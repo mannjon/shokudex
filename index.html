@@ -12,7 +12,7 @@
     <link rel="manifest" href="manifest.webmanifest" />
     <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="icon-180.png" />
-    <title>Shokudex — Page № 012 · Fuyu Persimmon</title>
+    <title>Shokudex — Page № 015 · Fuyu Persimmon</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -459,6 +459,17 @@
       .art-ic.temp-ic {
         background: var(--paper);
       }
+      .art-ic.zone-ic {
+        background: linear-gradient(140deg, #eef2e2 0%, #c3d3a4 100%);
+      }
+      .zone-txt {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        color: var(--ink);
+        white-space: nowrap;
+      }
       .stamp {
         position: absolute;
         left: auto;
@@ -612,7 +623,7 @@
 
         object-fit: contain;
         object-position: 50% 50%;
-        background: #efe8d3;
+        background: transparent;
       }
 
       .art-frame {
@@ -620,10 +631,10 @@
         width: 100%;
         flex: 1 1 auto;
         min-height: 0;
-        border: 1.5px solid var(--ink);
+        border: none;
         border-radius: var(--radius);
-        box-shadow: 3px 4px 0 rgba(38, 51, 31, 0.85);
-        background: #efe8d3;
+        box-shadow: none;
+        background: #f4ece0;
         overflow: hidden;
 
       }
@@ -1489,7 +1500,7 @@
 
         <div class="wordmark">
           <div class="name">Shokudex</div>
-          <div class="sub" id="pageSub">Plant Library · Page № 012</div>
+          <div class="sub" id="pageSub">Plant Library · Page № 015</div>
         </div>
 
         <button class="float-btn add-float" id="addBtn" aria-pressed="false" aria-label="Add to My Library">
@@ -1512,7 +1523,7 @@
       <section class="dex-home" id="homeView" hidden aria-label="Dex — categories">
         <div class="dex-head">
           <div class="dex-title">Shokudex</div>
-          <div class="dex-count" id="homeLibCount">IN LIBRARY: 0 / 17</div>
+          <div class="dex-count" id="homeLibCount">IN LIBRARY: 0 / 30</div>
         </div>
         <div class="cat-list" id="catRows"></div>
         <div class="tag-bar" id="tagPills" role="group" aria-label="Filter by tag"></div>
@@ -1549,7 +1560,7 @@
               <div class="art" id="artBox">
                 <img class="img-render" id="frontRender" src="persimmon-render.jpg" alt="Colored pencil and watercolor rendering of a Fuyu persimmon tree with white chalk highlights" />
                 <img class="img-photo" id="frontPhoto" src="persimmon-photo.jpg" alt="Photograph of the same Fuyu persimmon tree" />
-                <div class="entry-no"><small>№</small><span id="entryNoNum">012</span></div>
+                <div class="entry-no"><small>№</small><span id="entryNoNum">015</span></div>
                 <button type="button" class="fav-star" id="favBtn" aria-pressed="false" aria-label="Add to favorites">
                   <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2.8 14.7 8.6 21 9.4 16.3 13.8 17.5 20 12 16.9 6.5 20 7.7 13.8 3 9.4 9.3 8.6" /></svg>
                 </button>
@@ -1567,6 +1578,7 @@
                       <circle cx="12" cy="17.4" r="2" fill="#dd741f" stroke="none" />
                     </svg>
                   </span>
+                  <span class="art-ic zone-ic" aria-hidden="true"><span class="zone-txt" id="zoneIcText">7–9</span></span>
                 </div>
               </div>
 
@@ -1676,7 +1688,7 @@
           <img id="srImg" src="persimmon-render.jpg" alt="" />
           <div>
             <div class="sr-name" id="srName">Fuyu Persimmon</div>
-            <div class="sr-meta" id="srMeta">№ 012 · MATCH 98% · FRUIT TREE</div>
+            <div class="sr-meta" id="srMeta">№ 015 · MATCH 98% · FRUIT TREE</div>
           </div>
         </div>
         <div class="sr-actions">
@@ -1697,142 +1709,259 @@
         var WATER_WEEK = "Water: moderate — a deep soak once a week";
 
         var PLANTS = [
-          { no: "001", name: "Apple — Fuji", sci: "Malus domestica ‘Fuji’", group: "tree", kind: "FRUIT TREE", tags: TREE_TAGS,
+          { no: "001", name: "Annabelle Hydrangea", sci: "Hydrangea arborescens ‘Annabelle’", group: "bush", kind: "FLOWERING SHRUB", tags: BUSH_TAGS,
+            front: "hydrangea-annabelle-mature.jpg", photo: "hydrangea-annabelle-photo.jpg",
+            stages: ["hydrangea-annabelle-seedling.jpg", "hydrangea-annabelle-established.jpg", "hydrangea-annabelle-mature.jpg"],
+            ext: [[0.252, 0.786, 0.25, 0.899, 0.501], [0.106, 0.895, 0.056, 0.963, 0.518], [0.054, 0.936, 0.045, 0.971, 0.511]],
+            h: [3, 5], w: [4, 6], sun: "Sun: part shade — morning sun, shade from the afternoon heat", water: "Water: steady moisture — a deep soak twice a week in summer heat", temp: "Temperature: hardy in zones 3 to 9", zones: "3 to 9",
+            soil: "Rich, moist", ph: "5.5–7.0",
+            ftags: ["PERENNIAL", "DECIDUOUS"],
+            dex: ["Plant it in part shade — morning sun, shade from afternoon heat — in rich soil that stays moist. Water deeply twice a week through summer heat and mulch deep. Hardy in zones 3–9.",
+                  "Cut it back hard in late winter — it blooms on new wood. In early summer it covers itself in huge white snowballs, some a foot across; stand the heaviest heads back up after rain."] },
+          { no: "002", name: "Apple — Fuji", sci: "Malus domestica ‘Fuji’", group: "tree", kind: "FRUIT TREE", tags: TREE_TAGS,
             front: "apple-fuji-mature.jpg", photo: "apple-fuji-photo.jpg",
             stages: ["apple-fuji-seedling.jpg", "apple-fuji-established.jpg", "apple-fuji-maturing.jpg", "apple-fuji-mature.jpg"],
             ext: [[0.15, 0.857, 0.414, 0.914, 0.506], [0.086, 0.9, 0.061, 0.943, 0.5], [0.086, 0.914, 0.064, 0.957, 0.501], [0.036, 0.964, 0.025, 0.982, 0.495]],
             h: [15, 18], w: [15, 18], sun: SUN_FULL, water: WATER_WEEK, temp: "Temperature: hardy in zones 6 to 9", zones: "6 to 9",
             soil: "Loamy, drained", ph: "6.0–6.5",
-            dex: ["Plant it in full sun with room to spread, in loamy, well-drained soil, with another apple nearby to pollinate it. Water deeply once a week while it establishes, and keep a wide mulch ring clear of the trunk.",
-                  "Prune in late winter to an open framework, and thin the young fruit hard in June — Fuji overloads easily. Pick from mid-October, once a few cool nights have brought up the red blush; it eats sweet and crisp straight off the branch."] },
-          { no: "002", name: "Apple — Gala", sci: "Malus domestica ‘Gala’", group: "tree", kind: "FRUIT TREE", tags: TREE_TAGS,
+            dex: ["Plant it in full sun with room to spread, in loamy, well-drained soil, with another apple nearby to pollinate it. Water deeply once a week while it establishes. Hardy in zones 6–9.",
+                  "Prune in late winter to an open framework, and thin the young fruit hard in June — Fuji overloads easily. Pick from mid-October, when a few cool nights have brought up the red blush; it eats sweet and crisp."] },
+          { no: "003", name: "Apple — Gala", sci: "Malus domestica ‘Gala’", group: "tree", kind: "FRUIT TREE", tags: TREE_TAGS,
             front: "apple-gala-mature.jpg", photo: "apple-gala-photo.jpg",
             stages: ["apple-gala-seedling.jpg", "apple-gala-established.jpg", "apple-gala-maturing.jpg", "apple-gala-mature.jpg"],
             ext: [[0.286, 0.736, 0.389, 0.954, 0.52], [0.171, 0.871, 0.057, 0.929, 0.501], [0.057, 0.929, 0.043, 0.975, 0.494], [0.064, 0.936, 0.032, 0.979, 0.502]],
             h: [14, 16], w: [14, 16], sun: SUN_FULL, water: WATER_WEEK, temp: "Temperature: hardy in zones 5 to 8", zones: "5 to 8",
             soil: "Loamy, drained", ph: "6.0–6.5",
-            dex: ["Plant it in full sun with room to spread, in loamy, well-drained soil, with another apple nearby to pollinate it. Water deeply once a week while it establishes, and keep a wide mulch ring clear of the trunk.",
-                  "Prune in late winter to an open framework, and thin early and hard — Gala sets a heavy crop. Pick from late August as the skin turns creamy under the stripes; it sweetens early and does not keep long, so eat it fresh."] },
-          { no: "003", name: "Apple — Liberty", sci: "Malus domestica ‘Liberty’", group: "tree", kind: "FRUIT TREE", tags: TREE_TAGS,
+            dex: ["Plant it in full sun with room to spread, in loamy, well-drained soil, with another apple nearby to pollinate it. Water deeply once a week while it establishes. Hardy in zones 5–8.",
+                  "Prune in late winter to an open framework, and thin early and hard — Gala sets a heavy crop. Pick from late August as the skin turns creamy under the stripes; it does not keep long, so eat it fresh."] },
+          { no: "004", name: "Apple — Liberty", sci: "Malus domestica ‘Liberty’", group: "tree", kind: "FRUIT TREE", tags: TREE_TAGS,
             front: "apple-liberty-mature.jpg", photo: "apple-liberty-photo.jpg",
             stages: ["apple-liberty-seedling.jpg", "apple-liberty-established.jpg", "apple-liberty-maturing.jpg", "apple-liberty-mature.jpg"],
             ext: [[0.136, 0.857, 0.339, 0.921, 0.497], [0.086, 0.893, 0.043, 0.961, 0.506], [0.057, 0.943, 0.036, 0.964, 0.504], [0.029, 0.971, 0.046, 0.975, 0.501]],
             h: [12, 15], w: [12, 15], sun: SUN_FULL, water: WATER_WEEK, temp: "Temperature: hardy in zones 4 to 7", zones: "4 to 7",
             soil: "Loamy, drained", ph: "6.0–6.5",
-            dex: ["Plant it in full sun with room to spread, in loamy, well-drained soil, with another apple nearby to pollinate it. Liberty was bred to shrug off scab and rust, so it asks for far less spraying than most apples. Water deeply once a week while it establishes.",
-                  "Prune in late winter to an open framework, and thin the young fruit in June so what remains sizes up. Pick in late September when the skin is a deep glossy red — tart-sweet, and at its best eaten fresh."] },
-          { no: "004", name: "Apple — Pink Lady", sci: "Malus domestica ‘Pink Lady’", group: "tree", kind: "FRUIT TREE", tags: TREE_TAGS,
+            dex: ["Plant it in full sun in loamy, well-drained soil, with another apple nearby to pollinate it. Bred to resist scab and rust, it needs far less spraying than most apples. Water deeply once a week while it establishes. Hardy in zones 4–7.",
+                  "Prune in late winter to an open framework, and thin the young fruit in June. Pick in late September when the skin is deep glossy red — tart-sweet, best eaten fresh."] },
+          { no: "005", name: "Apple — Pink Lady", sci: "Malus domestica ‘Pink Lady’", group: "tree", kind: "FRUIT TREE", tags: TREE_TAGS,
             front: "apple-pinklady-mature.jpg", photo: "apple-pinklady-photo.jpg",
             stages: ["apple-pinklady-seedling.jpg", "apple-pinklady-established.jpg", "apple-pinklady-maturing.jpg", "apple-pinklady-mature.jpg"],
             ext: [[0.264, 0.7, 0.382, 0.871, 0.503], [0.129, 0.879, 0.061, 0.961, 0.502], [0.071, 0.921, 0.039, 0.975, 0.501], [0.0, 0.993, 0.0, 0.996, 0.498]],
             h: [15, 18], w: [12, 15], sun: SUN_FULL, water: WATER_WEEK, temp: "Temperature: hardy in zones 6 to 9", zones: "6 to 9",
             soil: "Loamy, drained", ph: "6.0–6.5",
-            dex: ["Plant it in full sun — the warmest, sunniest spot you have — in loamy, well-drained soil, with another apple nearby to pollinate it. It ripens very late and needs a long warm fall. Water deeply once a week while it establishes.",
-                  "Prune in late winter to an open framework, and thin the young fruit in June. Pick in late October or November, once the pink blush is full over a yellow-green ground; it keeps for months in the fridge and sweetens as it stores."] },
-          { no: "005", name: "Apple — Wolf River", sci: "Malus domestica ‘Wolf River’", group: "tree", kind: "FRUIT TREE", tags: TREE_TAGS,
+            dex: ["Plant it in the warmest, sunniest spot you have, in loamy, well-drained soil, with another apple nearby to pollinate it. It ripens very late and needs a long warm fall. Water deeply once a week while it establishes. Hardy in zones 6–9.",
+                  "Prune in late winter to an open framework, and thin the fruit in June. Pick in late October or November, once the pink blush is full; it keeps for months and sweetens in store."] },
+          { no: "006", name: "Apple — Wolf River", sci: "Malus domestica ‘Wolf River’", group: "tree", kind: "FRUIT TREE", tags: TREE_TAGS,
             front: "apple-wolfriver-mature.jpg", photo: "apple-wolfriver-photo.jpg",
             stages: ["apple-wolfriver-seedling.jpg", "apple-wolfriver-established.jpg", "apple-wolfriver-maturing.jpg", "apple-wolfriver-mature.jpg"],
             ext: [[0.321, 0.679, 0.418, 0.875, 0.501], [0.05, 0.943, 0.032, 0.996, 0.503], [0.0, 0.957, 0.0, 0.996, 0.496], [0.036, 0.986, 0.0, 0.979, 0.504]],
             h: [18, 22], w: [18, 22], sun: SUN_FULL, water: WATER_WEEK, temp: "Temperature: hardy in zones 4 to 7", zones: "4 to 7",
             soil: "Loamy, drained", ph: "6.0–6.5",
-            dex: ["Plant it in full sun with more room than the other apples — Wolf River grows big and vigorous — in loamy, well-drained soil, with another apple nearby to pollinate it. Water deeply once a week while it establishes.",
-                  "Prune in late winter to an open framework, and thin in June so the fruit can reach its famous size — a single apple can fill a pie. Pick in September as the pale skin takes on its red wash; it is a cooker, born for sauce and pies."] },
-          { no: "006", name: "Apricot", sci: "Prunus armeniaca", group: "tree", kind: "FRUIT TREE", tags: TREE_TAGS,
+            dex: ["Plant it in full sun with extra room — Wolf River grows big and vigorous — in loamy, well-drained soil, with another apple nearby to pollinate it. Water deeply once a week while it establishes. Hardy in zones 4–7.",
+                  "Prune in late winter to an open framework, and thin in June so the fruit can reach its famous size — one apple can fill a pie. Pick in September; it is a cooker, born for sauce and pies."] },
+          { no: "007", name: "Apricot", sci: "Prunus armeniaca", group: "tree", kind: "FRUIT TREE", tags: TREE_TAGS,
             front: "apricot-mature.jpg", photo: "apricot-photo.jpg",
             stages: ["apricot-seedling.jpg", "apricot-established.jpg", "apricot-maturing.jpg", "apricot-mature.jpg"],
             ext: [[0.214, 0.793, 0.414, 0.932, 0.492], [0.0, 0.936, 0.046, 0.968, 0.494], [0.057, 0.943, 0.039, 0.975, 0.504], [0.0, 0.957, 0.0, 0.996, 0.474]],
             h: [15, 20], w: [15, 20], sun: SUN_FULL, water: "Water: low to moderate — a deep soak every week or two once established", temp: "Temperature: hardy in zones 5 to 8", zones: "5 to 8",
             soil: "Loamy, drained", ph: "6.0–7.0",
-            dex: ["Plant it in full sun on the highest ground you have — apricots bloom early, and cold air settling in a low spot takes the blossoms. Loamy, sharply drained soil; it hates wet feet. Water deeply every week or two once it establishes.",
-                  "Prune lightly in late winter to a vase shape, and thin the fruit in spring so what remains sizes up. Pick in July when the fruit is fully orange and gives a little in the hand — an apricot ripens on the tree or not at all."] },
-          { no: "007", name: "Cherry, Tart — Montmorency", sci: "Prunus cerasus ‘Montmorency’", group: "tree", kind: "FRUIT TREE", tags: TREE_TAGS,
-            front: "cherry-montmorency-mature.jpg", photo: "cherry-montmorency-photo.jpg",
-            stages: ["cherry-montmorency-seedling.jpg", "cherry-montmorency-established.jpg", "cherry-montmorency-maturing.jpg", "cherry-montmorency-mature.jpg"],
-            ext: [[0.336, 0.65, 0.432, 0.85, 0.504], [0.0, 0.879, 0.0, 0.961, 0.504], [0.071, 0.929, 0.036, 0.975, 0.49], [0.0, 0.993, 0.0, 0.996, 0.517]],
-            h: [15, 18], w: [15, 20], sun: SUN_FULL, water: WATER_WEEK, temp: "Temperature: hardy in zones 4 to 7", zones: "4 to 7",
-            soil: "Loamy, drained", ph: "6.0–7.0",
-            dex: ["Plant it in full sun with room to spread, in loamy, well-drained soil. It is self-fertile — one tree fruits on its own. Water deeply once a week while it establishes; after that, rainfall mostly covers it, with extra water while the fruit swells.",
-                  "Prune in late winter to an open framework, and net the tree as the cherries color or the birds will take the whole crop. Pick in June and July when the fruit is a clear bright red — tart, and made for pies."] },
-          { no: "008", name: "Peach — Contender", sci: "Prunus persica ‘Contender’", group: "tree", kind: "FRUIT TREE", tags: TREE_TAGS,
-            front: "peach-contender-mature.jpg", photo: "peach-contender-photo.jpg",
-            stages: ["peach-contender-seedling.jpg", "peach-contender-established.jpg", "peach-contender-maturing.jpg", "peach-contender-mature.jpg"],
-            ext: [[0.264, 0.729, 0.375, 0.904, 0.51], [0.0, 0.993, 0.0, 0.996, 0.491], [0.079, 0.943, 0.039, 0.961, 0.495], [0.057, 0.943, 0.036, 0.968, 0.502]],
-            h: [12, 15], w: [12, 15], sun: SUN_FULL, water: "Water: moderate — a deep soak once a week, more in hot spells", temp: "Temperature: hardy in zones 4 to 8", zones: "4 to 8",
-            soil: "Sandy loam, drained", ph: "6.0–6.5",
-            dex: ["Plant it in full sun in sandy loam that drains fast — peaches sulk in wet soil. Contender blooms late and its buds are extra cold-hardy, which is why it crops in the South when other peaches get frosted. Water deeply once a week, more in hot spells.",
-                  "Prune hard every late winter to an open vase — peaches fruit on last year's wood. Thin ruthlessly in spring, one fruit every six inches. Pick in August when the ground color turns yellow and the fruit gives slightly; it finishes ripening on the counter."] },
-          { no: "009", name: "Pear — Bartlett", sci: "Pyrus communis ‘Bartlett’", group: "tree", kind: "FRUIT TREE", tags: TREE_TAGS,
-            front: "pear-bartlett-mature.jpg", photo: "pear-bartlett-photo.jpg",
-            stages: ["pear-bartlett-seedling.jpg", "pear-bartlett-established.jpg", "pear-bartlett-maturing.jpg", "pear-bartlett-mature.jpg"],
-            ext: [[0.236, 0.786, 0.386, 0.943, 0.511], [0.086, 0.893, 0.064, 0.964, 0.495], [0.064, 0.993, 0.025, 0.971, 0.509], [0.05, 0.957, 0.039, 0.979, 0.502]],
-            h: [18, 24], w: [13, 18], sun: SUN_FULL, water: WATER_WEEK, temp: "Temperature: hardy in zones 5 to 8", zones: "5 to 8",
-            soil: "Loamy, drained", ph: "6.0–6.5",
-            dex: ["Plant it in full sun with room to grow tall, in loamy, well-drained soil, with another pear nearby to pollinate it — the Moonglow does the job well. Water deeply once a week while it establishes.",
-                  "Prune in late winter to a pyramidal framework, lightly — pears resent hard cutting. Pick in August while the fruit is still green and firm, when it lifts and twists free easily; a Bartlett ripens off the tree, on the counter, into butter-soft sweetness."] },
-          { no: "010", name: "Pear — Moonglow", sci: "Pyrus communis ‘Moonglow’", group: "tree", kind: "FRUIT TREE", tags: TREE_TAGS,
-            front: "pear-moonglow-mature.jpg", photo: "pear-moonglow-photo.jpg",
-            stages: ["pear-moonglow-seedling.jpg", "pear-moonglow-established.jpg", "pear-moonglow-maturing.jpg", "pear-moonglow-mature.jpg"],
-            ext: [[0.257, 0.736, 0.4, 0.9, 0.513], [0.029, 0.886, 0.021, 0.989, 0.511], [0.086, 0.914, 0.032, 0.971, 0.502], [0.043, 0.986, 0.0, 0.996, 0.493]],
-            h: [15, 20], w: [12, 15], sun: SUN_FULL, water: WATER_WEEK, temp: "Temperature: hardy in zones 5 to 8", zones: "5 to 8",
-            soil: "Loamy, drained", ph: "6.0–6.5",
-            dex: ["Plant it in full sun with room to grow tall and upright, in loamy, well-drained soil, with another pear nearby to pollinate it — and it returns the favor for the Bartlett. Moonglow was bred to resist fire blight, the pear grower's worst enemy. Water deeply once a week while it establishes.",
-                  "Prune in late winter, lightly, keeping its upright pyramidal shape. Pick in August while still firm, when the skin warms to yellow-green; like the Bartlett it ripens off the tree, mild and juicy with almost no grit."] },
-          { no: "011", name: "Pear — Shinseiki", sci: "Pyrus pyrifolia ‘Shinseiki’", group: "tree", kind: "FRUIT TREE", tags: TREE_TAGS,
-            front: "pear-shinseiki-mature.jpg", photo: "pear-shinseiki-photo.jpg",
-            stages: ["pear-shinseiki-seedling.jpg", "pear-shinseiki-established.jpg", "pear-shinseiki-maturing.jpg", "pear-shinseiki-mature.jpg"],
-            ext: [[0.293, 0.707, 0.386, 0.882, 0.493], [0.0, 0.993, 0.0, 0.996, 0.482], [0.0, 0.964, 0.0, 0.996, 0.494], [0.043, 0.95, 0.036, 0.975, 0.5]],
-            h: [10, 15], w: [10, 15], sun: SUN_FULL, water: "Water: moderate — a deep soak once a week, steady while the fruit sizes", temp: "Temperature: hardy in zones 5 to 9", zones: "5 to 9",
-            soil: "Loamy, drained", ph: "5.5–7.0",
-            dex: ["Plant it in full sun with room to spread, in loamy, well-drained soil. An Asian pear — round as an apple and eaten crisp. Water deeply once a week, and keep it steady while the fruit sizes up, or the fruit stays small.",
-                  "Prune in late winter to an open framework, and thin hard in spring — Shinseiki sets far more fruit than it can grow. Pick in August when the skin turns a clear golden yellow; unlike European pears it ripens on the tree and is eaten crisp, straight off the branch."] },
-          { no: "012", name: "Fuyu Persimmon", sci: "Diospyros kaki ‘Fuyu’", group: "tree", kind: "FRUIT TREE", tags: TREE_TAGS,
-            front: "persimmon-render.jpg", photo: "persimmon-photo.jpg",
-            stages: ["persimmon-seedling.jpg", "persimmon-established.jpg", "persimmon-render.jpg", "persimmon-fully-mature.jpg"],
-            ext: [[0.155, 0.812, 0.468, 0.81, 0.508], [0.04, 0.945, 0.135, 0.805, 0.51], [0.025, 0.965, 0.12, 0.81, 0.511], [0.017, 0.984, 0.095, 0.798, 0.514]],
-            h: [20, 25], w: [20, 25], sun: SUN_FULL, water: WATER_WEEK, temp: "Temperature: hardy in zones 7 to 9", zones: "7 to 9",
-            soil: "Loamy, drained", ph: "6.0–7.5",
-            dex: ["Plant it in full sun with room to spread, in loamy, well-drained soil. Water deeply once a week while it establishes; after that, rainfall mostly covers it.",
-                  "Prune in late winter to an open framework, and thin the fruit in June so what remains ripens large. Pick at deep orange — a Fuyu is eaten crisp, straight off the branch."] },
-          { no: "013", name: "Plum — AU Rosa", sci: "Prunus salicina ‘AU Rosa’", group: "tree", kind: "FRUIT TREE", tags: TREE_TAGS,
-            front: "plum-aurosa-mature.jpg", photo: "plum-aurosa-photo.jpg",
-            stages: ["plum-aurosa-seedling.jpg", "plum-aurosa-established.jpg", "plum-aurosa-maturing.jpg", "plum-aurosa-mature.jpg"],
-            ext: [[0.264, 0.664, 0.329, 0.932, 0.473], [0.0, 0.993, 0.0, 0.996, 0.497], [0.071, 0.936, 0.036, 0.961, 0.5], [0.0, 0.957, 0.043, 0.964, 0.502]],
-            h: [15, 18], w: [15, 18], sun: SUN_FULL, water: WATER_WEEK, temp: "Temperature: hardy in zones 6 to 9", zones: "6 to 9",
-            soil: "Loamy, drained", ph: "5.5–6.5",
-            dex: ["Plant it in full sun with room to spread, in loamy, well-drained soil. AU Rosa was bred at Auburn for the humid South, with real resistance to the diseases that take other Japanese plums here — and it is self-fertile, so one tree fruits alone. Water deeply once a week while it establishes.",
-                  "Prune in late winter to a vase shape, and thin the fruit in spring so what remains sizes up. Pick in June when the skin is fully red-purple and the fruit gives a little — sweet, juicy, and best eaten within days."] },
-          { no: "014", name: "Blackberry", sci: "Rubus fruticosus", group: "bush", kind: "FRUIT BUSH", tags: BUSH_TAGS,
+            dex: ["Plant it in full sun on high ground — apricots bloom early, and cold air settling low takes the blossoms. Loamy, sharply drained soil; it hates wet feet. Water deeply every week or two once established. Hardy in zones 5–8.",
+                  "Prune lightly in late winter to a vase shape, and thin the fruit in spring. Pick in July when the fruit is fully orange and gives a little — an apricot ripens on the tree or not at all."] },
+          { no: "008", name: "Azalea — Jubilee", sci: "Rhododendron ‘Jubilee’", group: "bush", kind: "FLOWERING SHRUB", tags: BUSH_TAGS,
+            front: "azalea-jubilee-mature.jpg", photo: "azalea-jubilee-photo.jpg",
+            stages: ["azalea-jubilee-seedling.jpg", "azalea-jubilee-established.jpg", "azalea-jubilee-mature.jpg"],
+            ext: [[0.245, 0.763, 0.18, 0.899, 0.51], [0.058, 0.942, 0.041, 0.981, 0.503], [0.062, 0.949, 0.033, 0.98, 0.508]],
+            h: [3, 5], w: [3, 5], sun: "Sun: part shade — morning sun, shade in the afternoon", water: "Water: steady moisture — a deep soak twice a week while it settles in", temp: "Temperature: hardy in zones 6 to 9", zones: "6 to 9",
+            soil: "Acid, rich", ph: "4.5–6.0",
+            ftags: ["PERENNIAL", "EVERGREEN"],
+            dex: ["Plant it in part shade — morning sun, afternoon shade — in acid, humus-rich soil that drains well but never dries out. Azaleas root shallow: mulch deep and water twice a week while it settles. Hardy in zones 6–9.",
+                  "Feed and prune right after the spring flowers fade — next year's buds set by summer, so a late cut takes the bloom. In spring it covers itself in pink trumpet flowers."] },
+          { no: "009", name: "Azalea — White", sci: "Rhododendron sp.", group: "bush", kind: "FLOWERING SHRUB", tags: BUSH_TAGS,
+            front: "azalea-white-mature.jpg", photo: "azalea-white-photo.jpg",
+            stages: ["azalea-white-seedling.jpg", "azalea-white-established.jpg", "azalea-white-mature.jpg"],
+            ext: [[0.187, 0.864, 0.218, 0.922, 0.504], [0.027, 0.972, 0.014, 0.985, 0.511], [0.038, 0.967, 0.036, 0.981, 0.508]],
+            h: [3, 4], w: [3, 4], sun: "Sun: part shade — morning sun, shade in the afternoon", water: "Water: steady moisture — a deep soak twice a week while it settles in", temp: "Temperature: hardy in zones 6 to 9", zones: "6 to 9",
+            soil: "Acid, rich", ph: "4.5–6.0",
+            ftags: ["PERENNIAL", "EVERGREEN"],
+            dex: ["Plant it in part shade — morning sun, then shade — in acid soil rich with leaf mold and pine bark. Never let the shallow roots dry out: mulch deep, water twice a week while it settles, and keep lime away. Hardy in zones 6–9.",
+                  "In spring it opens white trumpet flowers over the whole bush, lit against the dark green leaves. Prune only in the weeks right after flowering, and feed once the blooms fade."] },
+          { no: "010", name: "Blackberry", sci: "Rubus fruticosus", group: "bush", kind: "FRUIT BUSH", tags: BUSH_TAGS,
             front: "blackberry-mature.jpg", photo: "blackberry-photo.jpg",
             stages: ["blackberry-seedling.jpg", "blackberry-established.jpg", "blackberry-mature.jpg"],
             ext: [[0.0, 0.993, 0.0, 0.996, 0.44], [0.0, 0.986, 0.007, 0.996, 0.56], [0.064, 0.943, 0.029, 0.936, 0.518]],
             h: [5, 8], w: [4, 6], sun: SUN_FULL, water: "Water: moderate — a deep soak once a week, more while fruiting", temp: "Temperature: hardy in zones 5 to 9", zones: "5 to 9",
             soil: "Rich, drained", ph: "5.5–7.0",
-            dex: ["Plant it in full sun along a fence or wire it can lean on, in rich, well-drained soil. Water deeply once a week, and more while the fruit is sizing. The canes fruit in their second year, so give the patch room to renew itself.",
-                  "After harvest, cut the canes that fruited right down to the ground — they are done — and tip the new canes back to keep them branching. Pick every couple of days when the berries are fully black and glossy; a dull or red berry is not ripe, whatever its size."] },
-          { no: "015", name: "Blueberry", sci: "Vaccinium corymbosum", group: "bush", kind: "FRUIT BUSH", tags: BUSH_TAGS,
+            dex: ["Plant it in full sun along a fence or wire it can lean on, in rich, well-drained soil. Water deeply once a week, more while the fruit sizes. The canes fruit in their second year. Hardy in zones 5–9.",
+                  "After harvest, cut the fruited canes to the ground and tip new canes back to keep them branching. Pick every couple of days when berries are fully black and glossy — a dull or red one is not ripe."] },
+          { no: "011", name: "Blueberry", sci: "Vaccinium corymbosum", group: "bush", kind: "FRUIT BUSH", tags: BUSH_TAGS,
             front: "blueberry-mature.jpg", photo: "blueberry-photo.jpg",
             stages: ["blueberry-seedling.jpg", "blueberry-established.jpg", "blueberry-mature.jpg"],
             ext: [[0.286, 0.686, 0.368, 0.832, 0.517], [0.129, 0.871, 0.05, 0.957, 0.505], [0.057, 0.936, 0.039, 0.971, 0.515]],
             h: [6, 8], w: [5, 7], sun: SUN_FULL, water: "Water: steady moisture — a deep soak twice a week", temp: "Temperature: hardy in zones 4 to 8", zones: "4 to 8",
             soil: "Acid, rich", ph: "4.5–5.5",
-            dex: ["Plant it in full sun in acid soil — that is the whole secret of blueberries. Work in peat or pine bark and keep the pH down near 5, or the leaves yellow and the bush sulks. Keep the soil steadily moist, a deep soak twice a week, and mulch deep.",
-                  "Prune in late winter, taking out the oldest, twiggy stems at the ground so young wood keeps coming. Pick a few days after the berries turn fully blue, when the dusty bloom is on them and they roll off the stem with a light touch."] },
-          { no: "016", name: "Grape — Moon Drop", sci: "Vitis vinifera ‘Moon Drop’", group: "bush", kind: "FRUIT VINE", tags: VINE_TAGS,
+            dex: ["Plant it in full sun in acid soil — that is the whole secret of blueberries. Work in peat or pine bark and keep the pH near 5, or the leaves yellow. Water deeply twice a week and mulch deep. Hardy in zones 4–8.",
+                  "Prune in late winter, taking the oldest, twiggy stems out at the ground. Pick a few days after the berries turn fully blue, when they roll off the stem with a light touch."] },
+          { no: "012", name: "Cherry, Tart — Montmorency", sci: "Prunus cerasus ‘Montmorency’", group: "tree", kind: "FRUIT TREE", tags: TREE_TAGS,
+            front: "cherry-montmorency-mature.jpg", photo: "cherry-montmorency-photo.jpg",
+            stages: ["cherry-montmorency-seedling.jpg", "cherry-montmorency-established.jpg", "cherry-montmorency-maturing.jpg", "cherry-montmorency-mature.jpg"],
+            ext: [[0.336, 0.65, 0.432, 0.85, 0.504], [0.0, 0.879, 0.0, 0.961, 0.504], [0.071, 0.929, 0.036, 0.975, 0.49], [0.0, 0.993, 0.0, 0.996, 0.517]],
+            h: [15, 18], w: [15, 20], sun: SUN_FULL, water: WATER_WEEK, temp: "Temperature: hardy in zones 4 to 7", zones: "4 to 7",
+            soil: "Loamy, drained", ph: "6.0–7.0",
+            dex: ["Plant it in full sun with room to spread, in loamy, well-drained soil. It is self-fertile — one tree fruits on its own. Water deeply once a week while it establishes, with extra while the fruit swells. Hardy in zones 4–7.",
+                  "Prune in late winter to an open framework, and net the tree as the cherries color or the birds take the crop. Pick in June and July at a clear bright red — tart, and made for pies."] },
+          { no: "013", name: "Cinnamon Girl", sci: "Distylium ‘Cinnamon Girl’", group: "bush", kind: "EVERGREEN SHRUB", tags: BUSH_TAGS,
+            front: "cinnamon-girl-mature.jpg", photo: "cinnamon-girl-photo.jpg",
+            stages: ["cinnamon-girl-seedling.jpg", "cinnamon-girl-established.jpg", "cinnamon-girl-mature.jpg"],
+            ext: [[0.222, 0.843, 0.108, 0.897, 0.501], [0.028, 0.971, 0.015, 0.986, 0.502], [0.027, 0.972, 0.05, 0.973, 0.505]],
+            h: [2, 3], w: [3, 4], sun: "Sun: full sun to part shade", water: "Water: moderate — a deep soak once a week", temp: "Temperature: hardy in zones 6 to 9", zones: "6 to 9",
+            soil: "Loamy, drained", ph: "5.5–7.5",
+            ftags: ["PERENNIAL", "EVERGREEN"],
+            dex: ["Plant it in full sun or part shade in almost any soil that drains — a tough shrub bred to stand in for boxwood and holly. Water deeply once a week while it settles; after that it mostly looks after itself. Hardy in zones 6–9.",
+                  "Spring leaves open plum-purple, almost cinnamon, then settle to blue-green. It grows as a low spreading mound and takes shearing well — one light trim a year is plenty."] },
+          { no: "014", name: "Dwarf Red Mulberry", sci: "Morus rubra (dwarf form)", group: "tree", kind: "FRUIT TREE", tags: TREE_TAGS,
+            front: "mulberry-dwarf-mature.jpg", photo: "mulberry-dwarf-photo.jpg",
+            stages: ["mulberry-dwarf-seedling.jpg", "mulberry-dwarf-established.jpg", "mulberry-dwarf-maturing.jpg", "mulberry-dwarf-mature.jpg"],
+            ext: [[0.204, 0.963, 0.051, 0.875, 0.513], [0.094, 0.965, 0.048, 0.985, 0.508], [0.038, 0.964, 0.052, 0.976, 0.503], [0.055, 0.947, 0.044, 0.966, 0.507]],
+            h: [6, 10], w: [6, 10], sun: "Sun: full sun, 6 or more hours direct", water: "Water: moderate — a deep soak once a week", temp: "Temperature: hardy in zones 4 to 9", zones: "4 to 9",
+            soil: "Loamy, drained", ph: "5.5–7.0",
+            ftags: ["PERENNIAL", "DECIDUOUS", "EDIBLE"],
+            dex: ["Plant it in full sun in loamy, drained soil, away from patios and paving — ripe fruit stains everything it lands on. Water deeply once a week at first. Hardy in zones 4–9.",
+                  "It stays small enough for a big pot and fruits young. Prune in late winter to keep the canopy in reach. Pick from late spring once berries are dark — a red one is not ripe — and eat them the same day."] },
+          { no: "015", name: "Fuyu Persimmon", sci: "Diospyros kaki ‘Fuyu’", group: "tree", kind: "FRUIT TREE", tags: TREE_TAGS,
+            front: "persimmon-render.jpg", photo: "persimmon-photo.jpg",
+            stages: ["persimmon-seedling.jpg", "persimmon-established.jpg", "persimmon-render.jpg", "persimmon-fully-mature.jpg"],
+            ext: [[0.155, 0.812, 0.468, 0.81, 0.508], [0.04, 0.945, 0.135, 0.805, 0.51], [0.025, 0.965, 0.12, 0.81, 0.511], [0.017, 0.984, 0.095, 0.798, 0.514]],
+            h: [20, 25], w: [20, 25], sun: SUN_FULL, water: WATER_WEEK, temp: "Temperature: hardy in zones 7 to 9", zones: "7 to 9",
+            soil: "Loamy, drained", ph: "6.0–7.5",
+            dex: ["Plant it in full sun with room to spread, in loamy, well-drained soil. Water deeply once a week while it establishes; after that, rainfall mostly covers it. Hardy in zones 7–9.",
+                  "Prune in late winter to an open framework, and thin the fruit in June so what remains ripens large. Pick at deep orange — a Fuyu is eaten crisp, straight off the branch."] },
+          { no: "016", name: "Gardenia", sci: "Gardenia jasminoides", group: "bush", kind: "FLOWERING SHRUB", tags: BUSH_TAGS,
+            front: "gardenia-mature.jpg", photo: "gardenia-photo.jpg",
+            stages: ["gardenia-seedling.jpg", "gardenia-established.jpg", "gardenia-mature.jpg"],
+            ext: [[0.238, 0.751, 0.152, 0.871, 0.502], [0.108, 0.893, 0.05, 0.971, 0.505], [0.054, 0.965, 0.023, 0.981, 0.507]],
+            h: [4, 6], w: [4, 6], sun: "Sun: full sun to part shade — morning sun is best", water: "Water: steady moisture — a deep soak twice a week in hot weather", temp: "Temperature: hardy in zones 8 to 11", zones: "8 to 11",
+            soil: "Acid, rich", ph: "5.0–6.5",
+            ftags: ["PERENNIAL", "EVERGREEN"],
+            dex: ["Plant it in morning sun with a break from afternoon heat, in acid, rich soil that drains well. Water deeply twice a week in hot weather and feed through the season, or the buds drop before they open. Hardy in zones 8–11.",
+                  "Prune right after the main flush of bloom, and pick the white rosettes often — cutting them is what the plant is for, and the perfume fills a room."] },
+          { no: "017", name: "Grape — Moon Drop", sci: "Vitis vinifera ‘Moon Drop’", group: "bush", kind: "FRUIT VINE", tags: VINE_TAGS,
             front: "grape-moondrop-mature.jpg", photo: "grape-moondrop-photo.jpg",
             stages: ["grape-moondrop-seedling.jpg", "grape-moondrop-established.jpg", "grape-moondrop-mature.jpg"],
             ext: [[0.257, 0.75, 0.475, 0.925, 0.498], [0.064, 0.936, 0.05, 0.946, 0.515], [0.05, 0.964, 0.018, 0.979, 0.494]],
             h: [5, 7], w: [12, 20], sun: SUN_FULL, water: "Water: low to moderate — a deep soak every week or two once established", temp: "Temperature: hardy in zones 7 to 10", zones: "7 to 10",
             soil: "Deep loam, drained", ph: "5.5–6.5",
-            dex: ["Plant it in full sun against a strong trellis — a Moon Drop vine grows long and heavy — in deep, well-drained loam. Train one trunk up and two arms along the wire. Water deeply every week or two once it establishes; grapes like a dry summer better than wet feet.",
-                  "Prune hard every late winter — grapes fruit on new wood growing from last year's canes, so cut most of the vine away and leave short spurs. Pick in September when the long tubular berries are fully black and taste crisp and sweet; unripe ones never sweeten off the vine."] },
-          { no: "017", name: "Raspberry", sci: "Rubus idaeus", group: "bush", kind: "FRUIT BUSH", tags: BUSH_TAGS,
+            dex: ["Plant it in full sun against a strong trellis, in deep, well-drained loam — the vine grows long and heavy. Train one trunk up and two arms along the wire. Water deeply every week or two once established. Hardy in zones 7–10.",
+                  "Prune hard every late winter — grapes fruit on new wood, so cut most of the vine away and leave short spurs. Pick in September when the long berries are fully black and taste crisp and sweet."] },
+          { no: "018", name: "Japanese Yew", sci: "Taxus cuspidata", group: "bush", kind: "EVERGREEN SHRUB", tags: BUSH_TAGS,
+            front: "yew-japanese-mature.jpg", photo: "yew-japanese-photo.jpg",
+            stages: ["yew-japanese-seedling.jpg", "yew-japanese-established.jpg", "yew-japanese-mature.jpg"],
+            ext: [[0.315, 0.731, 0.135, 0.9, 0.504], [0.054, 0.961, 0.018, 0.986, 0.515], [0.087, 0.913, 0.022, 0.984, 0.5]],
+            h: [10, 15], w: [8, 12], sun: "Sun: full sun to full shade — very shade tolerant", water: "Water: moderate — a deep soak once a week", temp: "Temperature: hardy in zones 4 to 7", zones: "4 to 7",
+            soil: "Loamy, drained", ph: "6.0–7.0",
+            ftags: ["PERENNIAL", "EVERGREEN"],
+            dex: ["Plant it in sun or shade, in loamy, well-drained soil — drainage is the one thing it insists on. Water deeply once a week while it establishes; a settled yew rides out dry spells on its own. Hardy in zones 4–7.",
+                  "Shear once a year to keep it dense; it sprouts from old wood, so a hard cut grows back. Red berry-like arils in fall are pretty, but the seed inside is poisonous — and so is the foliage."] },
+          { no: "019", name: "Jujube", sci: "Ziziphus jujuba", group: "tree", kind: "FRUIT TREE", tags: TREE_TAGS,
+            front: "jujube-mature.jpg", photo: "jujube-photo.jpg",
+            stages: ["jujube-seedling.jpg", "jujube-established.jpg", "jujube-maturing.jpg", "jujube-mature.jpg"],
+            ext: [[0.257, 0.711, 0.236, 0.832, 0.503], [0.102, 0.894, 0.027, 0.977, 0.507], [0.051, 0.947, 0.015, 0.982, 0.509], [0.042, 0.962, 0.024, 0.982, 0.511]],
+            h: [15, 25], w: [10, 20], sun: "Sun: full sun, 6 or more hours direct", water: "Water: low — a deep soak every week or two once established", temp: "Temperature: hardy in zones 6 to 9", zones: "6 to 9",
+            soil: "Sandy loam, drained", ph: "5.5–8.5",
+            ftags: ["PERENNIAL", "DECIDUOUS", "EDIBLE"],
+            dex: ["Plant it in full sun, the hotter the better, in sandy loam that drains fast. Drought-tough, it shrugs off poor or alkaline soil. Water deeply every week or two at first. Hardy in zones 6–9.",
+                  "Prune in late winter to an open center; cut base suckers clean or they make a thicket. Fruit ripens in late summer, green to mahogany — crisp like a little apple, wrinkled like a date."] },
+          { no: "020", name: "Pampas Grass", sci: "Cortaderia selloana", group: "bush", kind: "ORNAMENTAL GRASS", tags: BUSH_TAGS,
+            front: "pampas-mature.jpg", photo: "pampas-photo.jpg",
+            stages: ["pampas-seedling.jpg", "pampas-established.jpg", "pampas-mature.jpg"],
+            ext: [[0.064, 0.912, 0.178, 0.908, 0.495], [0.063, 0.945, 0.032, 0.986, 0.509], [0.027, 0.972, 0.024, 0.985, 0.504]],
+            h: [8, 12], w: [4, 6], sun: "Sun: full sun, 6 or more hours direct", water: "Water: low — a deep soak every week or two once established", temp: "Temperature: hardy in zones 7 to 10", zones: "7 to 10",
+            soil: "Loamy, drained", ph: "6.0–7.5",
+            ftags: ["PERENNIAL", "EVERGREEN"], catName: "Ornamental",
+            dex: ["Plant it in full sun with plenty of room, in soil that drains well. Water every week or two while it establishes; a settled clump is drought-tough. Hardy in zones 7–10.",
+                  "Cut it back hard in late winter, wearing gloves and long sleeves — the leaf edges cut like paper. In late summer it throws up tall creamy plumes that stand into winter. Leave a wide clear ring around it."] },
+          { no: "021", name: "Peach — Contender", sci: "Prunus persica ‘Contender’", group: "tree", kind: "FRUIT TREE", tags: TREE_TAGS,
+            front: "peach-contender-mature.jpg", photo: "peach-contender-photo.jpg",
+            stages: ["peach-contender-seedling.jpg", "peach-contender-established.jpg", "peach-contender-maturing.jpg", "peach-contender-mature.jpg"],
+            ext: [[0.264, 0.729, 0.375, 0.904, 0.51], [0.0, 0.993, 0.0, 0.996, 0.491], [0.079, 0.943, 0.039, 0.961, 0.495], [0.057, 0.943, 0.036, 0.968, 0.502]],
+            h: [12, 15], w: [12, 15], sun: SUN_FULL, water: "Water: moderate — a deep soak once a week, more in hot spells", temp: "Temperature: hardy in zones 4 to 8", zones: "4 to 8",
+            soil: "Sandy loam, drained", ph: "6.0–6.5",
+            dex: ["Plant it in full sun in sandy loam that drains fast. Contender blooms late, with cold-hardy buds, so it crops when other peaches frost. Water deeply once a week, more in hot spells. Hardy in zones 4–8.",
+                  "Prune hard every late winter to an open vase — peaches fruit on last year's wood. Thin ruthlessly in spring, one fruit every six inches. Pick in August when the fruit gives slightly."] },
+          { no: "022", name: "Pear — Bartlett", sci: "Pyrus communis ‘Bartlett’", group: "tree", kind: "FRUIT TREE", tags: TREE_TAGS,
+            front: "pear-bartlett-mature.jpg", photo: "pear-bartlett-photo.jpg",
+            stages: ["pear-bartlett-seedling.jpg", "pear-bartlett-established.jpg", "pear-bartlett-maturing.jpg", "pear-bartlett-mature.jpg"],
+            ext: [[0.236, 0.786, 0.386, 0.943, 0.511], [0.086, 0.893, 0.064, 0.964, 0.495], [0.064, 0.993, 0.025, 0.971, 0.509], [0.05, 0.957, 0.039, 0.979, 0.502]],
+            h: [18, 24], w: [13, 18], sun: SUN_FULL, water: WATER_WEEK, temp: "Temperature: hardy in zones 5 to 8", zones: "5 to 8",
+            soil: "Loamy, drained", ph: "6.0–6.5",
+            dex: ["Plant it in full sun with room to grow tall, in loamy, well-drained soil, with another pear nearby to pollinate it — the Moonglow does the job. Water deeply once a week while it establishes. Hardy in zones 5–8.",
+                  "Prune lightly in late winter to a pyramidal framework — pears resent hard cutting. Pick in August while still firm, when the fruit lifts and twists free; it ripens off the tree, butter-soft."] },
+          { no: "023", name: "Pear — Moonglow", sci: "Pyrus communis ‘Moonglow’", group: "tree", kind: "FRUIT TREE", tags: TREE_TAGS,
+            front: "pear-moonglow-mature.jpg", photo: "pear-moonglow-photo.jpg",
+            stages: ["pear-moonglow-seedling.jpg", "pear-moonglow-established.jpg", "pear-moonglow-maturing.jpg", "pear-moonglow-mature.jpg"],
+            ext: [[0.257, 0.736, 0.4, 0.9, 0.513], [0.029, 0.886, 0.021, 0.989, 0.511], [0.086, 0.914, 0.032, 0.971, 0.502], [0.043, 0.986, 0.0, 0.996, 0.493]],
+            h: [15, 20], w: [12, 15], sun: SUN_FULL, water: WATER_WEEK, temp: "Temperature: hardy in zones 5 to 8", zones: "5 to 8",
+            soil: "Loamy, drained", ph: "6.0–6.5",
+            dex: ["Plant it in full sun in loamy, well-drained soil, with another pear nearby to pollinate it — it returns the favor for the Bartlett. Bred to resist fire blight. Water deeply once a week while it establishes. Hardy in zones 5–8.",
+                  "Prune lightly in late winter, keeping the upright pyramidal shape. Pick in August while still firm; it ripens off the tree, mild and juicy with almost no grit."] },
+          { no: "024", name: "Pear — Shinseiki", sci: "Pyrus pyrifolia ‘Shinseiki’", group: "tree", kind: "FRUIT TREE", tags: TREE_TAGS,
+            front: "pear-shinseiki-mature.jpg", photo: "pear-shinseiki-photo.jpg",
+            stages: ["pear-shinseiki-seedling.jpg", "pear-shinseiki-established.jpg", "pear-shinseiki-maturing.jpg", "pear-shinseiki-mature.jpg"],
+            ext: [[0.293, 0.707, 0.386, 0.882, 0.493], [0.0, 0.993, 0.0, 0.996, 0.482], [0.0, 0.964, 0.0, 0.996, 0.494], [0.043, 0.95, 0.036, 0.975, 0.5]],
+            h: [10, 15], w: [10, 15], sun: SUN_FULL, water: "Water: moderate — a deep soak once a week, steady while the fruit sizes", temp: "Temperature: hardy in zones 5 to 9", zones: "5 to 9",
+            soil: "Loamy, drained", ph: "5.5–7.0",
+            dex: ["Plant it in full sun in loamy, well-drained soil. An Asian pear — round as an apple, eaten crisp. Water deeply once a week, and keep it steady while the fruit sizes. Hardy in zones 5–9.",
+                  "Prune in late winter to an open framework, and thin hard in spring — Shinseiki sets far more fruit than it can grow. Pick in August when the skin is clear golden yellow; it ripens on the tree and is eaten crisp."] },
+          { no: "025", name: "Pink Muhly Grass", sci: "Muhlenbergia capillaris", group: "bush", kind: "ORNAMENTAL GRASS", tags: BUSH_TAGS,
+            front: "muhly-pink-mature.jpg", photo: "muhly-pink-photo.jpg",
+            stages: ["muhly-pink-seedling.jpg", "muhly-pink-established.jpg", "muhly-pink-mature.jpg"],
+            ext: [[0.178, 0.861, 0.3, 0.931, 0.51], [0.09, 0.928, 0.033, 0.962, 0.507], [0.027, 0.972, 0.015, 0.978, 0.509]],
+            h: [3, 4], w: [2, 3], sun: "Sun: full sun, 6 or more hours direct", water: "Water: low — a deep soak every week or two once established", temp: "Temperature: hardy in zones 6 to 9", zones: "6 to 9",
+            soil: "Sandy, drained", ph: "5.5–7.5",
+            ftags: ["PERENNIAL"], catName: "Ornamental",
+            dex: ["Plant it in full sun in soil that drains sharply — sand or gravel over rich ground; wet winter feet are the one thing that kills it. Water every week or two while it establishes, then almost never. Hardy in zones 6–9.",
+                  "Leave the clump standing through winter; cut it to the ground in late winter. In fall, a cloud of pink plumes floats over the clump for weeks — best with low sun behind it."] },
+          { no: "026", name: "Plum — AU Rosa", sci: "Prunus salicina ‘AU Rosa’", group: "tree", kind: "FRUIT TREE", tags: TREE_TAGS,
+            front: "plum-aurosa-mature.jpg", photo: "plum-aurosa-photo.jpg",
+            stages: ["plum-aurosa-seedling.jpg", "plum-aurosa-established.jpg", "plum-aurosa-maturing.jpg", "plum-aurosa-mature.jpg"],
+            ext: [[0.264, 0.664, 0.329, 0.932, 0.473], [0.0, 0.993, 0.0, 0.996, 0.497], [0.071, 0.936, 0.036, 0.961, 0.5], [0.0, 0.957, 0.043, 0.964, 0.502]],
+            h: [15, 18], w: [15, 18], sun: SUN_FULL, water: WATER_WEEK, temp: "Temperature: hardy in zones 6 to 9", zones: "6 to 9",
+            soil: "Loamy, drained", ph: "5.5–6.5",
+            dex: ["Plant it in full sun in loamy, well-drained soil. Bred at Auburn for the humid South, it resists local plum diseases and fruits alone — no pollinator needed. Water deeply once a week at first. Hardy in zones 6–9.",
+                  "Prune in late winter to a vase shape, and thin the fruit in spring. Pick in June at full red-purple, when the fruit gives a little — sweet and juicy, best within days."] },
+          { no: "027", name: "Podocarpus — Roman Candle", sci: "Podocarpus macrophyllus ‘Roman Candle’", group: "bush", kind: "EVERGREEN SHRUB", tags: BUSH_TAGS,
+            front: "podocarpus-romancandle-mature.jpg", photo: "podocarpus-romancandle-photo.jpg",
+            stages: ["podocarpus-romancandle-seedling.jpg", "podocarpus-romancandle-established.jpg", "podocarpus-romancandle-mature.jpg"],
+            ext: [[0.208, 0.787, 0.161, 0.908, 0.509], [0.209, 0.806, 0.036, 0.97, 0.505], [0.201, 0.8, 0.019, 0.986, 0.502]],
+            h: [10, 15], w: [2, 3], sun: "Sun: full sun to part shade", water: "Water: moderate — a deep soak once a week", temp: "Temperature: hardy in zones 7 to 10", zones: "7 to 10",
+            soil: "Loamy, drained", ph: "5.5–7.0",
+            ftags: ["PERENNIAL", "EVERGREEN"],
+            dex: ["Plant it in full sun or part shade in loamy soil that drains well. It grows as a natural narrow column, so no shearing is needed to hold the shape. Water deeply once a week while it establishes. Hardy in zones 7–10.",
+                  "Its leaves come out edged in creamy white — the candle-flame variegation that is the whole point — over deep green. Give it room to go up, not out: a slim screen, or a tall accent in a bed."] },
+          { no: "028", name: "Pringle Dwarf Yew", sci: "Taxus cuspidata ‘Pringle Dwarf’", group: "bush", kind: "EVERGREEN SHRUB", tags: BUSH_TAGS,
+            front: "yew-pringle-mature.jpg", photo: "yew-pringle-photo.jpg",
+            stages: ["yew-pringle-seedling.jpg", "yew-pringle-established.jpg", "yew-pringle-mature.jpg"],
+            ext: [[0.224, 0.788, 0.278, 0.861, 0.502], [0.033, 0.965, 0.236, 0.984, 0.507], [0.027, 0.972, 0.271, 0.946, 0.505]],
+            h: [2, 3], w: [3, 4], sun: "Sun: full sun to full shade — very shade tolerant", water: "Water: moderate — a deep soak once a week", temp: "Temperature: hardy in zones 4 to 7", zones: "4 to 7",
+            soil: "Loamy, drained", ph: "6.0–7.0",
+            ftags: ["PERENNIAL", "EVERGREEN"],
+            dex: ["Plant it in sun or shade — a yew truly does not mind shade — in loamy soil that drains well; it rots in wet ground. Water deeply once a week while it establishes. Hardy in zones 4–7.",
+                  "A slow dwarf — a few inches a year — so plant it at final spacing and let it be. Shear at most once a year into a tight low mound. Every part is poisonous but the berry's red flesh, and the seed inside that is poisonous too."] },
+          { no: "029", name: "Raspberry", sci: "Rubus idaeus", group: "bush", kind: "FRUIT BUSH", tags: BUSH_TAGS,
             front: "raspberry-mature.jpg", photo: "raspberry-photo.jpg",
             stages: ["raspberry-seedling.jpg", "raspberry-established.jpg", "raspberry-mature.jpg"],
             ext: [[0.214, 0.821, 0.382, 0.929, 0.492], [0.0, 0.993, 0.0, 0.996, 0.448], [0.05, 0.943, 0.036, 0.961, 0.527]],
             h: [4, 6], w: [3, 5], sun: SUN_FULL, water: "Water: moderate — a deep soak once a week, steady while fruiting", temp: "Temperature: hardy in zones 4 to 8", zones: "4 to 8",
             soil: "Rich, drained", ph: "5.5–6.5",
-            dex: ["Plant it in full sun in a row it can call its own, in rich, well-drained soil — raspberries spread by runners and will wander a bed if you let them. Water deeply once a week, and keep it steady while the fruit is on.",
-                  "After harvest, cut the canes that fruited down to the ground and thin the new canes to the strongest few per foot. Pick every couple of days when a ripe berry slips off its core with a gentle pull, leaving the white core behind on the plant."] }
+            dex: ["Plant it in full sun in a row of its own, in rich, well-drained soil — raspberries spread by runners and will wander a bed. Water deeply once a week, steady while the fruit is on. Hardy in zones 4–8.",
+                  "After harvest, cut fruited canes to the ground and thin new ones to the strongest few per foot. Pick every couple of days when a berry slips off its core with a gentle pull."] },
+          { no: "030", name: "Tree Form Gardenia", sci: "Gardenia jasminoides (tree form)", group: "bush", kind: "FLOWERING SHRUB", tags: BUSH_TAGS,
+            front: "gardenia-tree-mature.jpg", photo: "gardenia-tree-photo.jpg",
+            stages: ["gardenia-tree-seedling.jpg", "gardenia-tree-established.jpg", "gardenia-tree-mature.jpg"],
+            ext: [[0.284, 0.728, 0.239, 0.854, 0.503], [0.112, 0.88, 0.053, 0.952, 0.504], [0.065, 0.937, 0.049, 0.982, 0.504]],
+            h: [5, 6], w: [2, 3], sun: "Sun: full sun to part shade — morning sun is best", water: "Water: steady moisture — a deep soak twice a week in hot weather", temp: "Temperature: hardy in zones 8 to 11", zones: "8 to 11",
+            soil: "Acid, rich", ph: "5.0–6.5",
+            ftags: ["PERENNIAL", "EVERGREEN"],
+            dex: ["The same gardenia, trained on one straight trunk: morning sun, a break from afternoon heat, acid rich soil that drains. Water deeply twice a week in hot weather and feed through the season, or the buds drop. Hardy in zones 8–11.",
+                  "After the bloom flush, trim the head back evenly all over, and rub off shoots along the bare trunk the moment they appear — left alone, it turns back into a bush."] }
         ];
 
         var TREE_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8.2" r="5.6" /><path d="M12 13.4V21M12 16.8c-1.8-.2-3-1.2-3.6-2.8M12 15.4c1.6-.4 2.6-1.4 3.1-3" /><circle cx="9.7" cy="6.6" r="1" fill="currentColor" stroke="none" /><circle cx="14.1" cy="5.9" r="1" fill="currentColor" stroke="none" /><circle cx="12.4" cy="10.3" r="1" fill="currentColor" stroke="none" /><path d="M7.5 21h9" /></svg>';
@@ -1851,8 +1980,8 @@
         function tempLow(p) { var n = parseInt(p.zones, 10); return isNaN(n) ? 0 : n; }
         for (var ti2 = 0; ti2 < PLANTS.length; ti2++) {
           var pp = PLANTS[ti2];
-          pp.cat = pp.kind.indexOf("VINE") >= 0 ? "Vine" : (pp.group === "bush" ? "Shrub" : "Tree");
-          pp.filterTags = ["PERENNIAL", "DECIDUOUS", "EDIBLE", heightClass(pp)];
+          pp.cat = pp.catName || (pp.kind.indexOf("VINE") >= 0 ? "Vine" : (pp.group === "bush" ? "Shrub" : "Tree"));
+          pp.filterTags = (pp.ftags || ["PERENNIAL", "DECIDUOUS", "EDIBLE"]).concat([heightClass(pp)]);
           pp.tags = [];
           for (var tj = 0; tj < pp.filterTags.length; tj++) pp.tags.push([pp.filterTags[tj], TAG_CLASS[pp.filterTags[tj]]]);
         }
@@ -1861,9 +1990,9 @@
         var pageEl = document.getElementById("pageEl");
         var frontFace = pageEl.querySelector(".face.front");
         var backFace = pageEl.querySelector(".face.back");
-        var cur = 11;        /* plant the reader is on — opens on the persimmon page */
-        var frontIdx = 11;   /* plant loaded on the front face */
-        var backIdx = 11;    /* plant loaded on the back face */
+        var cur = 14;        /* plant the reader is on — opens on the persimmon page */
+        var frontIdx = 14;   /* plant loaded on the front face */
+        var backIdx = 14;    /* plant loaded on the back face */
         var addedFlags = [], favFlags = [], scannedFlags = [];
         for (var fi = 0; fi < PLANTS.length; fi++) { addedFlags.push(false); favFlags.push(false); scannedFlags.push(false); }
 
@@ -1901,11 +2030,9 @@
           applySettle();
           if (dir > 0) {
             if (!isBack()) { rot += 180; }
-            else if (cur < PLANTS.length - 1) { cur += 1; loadFront(cur); rot += 180; scheduleSettle(); }
             else return;
           } else {
             if (isBack()) { rot -= 180; }
-            else if (cur > 0) { cur -= 1; loadBack(cur); rot -= 180; scheduleSettle(); }
             else return;
           }
           renderFlip();
@@ -1939,11 +2066,11 @@
         var pageSub = document.getElementById("pageSub");
 
         function renderAlt(p) {
-          if (p.no === "012") return "Colored pencil and watercolor rendering of a Fuyu persimmon tree with white chalk highlights";
+          if (p.name === "Fuyu Persimmon") return "Colored pencil and watercolor rendering of a Fuyu persimmon tree with white chalk highlights";
           return "Colored pencil and watercolor rendering of " + p.name + " with white chalk highlights";
         }
         function photoAlt(p) {
-          if (p.no === "012") return "Photograph of the same Fuyu persimmon tree";
+          if (p.name === "Fuyu Persimmon") return "Photograph of the same Fuyu persimmon tree";
           return "Photograph of the same " + p.name;
         }
         function loadFront(i) {
@@ -1956,7 +2083,8 @@
           document.getElementById("entryNoNum").textContent = p.no;
           document.getElementById("plantName").textContent = p.name;
           document.getElementById("plantSci").textContent = p.sci;
-          document.getElementById("artIcons").setAttribute("aria-label", "Requirements: full sun; hardy in zones " + p.zones);
+          document.getElementById("zoneIcText").textContent = p.zones.replace(" to ", "–");
+          document.getElementById("artIcons").setAttribute("aria-label", "Requirements: " + p.sun.replace("Sun: ", "") + "; hardy in zones " + p.zones);
           frontFace.setAttribute("aria-label", "Page front — " + p.name);
           stamp.classList.toggle("on", addedFlags[i]);
           favBtn.setAttribute("aria-pressed", favFlags[i] ? "true" : "false");
@@ -1966,6 +2094,113 @@
           frontFace.classList.toggle("scanned", scannedFlags[i]);
         }
 
+        var STAGE_BG = {
+            "apple-fuji-established.jpg": "#f2e8d6",
+            "apple-fuji-mature.jpg": "#f2e5cb",
+            "apple-fuji-maturing.jpg": "#f5e7ce",
+            "apple-fuji-seedling.jpg": "#f7e9ce",
+            "apple-gala-established.jpg": "#f5ead7",
+            "apple-gala-mature.jpg": "#f6e8ce",
+            "apple-gala-maturing.jpg": "#f8ebd6",
+            "apple-gala-seedling.jpg": "#f5e7cf",
+            "apple-liberty-established.jpg": "#f4e9d8",
+            "apple-liberty-mature.jpg": "#f4e8d3",
+            "apple-liberty-maturing.jpg": "#f6e9cf",
+            "apple-liberty-seedling.jpg": "#f4e7d1",
+            "apple-pinklady-established.jpg": "#f4e7d2",
+            "apple-pinklady-mature.jpg": "#f5e6cb",
+            "apple-pinklady-maturing.jpg": "#f2e4ca",
+            "apple-pinklady-seedling.jpg": "#f6e8ce",
+            "apple-wolfriver-established.jpg": "#f2e3c9",
+            "apple-wolfriver-mature.jpg": "#f5e7cc",
+            "apple-wolfriver-maturing.jpg": "#f5e9d3",
+            "apple-wolfriver-seedling.jpg": "#f8efd9",
+            "apricot-established.jpg": "#f7ebd5",
+            "apricot-mature.jpg": "#f5e6ca",
+            "apricot-maturing.jpg": "#f7e9cf",
+            "apricot-seedling.jpg": "#f5e9d6",
+            "azalea-jubilee-established.jpg": "#f8ecdc",
+            "azalea-jubilee-mature.jpg": "#f7ecdb",
+            "azalea-jubilee-seedling.jpg": "#f8efdf",
+            "azalea-white-established.jpg": "#f4ecdb",
+            "azalea-white-mature.jpg": "#f2e8d7",
+            "azalea-white-seedling.jpg": "#f7f0e0",
+            "blackberry-established.jpg": "#f3e5cb",
+            "blackberry-mature.jpg": "#f4e8d2",
+            "blackberry-seedling.jpg": "#f0e1c7",
+            "blueberry-established.jpg": "#f4e8d2",
+            "blueberry-mature.jpg": "#f4e6ce",
+            "blueberry-seedling.jpg": "#f4e8d6",
+            "cherry-montmorency-established.jpg": "#f5e7cd",
+            "cherry-montmorency-mature.jpg": "#f6e8cf",
+            "cherry-montmorency-maturing.jpg": "#f7ead0",
+            "cherry-montmorency-seedling.jpg": "#f3e7d4",
+            "cinnamon-girl-established.jpg": "#f9f1e2",
+            "cinnamon-girl-mature.jpg": "#fdf2df",
+            "cinnamon-girl-seedling.jpg": "#faf2e3",
+            "gardenia-established.jpg": "#f4ecdc",
+            "gardenia-mature.jpg": "#f2e8d9",
+            "gardenia-seedling.jpg": "#f6efdf",
+            "gardenia-tree-established.jpg": "#f7f0e3",
+            "gardenia-tree-mature.jpg": "#f3ead9",
+            "gardenia-tree-seedling.jpg": "#f7eddd",
+            "grape-moondrop-established.jpg": "#f6e8cf",
+            "grape-moondrop-mature.jpg": "#f4ead6",
+            "grape-moondrop-seedling.jpg": "#f5e9d6",
+            "hydrangea-annabelle-established.jpg": "#f6eee1",
+            "hydrangea-annabelle-mature.jpg": "#f4ecde",
+            "hydrangea-annabelle-seedling.jpg": "#f6eee1",
+            "jujube-established.jpg": "#f4e9d7",
+            "jujube-mature.jpg": "#f7efdf",
+            "jujube-maturing.jpg": "#f5ead8",
+            "jujube-seedling.jpg": "#f2e9d9",
+            "muhly-pink-established.jpg": "#f7ebdb",
+            "muhly-pink-mature.jpg": "#f2eada",
+            "muhly-pink-seedling.jpg": "#f4ecdc",
+            "mulberry-dwarf-established.jpg": "#f5eddd",
+            "mulberry-dwarf-mature.jpg": "#f5eee1",
+            "mulberry-dwarf-maturing.jpg": "#f7efdf",
+            "mulberry-dwarf-seedling.jpg": "#f8efdf",
+            "pampas-established.jpg": "#f8f2e6",
+            "pampas-mature.jpg": "#efe4d1",
+            "pampas-seedling.jpg": "#f3ecdc",
+            "peach-contender-established.jpg": "#f2e4cb",
+            "peach-contender-mature.jpg": "#f4e7d4",
+            "peach-contender-maturing.jpg": "#f5eada",
+            "peach-contender-seedling.jpg": "#f6e9d5",
+            "pear-bartlett-established.jpg": "#f7e9d0",
+            "pear-bartlett-mature.jpg": "#fceed8",
+            "pear-bartlett-maturing.jpg": "#f5e6ca",
+            "pear-bartlett-seedling.jpg": "#f6e8cf",
+            "pear-moonglow-established.jpg": "#f0e3cd",
+            "pear-moonglow-mature.jpg": "#f1e3c9",
+            "pear-moonglow-maturing.jpg": "#f5e8d0",
+            "pear-moonglow-seedling.jpg": "#f8ecd4",
+            "pear-shinseiki-established.jpg": "#ebdcc3",
+            "pear-shinseiki-mature.jpg": "#f4e8d6",
+            "pear-shinseiki-maturing.jpg": "#f3e3c9",
+            "pear-shinseiki-seedling.jpg": "#f4e8d4",
+            "persimmon-established.jpg": "#f3ecdf",
+            "persimmon-fully-mature.jpg": "#f4ece0",
+            "persimmon-render.jpg": "#f5ede1",
+            "persimmon-seedling.jpg": "#f4ede1",
+            "plum-aurosa-established.jpg": "#f1e3c9",
+            "plum-aurosa-mature.jpg": "#f4e5cb",
+            "plum-aurosa-maturing.jpg": "#f7ead5",
+            "plum-aurosa-seedling.jpg": "#f4e7cf",
+            "podocarpus-romancandle-established.jpg": "#f8eddb",
+            "podocarpus-romancandle-mature.jpg": "#f5eddd",
+            "podocarpus-romancandle-seedling.jpg": "#f4e9d6",
+            "raspberry-established.jpg": "#f4e7ce",
+            "raspberry-mature.jpg": "#f7ebda",
+            "raspberry-seedling.jpg": "#f2e4ca",
+            "yew-japanese-established.jpg": "#faf2e2",
+            "yew-japanese-mature.jpg": "#f4ead8",
+            "yew-japanese-seedling.jpg": "#f2ead9",
+            "yew-pringle-established.jpg": "#f5ead2",
+            "yew-pringle-mature.jpg": "#f7f0e0",
+            "yew-pringle-seedling.jpg": "#f8f0e1"
+          };
         var growthFrame = document.getElementById("growthFrame");
         var growthBox = document.getElementById("growthBox");
         var growthSlider = document.getElementById("growthSlider");
@@ -2100,6 +2335,8 @@
             for (var i = 0; i < stageImgs.length; i++) {
               stageImgs[i].classList.toggle("is-on", i === stageShown);
             }
+            var bgc = STAGE_BG[p.stages[stageShown]];
+            if (bgc) growthFrame.style.background = bgc;
           }
           var geo = plantGeometry(s);
           if (geo) {
@@ -2495,8 +2732,8 @@
         })();
 
         /* ----- First load: the persimmon page, as it was ----- */
-        loadFront(11);
-        loadBack(11);
+        loadFront(14);
+        loadBack(14);
         syncChrome();
         rebuildLibrary();
         renderFlip();
