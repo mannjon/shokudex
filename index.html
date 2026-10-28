@@ -459,7 +459,8 @@
       }
       .stamp {
         position: absolute;
-        left: 50%;
+        left: auto;
+        right: 12px;
         top: 14px;
         z-index: 3;
         font-family: "IBM Plex Mono", monospace;
@@ -470,7 +471,7 @@
         border: 2.5px solid var(--hanko);
         border-radius: 5px;
         padding: 5px 9px 4px;
-        transform: translateX(-50%) rotate(-8deg);
+        transform: rotate(-8deg);
         white-space: nowrap;
         background: rgba(248, 243, 228, 0.55);
         opacity: 0;
@@ -515,6 +516,9 @@
 
       
       @media (max-width: 899px) {
+        .stamp {
+          right: 64px;
+        }
         .face.front {
           display: flex;
           flex-direction: column;
@@ -1292,7 +1296,8 @@
                       <div class="growth-box">
                         <img class="thumb stage-img" data-stage="0" src="persimmon-seedling.jpg" alt="" aria-hidden="true" />
                         <img class="thumb stage-img" data-stage="1" src="persimmon-established.jpg" alt="" aria-hidden="true" />
-                        <img class="thumb stage-img is-on" data-stage="2" src="persimmon-render.jpg" alt="Rendered Fuyu persimmon tree — matures to 12–15 ft tall and 12–15 ft wide" />
+                        <img class="thumb stage-img" data-stage="2" src="persimmon-render.jpg" alt="" aria-hidden="true" />
+                        <img class="thumb stage-img is-on" data-stage="3" src="persimmon-fully-mature.jpg" alt="Rendered Fuyu persimmon tree — matures to 12–15 ft tall and 12–15 ft wide" />
                       </div>
                       <input class="growth-slider" id="growthSlider" type="range" min="0" max="100" step="0.5" value="100" aria-label="Tree size — slide up to grow, slide down to shrink" aria-orientation="vertical" />
                       <div class="dim dim-w" aria-hidden="true"><span class="dim-label">12–15 FT</span></div>
@@ -1465,7 +1470,7 @@
         var dimWLabel = growthFrame.querySelector(".dim-w .dim-label");
         var dimHLabel = growthFrame.querySelector(".dim-h .dim-label");
         var growth = 100;
-        var stageShown = 2;
+        var stageShown = 3;
         var stageApplied = -1;
 
         var SCALE_KEYS = [[0, 0.45], [25, 0.62], [65, 0.82], [100, 1]];
@@ -1482,8 +1487,9 @@
 
         function stageFor(v) {
           if (v <= 25) return 0;
-          if (v <= 65) return 1;
-          return 2;
+          if (v <= 50) return 1;
+          if (v <= 75) return 2;
+          return 3;
         }
         function fmtFt(n) {
           return String(Math.round(n * 2) / 2);
@@ -1493,7 +1499,8 @@
         var PLANT_EXTENT = [
           { l: 0.155, r: 0.812, t: 0.468, b: 0.810, cx: 0.508 },
           { l: 0.040, r: 0.945, t: 0.135, b: 0.805, cx: 0.510 },
-          { l: 0.025, r: 0.965, t: 0.120, b: 0.810, cx: 0.511 }
+          { l: 0.025, r: 0.965, t: 0.120, b: 0.810, cx: 0.511 },
+          { l: 0.017, r: 0.984, t: 0.095, b: 0.798, cx: 0.514 }
         ];
         var IMG_ASPECT = 1120 / 2240; 
 
