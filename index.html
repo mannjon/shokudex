@@ -12,7 +12,7 @@
     <link rel="manifest" href="manifest.webmanifest" />
     <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="icon-180.png" />
-    <title>Shokudex — Page № 001 · Fuyu Persimmon</title>
+    <title>Shokudex — Page № 012 · Fuyu Persimmon</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -873,6 +873,21 @@
       .badge.tree {
         background: #7a5a30;
       }
+      .badge.bush {
+        background: #6b7f2e;
+      }
+      .badge.vine {
+        background: #8a6d3b;
+      }
+      .bh-title.bush {
+        background: #7d9b4e;
+      }
+      .bh-title.bush .bh-sci {
+        color: #22330f;
+      }
+      .lib-item + .lib-item {
+        margin-top: 6px;
+      }
       .panel {
         border: 1.5px solid var(--ink);
         border-radius: 8px;
@@ -1217,19 +1232,13 @@
           <div class="library-panel" id="libraryPanel" role="dialog" aria-label="My library">
             <h3>My Library</h3>
             <p class="empty" id="libEmpty">No pages yet. Add the page you're reading, or scan a plant in the yard to find its page.</p>
-            <button class="lib-item" id="libItem" hidden>
-              <img src="persimmon-render.jpg" alt="" />
-              <span>
-                <span class="li-name">Fuyu Persimmon</span><br />
-                <span class="li-no">№ 001 · FRUIT TREE</span>
-              </span>
-            </button>
+            <div id="libList"></div>
           </div>
         </div>
 
         <div class="wordmark">
           <div class="name">Shokudex</div>
-          <div class="sub">Plant Library · Page № 001</div>
+          <div class="sub" id="pageSub">Plant Library · Page № 012</div>
         </div>
 
         <button class="float-btn add-float" id="addBtn" aria-pressed="false" aria-label="Add to My Library">
@@ -1256,13 +1265,13 @@
             <section class="face front" aria-label="Page front">
               <div class="stamp" id="stamp">In Library</div>
               <div class="art" id="artBox">
-                <img class="img-render" src="persimmon-render.jpg" alt="Colored pencil and watercolor rendering of a Fuyu persimmon tree with white chalk highlights" />
-                <img class="img-photo" src="persimmon-photo.jpg" alt="Photograph of the same Fuyu persimmon tree" />
-                <div class="entry-no"><small>№</small>001</div>
+                <img class="img-render" id="frontRender" src="persimmon-render.jpg" alt="Colored pencil and watercolor rendering of a Fuyu persimmon tree with white chalk highlights" />
+                <img class="img-photo" id="frontPhoto" src="persimmon-photo.jpg" alt="Photograph of the same Fuyu persimmon tree" />
+                <div class="entry-no"><small>№</small><span id="entryNoNum">012</span></div>
                 <button type="button" class="fav-star" id="favBtn" aria-pressed="false" aria-label="Add to favorites">
                   <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2.8 14.7 8.6 21 9.4 16.3 13.8 17.5 20 12 16.9 6.5 20 7.7 13.8 3 9.4 9.3 8.6" /></svg>
                 </button>
-                <div class="art-icons" role="img" aria-label="Requirements: full sun; hardy in zones 7 to 9">
+                <div class="art-icons" id="artIcons" role="img" aria-label="Requirements: full sun; hardy in zones 7 to 9">
                   <span class="art-ic sun-ic" aria-hidden="true">
                     <svg viewBox="0 0 24 24" fill="none" stroke="#7c3f06" stroke-width="2.1" stroke-linecap="round">
                       <circle cx="12" cy="12" r="4.2" fill="#fff3d6" />
@@ -1281,8 +1290,8 @@
 
               <div class="front-body">
                 <div>
-                  <h1 class="plant-name">Fuyu Persimmon</h1>
-                  <p class="plant-sci">Diospyros kaki ‘Fuyu’</p>
+                  <h1 class="plant-name" id="plantName">Fuyu Persimmon</h1>
+                  <p class="plant-sci" id="plantSci">Diospyros kaki ‘Fuyu’</p>
                 </div>
               </div>
             </section>
@@ -1293,7 +1302,7 @@
                 <div class="back-head">
                   <div class="art-col">
                     <div class="art-frame" id="growthFrame">
-                      <div class="growth-box">
+                      <div class="growth-box" id="growthBox">
                         <img class="thumb stage-img" data-stage="0" src="persimmon-seedling.jpg" alt="" aria-hidden="true" />
                         <img class="thumb stage-img" data-stage="1" src="persimmon-established.jpg" alt="" aria-hidden="true" />
                         <img class="thumb stage-img" data-stage="2" src="persimmon-render.jpg" alt="" aria-hidden="true" />
@@ -1305,41 +1314,41 @@
                     </div>
                   </div>
                   <div class="info-col">
-                    <div class="bh-title">
-                      <span class="group-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8.2" r="5.6" /><path d="M12 13.4V21M12 16.8c-1.8-.2-3-1.2-3.6-2.8M12 15.4c1.6-.4 2.6-1.4 3.1-3" /><circle cx="9.7" cy="6.6" r="1" fill="currentColor" stroke="none" /><circle cx="14.1" cy="5.9" r="1" fill="currentColor" stroke="none" /><circle cx="12.4" cy="10.3" r="1" fill="currentColor" stroke="none" /><path d="M7.5 21h9" /></svg></span>
-                      <h2 class="bh-name">Fuyu Persimmon</h2>
-                      <p class="bh-sci">Diospyros kaki ‘Fuyu’</p>
+                    <div class="bh-title" id="bhTitle">
+                      <span class="group-icon" id="groupIcon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8.2" r="5.6" /><path d="M12 13.4V21M12 16.8c-1.8-.2-3-1.2-3.6-2.8M12 15.4c1.6-.4 2.6-1.4 3.1-3" /><circle cx="9.7" cy="6.6" r="1" fill="currentColor" stroke="none" /><circle cx="14.1" cy="5.9" r="1" fill="currentColor" stroke="none" /><circle cx="12.4" cy="10.3" r="1" fill="currentColor" stroke="none" /><path d="M7.5 21h9" /></svg></span>
+                      <h2 class="bh-name" id="bhName">Fuyu Persimmon</h2>
+                      <p class="bh-sci" id="bhSci">Diospyros kaki ‘Fuyu’</p>
                     </div>
                     <div class="tag-zone">
-                      <div class="type-tags">
+                      <div class="type-tags" id="typeTags">
                         <span class="badge fruit">FRUIT</span>
                         <span class="badge edible">EDIBLE</span>
                         <span class="badge tree">TREE</span>
                       </div>
                     </div>
                     <div class="req-grid">
-                        <span class="req-orb orb-sun" role="img" aria-label="Sun: full sun, 6 or more hours direct">
+                        <span class="req-orb orb-sun" id="orbSun" role="img" aria-label="Sun: full sun, 6 or more hours direct">
                           <svg viewBox="0 0 24 24" fill="none" stroke="#7c3f06" stroke-width="2" stroke-linecap="round" aria-hidden="true">
                             <circle cx="12" cy="12" r="4.4" fill="#fff3d6" />
                             <path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.2 5.2l1.6 1.6M17.2 17.2l1.6 1.6M18.8 5.2l-1.6 1.6M6.8 17.2l-1.6 1.6" />
                           </svg>
                         </span>
-                        <span class="req-orb orb-water" role="img" aria-label="Water: moderate — a deep soak once a week">
+                        <span class="req-orb orb-water" id="orbWater" role="img" aria-label="Water: moderate — a deep soak once a week">
                           <svg viewBox="0 0 24 24" fill="#fdf6e3" aria-hidden="true">
                             <path d="M12 2.7c3.4 4.1 6.3 7.9 6.3 11.3a6.3 6.3 0 1 1-12.6 0C5.7 10.6 8.6 6.8 12 2.7z" />
                           </svg>
                         </span>
-                        <span class="req-orb orb-temp" role="img" aria-label="Temperature: hardy in zones 7 to 9">
+                        <span class="req-orb orb-temp" id="orbTemp" role="img" aria-label="Temperature: hardy in zones 7 to 9">
                           <svg viewBox="0 0 24 24" fill="none" stroke="#26331f" stroke-width="1.9" stroke-linecap="round" aria-hidden="true">
                             <path d="M10 13.6V5a2 2 0 0 1 4 0v8.6a4.4 4.4 0 1 1-4 0z" fill="#f8f3e4" />
                             <path d="M12 15.4V8.5" stroke="#dd741f" stroke-width="2.2" />
                             <circle cx="12" cy="17.4" r="2" fill="#dd741f" stroke="none" />
                           </svg>
                         </span>
-                        <span class="req-orb orb-soil" role="img" aria-label="Soil: loamy, drained, pH 6.0 to 7.5">
+                        <span class="req-orb orb-soil" id="orbSoil" role="img" aria-label="Soil: loamy, drained, pH 6.0 to 7.5">
                           <span class="soil-kicker">SOIL</span>
-                          <span class="soil-main">Loamy, drained</span>
-                          <span class="soil-ph">— pH 6.0–7.5</span>
+                          <span class="soil-main" id="soilMain">Loamy, drained</span>
+                          <span class="soil-ph" id="soilPh">— pH 6.0–7.5</span>
                         </span>
                     </div>
                   </div>
@@ -1349,7 +1358,7 @@
               <div class="back-mid">
                 <div class="panel">
                   <span class="panel-tab">Dex Entry</span>
-                  <div class="dex-entry">
+                  <div class="dex-entry" id="dexEntry">
                     <p>Plant it in full sun with room to spread, in loamy, well-drained soil. Water deeply once a week while it establishes; after that, rainfall mostly covers it.</p>
                     <p>Prune in late winter to an open framework, and thin the fruit in June so what remains ripens large. Pick at deep orange — a Fuyu is eaten crisp, straight off the branch.</p>
                   </div>
@@ -1382,10 +1391,10 @@
       <p class="scan-status" id="scanStatus">Looking for leaves &amp; fruit…</p>
       <div class="scan-result" id="scanResult">
         <div class="sr-row">
-          <img src="persimmon-render.jpg" alt="" />
+          <img id="srImg" src="persimmon-render.jpg" alt="" />
           <div>
-            <div class="sr-name">Fuyu Persimmon</div>
-            <div class="sr-meta" id="srMeta">№ 001 · MATCH 98% · FRUIT TREE</div>
+            <div class="sr-name" id="srName">Fuyu Persimmon</div>
+            <div class="sr-meta" id="srMeta">№ 012 · MATCH 98% · FRUIT TREE</div>
           </div>
         </div>
         <div class="sr-actions">
@@ -1398,10 +1407,163 @@
 
     <script>
       (function () {
+        /* ================= Plant data — roster order, alphabetical ================= */
+        var TREE_TAGS = [["FRUIT", "fruit"], ["EDIBLE", "edible"], ["TREE", "tree"]];
+        var BUSH_TAGS = [["FRUIT", "fruit"], ["EDIBLE", "edible"], ["BUSH", "bush"]];
+        var VINE_TAGS = [["FRUIT", "fruit"], ["EDIBLE", "edible"], ["VINE", "vine"]];
+        var SUN_FULL = "Sun: full sun, 6 or more hours direct";
+        var WATER_WEEK = "Water: moderate — a deep soak once a week";
+
+        var PLANTS = [
+          { no: "001", name: "Apple — Fuji", sci: "Malus domestica ‘Fuji’", group: "tree", kind: "FRUIT TREE", tags: TREE_TAGS,
+            front: "apple-fuji-mature.jpg", photo: "apple-fuji-photo.jpg",
+            stages: ["apple-fuji-seedling.jpg", "apple-fuji-established.jpg", "apple-fuji-maturing.jpg", "apple-fuji-mature.jpg"],
+            ext: [[0.15, 0.857, 0.414, 0.914, 0.506], [0.086, 0.9, 0.061, 0.943, 0.5], [0.086, 0.914, 0.064, 0.957, 0.501], [0.036, 0.964, 0.025, 0.982, 0.495]],
+            h: [12, 15], w: [12, 15], sun: SUN_FULL, water: WATER_WEEK, temp: "Temperature: hardy in zones 6 to 9", zones: "6 to 9",
+            soil: "Loamy, drained", ph: "6.0–6.5",
+            dex: ["Plant it in full sun with room to spread, in loamy, well-drained soil, with another apple nearby to pollinate it. Water deeply once a week while it establishes, and keep a wide mulch ring clear of the trunk.",
+                  "Prune in late winter to an open framework, and thin the young fruit hard in June — Fuji overloads easily. Pick from mid-October, once a few cool nights have brought up the red blush; it eats sweet and crisp straight off the branch."] },
+          { no: "002", name: "Apple — Gala", sci: "Malus domestica ‘Gala’", group: "tree", kind: "FRUIT TREE", tags: TREE_TAGS,
+            front: "apple-gala-mature.jpg", photo: "apple-gala-photo.jpg",
+            stages: ["apple-gala-seedling.jpg", "apple-gala-established.jpg", "apple-gala-maturing.jpg", "apple-gala-mature.jpg"],
+            ext: [[0.286, 0.736, 0.389, 0.954, 0.52], [0.171, 0.871, 0.057, 0.929, 0.501], [0.057, 0.929, 0.043, 0.975, 0.494], [0.064, 0.936, 0.032, 0.979, 0.502]],
+            h: [12, 15], w: [12, 15], sun: SUN_FULL, water: WATER_WEEK, temp: "Temperature: hardy in zones 5 to 8", zones: "5 to 8",
+            soil: "Loamy, drained", ph: "6.0–6.5",
+            dex: ["Plant it in full sun with room to spread, in loamy, well-drained soil, with another apple nearby to pollinate it. Water deeply once a week while it establishes, and keep a wide mulch ring clear of the trunk.",
+                  "Prune in late winter to an open framework, and thin early and hard — Gala sets a heavy crop. Pick from late August as the skin turns creamy under the stripes; it sweetens early and does not keep long, so eat it fresh."] },
+          { no: "003", name: "Apple — Liberty", sci: "Malus domestica ‘Liberty’", group: "tree", kind: "FRUIT TREE", tags: TREE_TAGS,
+            front: "apple-liberty-mature.jpg", photo: "apple-liberty-photo.jpg",
+            stages: ["apple-liberty-seedling.jpg", "apple-liberty-established.jpg", "apple-liberty-maturing.jpg", "apple-liberty-mature.jpg"],
+            ext: [[0.136, 0.857, 0.339, 0.921, 0.497], [0.086, 0.893, 0.043, 0.961, 0.506], [0.057, 0.943, 0.036, 0.964, 0.504], [0.029, 0.971, 0.046, 0.975, 0.501]],
+            h: [12, 15], w: [12, 15], sun: SUN_FULL, water: WATER_WEEK, temp: "Temperature: hardy in zones 4 to 7", zones: "4 to 7",
+            soil: "Loamy, drained", ph: "6.0–6.5",
+            dex: ["Plant it in full sun with room to spread, in loamy, well-drained soil, with another apple nearby to pollinate it. Liberty was bred to shrug off scab and rust, so it asks for far less spraying than most apples. Water deeply once a week while it establishes.",
+                  "Prune in late winter to an open framework, and thin the young fruit in June so what remains sizes up. Pick in late September when the skin is a deep glossy red — tart-sweet, and at its best eaten fresh."] },
+          { no: "004", name: "Apple — Pink Lady", sci: "Malus domestica ‘Pink Lady’", group: "tree", kind: "FRUIT TREE", tags: TREE_TAGS,
+            front: "apple-pinklady-mature.jpg", photo: "apple-pinklady-photo.jpg",
+            stages: ["apple-pinklady-seedling.jpg", "apple-pinklady-established.jpg", "apple-pinklady-maturing.jpg", "apple-pinklady-mature.jpg"],
+            ext: [[0.264, 0.7, 0.382, 0.871, 0.503], [0.129, 0.879, 0.061, 0.961, 0.502], [0.071, 0.921, 0.039, 0.975, 0.501], [0.0, 0.993, 0.0, 0.996, 0.498]],
+            h: [12, 15], w: [12, 15], sun: SUN_FULL, water: WATER_WEEK, temp: "Temperature: hardy in zones 6 to 9", zones: "6 to 9",
+            soil: "Loamy, drained", ph: "6.0–6.5",
+            dex: ["Plant it in full sun — the warmest, sunniest spot you have — in loamy, well-drained soil, with another apple nearby to pollinate it. It ripens very late and needs a long warm fall. Water deeply once a week while it establishes.",
+                  "Prune in late winter to an open framework, and thin the young fruit in June. Pick in late October or November, once the pink blush is full over a yellow-green ground; it keeps for months in the fridge and sweetens as it stores."] },
+          { no: "005", name: "Apple — Wolf River", sci: "Malus domestica ‘Wolf River’", group: "tree", kind: "FRUIT TREE", tags: TREE_TAGS,
+            front: "apple-wolfriver-mature.jpg", photo: "apple-wolfriver-photo.jpg",
+            stages: ["apple-wolfriver-seedling.jpg", "apple-wolfriver-established.jpg", "apple-wolfriver-maturing.jpg", "apple-wolfriver-mature.jpg"],
+            ext: [[0.321, 0.679, 0.418, 0.875, 0.501], [0.05, 0.943, 0.032, 0.996, 0.503], [0.0, 0.957, 0.0, 0.996, 0.496], [0.036, 0.986, 0.0, 0.979, 0.504]],
+            h: [15, 20], w: [15, 20], sun: SUN_FULL, water: WATER_WEEK, temp: "Temperature: hardy in zones 4 to 7", zones: "4 to 7",
+            soil: "Loamy, drained", ph: "6.0–6.5",
+            dex: ["Plant it in full sun with more room than the other apples — Wolf River grows big and vigorous — in loamy, well-drained soil, with another apple nearby to pollinate it. Water deeply once a week while it establishes.",
+                  "Prune in late winter to an open framework, and thin in June so the fruit can reach its famous size — a single apple can fill a pie. Pick in September as the pale skin takes on its red wash; it is a cooker, born for sauce and pies."] },
+          { no: "006", name: "Apricot", sci: "Prunus armeniaca", group: "tree", kind: "FRUIT TREE", tags: TREE_TAGS,
+            front: "apricot-mature.jpg", photo: "apricot-photo.jpg",
+            stages: ["apricot-seedling.jpg", "apricot-established.jpg", "apricot-maturing.jpg", "apricot-mature.jpg"],
+            ext: [[0.214, 0.793, 0.414, 0.932, 0.492], [0.0, 0.936, 0.046, 0.968, 0.494], [0.057, 0.943, 0.039, 0.975, 0.504], [0.0, 0.957, 0.0, 0.996, 0.474]],
+            h: [15, 20], w: [15, 20], sun: SUN_FULL, water: "Water: low to moderate — a deep soak every week or two once established", temp: "Temperature: hardy in zones 5 to 8", zones: "5 to 8",
+            soil: "Loamy, drained", ph: "6.0–7.0",
+            dex: ["Plant it in full sun on the highest ground you have — apricots bloom early, and cold air settling in a low spot takes the blossoms. Loamy, sharply drained soil; it hates wet feet. Water deeply every week or two once it establishes.",
+                  "Prune lightly in late winter to a vase shape, and thin the fruit in spring so what remains sizes up. Pick in July when the fruit is fully orange and gives a little in the hand — an apricot ripens on the tree or not at all."] },
+          { no: "007", name: "Cherry, Tart — Montmorency", sci: "Prunus cerasus ‘Montmorency’", group: "tree", kind: "FRUIT TREE", tags: TREE_TAGS,
+            front: "cherry-montmorency-mature.jpg", photo: "cherry-montmorency-photo.jpg",
+            stages: ["cherry-montmorency-seedling.jpg", "cherry-montmorency-established.jpg", "cherry-montmorency-maturing.jpg", "cherry-montmorency-mature.jpg"],
+            ext: [[0.336, 0.65, 0.432, 0.85, 0.504], [0.0, 0.879, 0.0, 0.961, 0.504], [0.071, 0.929, 0.036, 0.975, 0.49], [0.0, 0.993, 0.0, 0.996, 0.517]],
+            h: [12, 15], w: [12, 15], sun: SUN_FULL, water: WATER_WEEK, temp: "Temperature: hardy in zones 4 to 7", zones: "4 to 7",
+            soil: "Loamy, drained", ph: "6.0–7.0",
+            dex: ["Plant it in full sun with room to spread, in loamy, well-drained soil. It is self-fertile — one tree fruits on its own. Water deeply once a week while it establishes; after that, rainfall mostly covers it, with extra water while the fruit swells.",
+                  "Prune in late winter to an open framework, and net the tree as the cherries color or the birds will take the whole crop. Pick in June and July when the fruit is a clear bright red — tart, and made for pies."] },
+          { no: "008", name: "Peach — Contender", sci: "Prunus persica ‘Contender’", group: "tree", kind: "FRUIT TREE", tags: TREE_TAGS,
+            front: "peach-contender-mature.jpg", photo: "peach-contender-photo.jpg",
+            stages: ["peach-contender-seedling.jpg", "peach-contender-established.jpg", "peach-contender-maturing.jpg", "peach-contender-mature.jpg"],
+            ext: [[0.264, 0.729, 0.375, 0.904, 0.51], [0.0, 0.993, 0.0, 0.996, 0.491], [0.079, 0.943, 0.039, 0.961, 0.495], [0.057, 0.943, 0.036, 0.968, 0.502]],
+            h: [12, 15], w: [12, 15], sun: SUN_FULL, water: "Water: moderate — a deep soak once a week, more in hot spells", temp: "Temperature: hardy in zones 4 to 8", zones: "4 to 8",
+            soil: "Sandy loam, drained", ph: "6.0–6.5",
+            dex: ["Plant it in full sun in sandy loam that drains fast — peaches sulk in wet soil. Contender blooms late and its buds are extra cold-hardy, which is why it crops in the South when other peaches get frosted. Water deeply once a week, more in hot spells.",
+                  "Prune hard every late winter to an open vase — peaches fruit on last year's wood. Thin ruthlessly in spring, one fruit every six inches. Pick in August when the ground color turns yellow and the fruit gives slightly; it finishes ripening on the counter."] },
+          { no: "009", name: "Pear — Bartlett", sci: "Pyrus communis ‘Bartlett’", group: "tree", kind: "FRUIT TREE", tags: TREE_TAGS,
+            front: "pear-bartlett-mature.jpg", photo: "pear-bartlett-photo.jpg",
+            stages: ["pear-bartlett-seedling.jpg", "pear-bartlett-established.jpg", "pear-bartlett-maturing.jpg", "pear-bartlett-mature.jpg"],
+            ext: [[0.236, 0.786, 0.386, 0.943, 0.511], [0.086, 0.893, 0.064, 0.964, 0.495], [0.064, 0.993, 0.025, 0.971, 0.509], [0.05, 0.957, 0.039, 0.979, 0.502]],
+            h: [15, 20], w: [12, 15], sun: SUN_FULL, water: WATER_WEEK, temp: "Temperature: hardy in zones 5 to 8", zones: "5 to 8",
+            soil: "Loamy, drained", ph: "6.0–6.5",
+            dex: ["Plant it in full sun with room to grow tall, in loamy, well-drained soil, with another pear nearby to pollinate it — the Moonglow does the job well. Water deeply once a week while it establishes.",
+                  "Prune in late winter to a pyramidal framework, lightly — pears resent hard cutting. Pick in August while the fruit is still green and firm, when it lifts and twists free easily; a Bartlett ripens off the tree, on the counter, into butter-soft sweetness."] },
+          { no: "010", name: "Pear — Moonglow", sci: "Pyrus communis ‘Moonglow’", group: "tree", kind: "FRUIT TREE", tags: TREE_TAGS,
+            front: "pear-moonglow-mature.jpg", photo: "pear-moonglow-photo.jpg",
+            stages: ["pear-moonglow-seedling.jpg", "pear-moonglow-established.jpg", "pear-moonglow-maturing.jpg", "pear-moonglow-mature.jpg"],
+            ext: [[0.257, 0.736, 0.4, 0.9, 0.513], [0.029, 0.886, 0.021, 0.989, 0.511], [0.086, 0.914, 0.032, 0.971, 0.502], [0.043, 0.986, 0.0, 0.996, 0.493]],
+            h: [15, 20], w: [12, 15], sun: SUN_FULL, water: WATER_WEEK, temp: "Temperature: hardy in zones 5 to 8", zones: "5 to 8",
+            soil: "Loamy, drained", ph: "6.0–6.5",
+            dex: ["Plant it in full sun with room to grow tall and upright, in loamy, well-drained soil, with another pear nearby to pollinate it — and it returns the favor for the Bartlett. Moonglow was bred to resist fire blight, the pear grower's worst enemy. Water deeply once a week while it establishes.",
+                  "Prune in late winter, lightly, keeping its upright pyramidal shape. Pick in August while still firm, when the skin warms to yellow-green; like the Bartlett it ripens off the tree, mild and juicy with almost no grit."] },
+          { no: "011", name: "Pear — Shinseiki", sci: "Pyrus pyrifolia ‘Shinseiki’", group: "tree", kind: "FRUIT TREE", tags: TREE_TAGS,
+            front: "pear-shinseiki-mature.jpg", photo: "pear-shinseiki-photo.jpg",
+            stages: ["pear-shinseiki-seedling.jpg", "pear-shinseiki-established.jpg", "pear-shinseiki-maturing.jpg", "pear-shinseiki-mature.jpg"],
+            ext: [[0.293, 0.707, 0.386, 0.882, 0.493], [0.0, 0.993, 0.0, 0.996, 0.482], [0.0, 0.964, 0.0, 0.996, 0.494], [0.043, 0.95, 0.036, 0.975, 0.5]],
+            h: [10, 15], w: [10, 15], sun: SUN_FULL, water: "Water: moderate — a deep soak once a week, steady while the fruit sizes", temp: "Temperature: hardy in zones 5 to 9", zones: "5 to 9",
+            soil: "Loamy, drained", ph: "5.5–7.0",
+            dex: ["Plant it in full sun with room to spread, in loamy, well-drained soil. An Asian pear — round as an apple and eaten crisp. Water deeply once a week, and keep it steady while the fruit sizes up, or the fruit stays small.",
+                  "Prune in late winter to an open framework, and thin hard in spring — Shinseiki sets far more fruit than it can grow. Pick in August when the skin turns a clear golden yellow; unlike European pears it ripens on the tree and is eaten crisp, straight off the branch."] },
+          { no: "012", name: "Fuyu Persimmon", sci: "Diospyros kaki ‘Fuyu’", group: "tree", kind: "FRUIT TREE", tags: TREE_TAGS,
+            front: "persimmon-render.jpg", photo: "persimmon-photo.jpg",
+            stages: ["persimmon-seedling.jpg", "persimmon-established.jpg", "persimmon-render.jpg", "persimmon-fully-mature.jpg"],
+            ext: [[0.155, 0.812, 0.468, 0.81, 0.508], [0.04, 0.945, 0.135, 0.805, 0.51], [0.025, 0.965, 0.12, 0.81, 0.511], [0.017, 0.984, 0.095, 0.798, 0.514]],
+            h: [12, 15], w: [12, 15], sun: SUN_FULL, water: WATER_WEEK, temp: "Temperature: hardy in zones 7 to 9", zones: "7 to 9",
+            soil: "Loamy, drained", ph: "6.0–7.5",
+            dex: ["Plant it in full sun with room to spread, in loamy, well-drained soil. Water deeply once a week while it establishes; after that, rainfall mostly covers it.",
+                  "Prune in late winter to an open framework, and thin the fruit in June so what remains ripens large. Pick at deep orange — a Fuyu is eaten crisp, straight off the branch."] },
+          { no: "013", name: "Plum — AU Rosa", sci: "Prunus salicina ‘AU Rosa’", group: "tree", kind: "FRUIT TREE", tags: TREE_TAGS,
+            front: "plum-aurosa-mature.jpg", photo: "plum-aurosa-photo.jpg",
+            stages: ["plum-aurosa-seedling.jpg", "plum-aurosa-established.jpg", "plum-aurosa-maturing.jpg", "plum-aurosa-mature.jpg"],
+            ext: [[0.264, 0.664, 0.329, 0.932, 0.473], [0.0, 0.993, 0.0, 0.996, 0.497], [0.071, 0.936, 0.036, 0.961, 0.5], [0.0, 0.957, 0.043, 0.964, 0.502]],
+            h: [15, 20], w: [15, 20], sun: SUN_FULL, water: WATER_WEEK, temp: "Temperature: hardy in zones 6 to 9", zones: "6 to 9",
+            soil: "Loamy, drained", ph: "5.5–6.5",
+            dex: ["Plant it in full sun with room to spread, in loamy, well-drained soil. AU Rosa was bred at Auburn for the humid South, with real resistance to the diseases that take other Japanese plums here — and it is self-fertile, so one tree fruits alone. Water deeply once a week while it establishes.",
+                  "Prune in late winter to a vase shape, and thin the fruit in spring so what remains sizes up. Pick in June when the skin is fully red-purple and the fruit gives a little — sweet, juicy, and best eaten within days."] },
+          { no: "014", name: "Blackberry", sci: "Rubus fruticosus", group: "bush", kind: "FRUIT BUSH", tags: BUSH_TAGS,
+            front: "blackberry-mature.jpg", photo: "blackberry-photo.jpg",
+            stages: ["blackberry-seedling.jpg", "blackberry-established.jpg", "blackberry-mature.jpg"],
+            ext: [[0.0, 0.993, 0.0, 0.996, 0.44], [0.0, 0.986, 0.007, 0.996, 0.56], [0.064, 0.943, 0.029, 0.936, 0.518]],
+            h: [4, 6], w: [4, 6], sun: SUN_FULL, water: "Water: moderate — a deep soak once a week, more while fruiting", temp: "Temperature: hardy in zones 5 to 9", zones: "5 to 9",
+            soil: "Rich, drained", ph: "5.5–7.0",
+            dex: ["Plant it in full sun along a fence or wire it can lean on, in rich, well-drained soil. Water deeply once a week, and more while the fruit is sizing. The canes fruit in their second year, so give the patch room to renew itself.",
+                  "After harvest, cut the canes that fruited right down to the ground — they are done — and tip the new canes back to keep them branching. Pick every couple of days when the berries are fully black and glossy; a dull or red berry is not ripe, whatever its size."] },
+          { no: "015", name: "Blueberry", sci: "Vaccinium corymbosum", group: "bush", kind: "FRUIT BUSH", tags: BUSH_TAGS,
+            front: "blueberry-mature.jpg", photo: "blueberry-photo.jpg",
+            stages: ["blueberry-seedling.jpg", "blueberry-established.jpg", "blueberry-mature.jpg"],
+            ext: [[0.286, 0.686, 0.368, 0.832, 0.517], [0.129, 0.871, 0.05, 0.957, 0.505], [0.057, 0.936, 0.039, 0.971, 0.515]],
+            h: [6, 8], w: [6, 8], sun: SUN_FULL, water: "Water: steady moisture — a deep soak twice a week", temp: "Temperature: hardy in zones 4 to 8", zones: "4 to 8",
+            soil: "Acid, rich", ph: "4.5–5.5",
+            dex: ["Plant it in full sun in acid soil — that is the whole secret of blueberries. Work in peat or pine bark and keep the pH down near 5, or the leaves yellow and the bush sulks. Keep the soil steadily moist, a deep soak twice a week, and mulch deep.",
+                  "Prune in late winter, taking out the oldest, twiggy stems at the ground so young wood keeps coming. Pick a few days after the berries turn fully blue, when the dusty bloom is on them and they roll off the stem with a light touch."] },
+          { no: "016", name: "Grape — Moon Drop", sci: "Vitis vinifera ‘Moon Drop’", group: "bush", kind: "FRUIT VINE", tags: VINE_TAGS,
+            front: "grape-moondrop-mature.jpg", photo: "grape-moondrop-photo.jpg",
+            stages: ["grape-moondrop-seedling.jpg", "grape-moondrop-established.jpg", "grape-moondrop-mature.jpg"],
+            ext: [[0.257, 0.75, 0.475, 0.925, 0.498], [0.064, 0.936, 0.05, 0.946, 0.515], [0.05, 0.964, 0.018, 0.979, 0.494]],
+            h: [6, 8], w: [8, 10], sun: SUN_FULL, water: "Water: low to moderate — a deep soak every week or two once established", temp: "Temperature: hardy in zones 7 to 10", zones: "7 to 10",
+            soil: "Deep loam, drained", ph: "5.5–6.5",
+            dex: ["Plant it in full sun against a strong trellis — a Moon Drop vine grows long and heavy — in deep, well-drained loam. Train one trunk up and two arms along the wire. Water deeply every week or two once it establishes; grapes like a dry summer better than wet feet.",
+                  "Prune hard every late winter — grapes fruit on new wood growing from last year's canes, so cut most of the vine away and leave short spurs. Pick in September when the long tubular berries are fully black and taste crisp and sweet; unripe ones never sweeten off the vine."] },
+          { no: "017", name: "Raspberry", sci: "Rubus idaeus", group: "bush", kind: "FRUIT BUSH", tags: BUSH_TAGS,
+            front: "raspberry-mature.jpg", photo: "raspberry-photo.jpg",
+            stages: ["raspberry-seedling.jpg", "raspberry-established.jpg", "raspberry-mature.jpg"],
+            ext: [[0.214, 0.821, 0.382, 0.929, 0.492], [0.0, 0.993, 0.0, 0.996, 0.448], [0.05, 0.943, 0.036, 0.961, 0.527]],
+            h: [4, 6], w: [4, 6], sun: SUN_FULL, water: "Water: moderate — a deep soak once a week, steady while fruiting", temp: "Temperature: hardy in zones 4 to 8", zones: "4 to 8",
+            soil: "Rich, drained", ph: "5.5–6.5",
+            dex: ["Plant it in full sun in a row it can call its own, in rich, well-drained soil — raspberries spread by runners and will wander a bed if you let them. Water deeply once a week, and keep it steady while the fruit is on.",
+                  "After harvest, cut the canes that fruited down to the ground and thin the new canes to the strongest few per foot. Pick every couple of days when a ripe berry slips off its core with a gentle pull, leaving the white core behind on the plant."] }
+        ];
+
+        var TREE_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8.2" r="5.6" /><path d="M12 13.4V21M12 16.8c-1.8-.2-3-1.2-3.6-2.8M12 15.4c1.6-.4 2.6-1.4 3.1-3" /><circle cx="9.7" cy="6.6" r="1" fill="currentColor" stroke="none" /><circle cx="14.1" cy="5.9" r="1" fill="currentColor" stroke="none" /><circle cx="12.4" cy="10.3" r="1" fill="currentColor" stroke="none" /><path d="M7.5 21h9" /></svg>';
+        var BUSH_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 15.5a5 5 0 0 1 1.2-9.8A6.5 6.5 0 0 1 17.6 4.6a5 5 0 0 1 1.9 10.9" /><path d="M12 15.5V19M5 21h14" /><circle cx="9" cy="10.5" r="1" fill="currentColor" stroke="none" /><circle cx="14.5" cy="8.5" r="1" fill="currentColor" stroke="none" /><circle cx="12.3" cy="13" r="1" fill="currentColor" stroke="none" /></svg>';
+
         var pageEl = document.getElementById("pageEl");
         var frontFace = pageEl.querySelector(".face.front");
         var backFace = pageEl.querySelector(".face.back");
-        var added = false;
+        var cur = 11;        /* plant the reader is on — opens on the persimmon page */
+        var frontIdx = 11;   /* plant loaded on the front face */
+        var backIdx = 11;    /* plant loaded on the back face */
+        var addedFlags = [], favFlags = [], scannedFlags = [];
+        for (var fi = 0; fi < PLANTS.length; fi++) { addedFlags.push(false); favFlags.push(false); scannedFlags.push(false); }
 
         var toastEl = document.getElementById("toast");
         var toastTimer = null;
@@ -1409,16 +1571,12 @@
           toastEl.textContent = msg;
           toastEl.classList.add("show");
           clearTimeout(toastTimer);
-          toastTimer = setTimeout(function () {
-            toastEl.classList.remove("show");
-          }, 2300);
+          toastTimer = setTimeout(function () { toastEl.classList.remove("show"); }, 2300);
         }
 
-        /* ----- Flip ----- */
+        /* ----- Flip / page turns ----- */
         var rot = 0;
-        function isBack() {
-          return ((rot % 360) + 360) % 360 === 180;
-        }
+        function isBack() { return ((rot % 360) + 360) % 360 === 180; }
         function renderFlip() {
           var flipped = isBack();
           pageEl.style.transform = "rotateY(" + rot + "deg)";
@@ -1426,17 +1584,34 @@
           frontFace.setAttribute("aria-hidden", flipped ? "true" : "false");
           backFace.setAttribute("aria-hidden", flipped ? "false" : "true");
         }
-        function flipBy(dir) {
-          rot += 180 * dir;
-          renderFlip();
+        var settleTimer = null;
+        function applySettle() {
+          if (settleTimer === null) return;
+          clearTimeout(settleTimer); settleTimer = null;
+          if (frontIdx !== cur) loadFront(cur);
+          if (backIdx !== cur) loadBack(cur);
         }
-        function setFlipped(v) {
-          if (v !== isBack()) rot += 180;
+        function scheduleSettle() {
+          clearTimeout(settleTimer);
+          settleTimer = setTimeout(applySettle, 700);
+        }
+        function turn(dir) {
+          applySettle();
+          if (dir > 0) {
+            if (!isBack()) { rot += 180; }
+            else if (cur < PLANTS.length - 1) { cur += 1; loadFront(cur); rot += 180; scheduleSettle(); }
+            else return;
+          } else {
+            if (isBack()) { rot -= 180; }
+            else if (cur > 0) { cur -= 1; loadBack(cur); rot -= 180; scheduleSettle(); }
+            else return;
+          }
           renderFlip();
+          syncChrome();
         }
         backFace.setAttribute("aria-hidden", "true");
 
-        /* ----- Flip: remember start, check end ----- */
+        /* ----- Page turn: a pull past half the page's width turns one page ----- */
         var startX = 0, startY = 0;
         pageEl.addEventListener("touchstart", function (e) {
           var t = e.changedTouches[0];
@@ -1447,92 +1622,177 @@
           if (!t) return;
           var dx = t.clientX - startX;
           var dy = t.clientY - startY;
-          if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) {
-            flipBy(dx > 0 ? 1 : -1);
+          var half = (pageEl.clientWidth || window.innerWidth) / 2;
+          if (Math.abs(dx) > half && Math.abs(dx) > Math.abs(dy)) {
+            turn(dx > 0 ? 1 : -1);
           }
         });
 
-        /* ----- Favorite star (front only) ----- */
+        /* ----- Loading a plant onto a face ----- */
+        var frontRender = document.getElementById("frontRender");
+        var frontPhoto = document.getElementById("frontPhoto");
+        var artBox = document.getElementById("artBox");
+        var stamp = document.getElementById("stamp");
         var favBtn = document.getElementById("favBtn");
-        var faved = false;
-        favBtn.addEventListener("click", function () {
-          faved = !faved;
-          favBtn.setAttribute("aria-pressed", faved ? "true" : "false");
-          favBtn.setAttribute("aria-label", faved ? "Remove from favorites" : "Add to favorites");
-        });
+        var pageSub = document.getElementById("pageSub");
 
-        /* ----- Growth slider (back art) ----- */
+        function renderAlt(p) {
+          if (p.no === "012") return "Colored pencil and watercolor rendering of a Fuyu persimmon tree with white chalk highlights";
+          return "Colored pencil and watercolor rendering of " + p.name + " with white chalk highlights";
+        }
+        function photoAlt(p) {
+          if (p.no === "012") return "Photograph of the same Fuyu persimmon tree";
+          return "Photograph of the same " + p.name;
+        }
+        function loadFront(i) {
+          var p = PLANTS[i];
+          frontIdx = i;
+          frontRender.src = p.front;
+          frontRender.alt = renderAlt(p);
+          frontPhoto.src = p.photo;
+          frontPhoto.alt = photoAlt(p);
+          document.getElementById("entryNoNum").textContent = p.no;
+          document.getElementById("plantName").textContent = p.name;
+          document.getElementById("plantSci").textContent = p.sci;
+          document.getElementById("artIcons").setAttribute("aria-label", "Requirements: full sun; hardy in zones " + p.zones);
+          frontFace.setAttribute("aria-label", "Page front — " + p.name);
+          stamp.classList.toggle("on", addedFlags[i]);
+          favBtn.setAttribute("aria-pressed", favFlags[i] ? "true" : "false");
+          favBtn.setAttribute("aria-label", favFlags[i] ? "Remove from favorites" : "Add to favorites");
+          artBox.classList.toggle("scanned", scannedFlags[i]);
+          artBox.classList.toggle("show-photo", scannedFlags[i]);
+          frontFace.classList.toggle("scanned", scannedFlags[i]);
+        }
+
         var growthFrame = document.getElementById("growthFrame");
+        var growthBox = document.getElementById("growthBox");
         var growthSlider = document.getElementById("growthSlider");
-        var stageImgs = growthFrame.querySelectorAll(".stage-img");
         var dimW = growthFrame.querySelector(".dim-w");
         var dimH = growthFrame.querySelector(".dim-h");
         var dimWLabel = growthFrame.querySelector(".dim-w .dim-label");
         var dimHLabel = growthFrame.querySelector(".dim-h .dim-label");
+        var stageImgs = [];
         var growth = 100;
-        var stageShown = 3;
+        var stageShown = 0;
         var stageApplied = -1;
 
-        var SCALE_KEYS = [[0, 0.45], [25, 0.62], [65, 0.82], [100, 1]];
-        function growthScale(v) {
-          for (var i = 1; i < SCALE_KEYS.length; i++) {
-            if (v <= SCALE_KEYS[i][0]) {
-              var a = SCALE_KEYS[i - 1];
-              var b = SCALE_KEYS[i];
+        function loadBack(i) {
+          var p = PLANTS[i];
+          backIdx = i;
+          document.getElementById("bhName").textContent = p.name;
+          document.getElementById("bhSci").textContent = p.sci;
+          document.getElementById("bhTitle").classList.toggle("bush", p.group === "bush");
+          document.getElementById("groupIcon").innerHTML = p.group === "bush" ? BUSH_ICON : TREE_ICON;
+          backFace.setAttribute("aria-label", "Page back — dex entry — " + p.name);
+          var tagsHtml = "";
+          for (var ti = 0; ti < p.tags.length; ti++) {
+            tagsHtml += '<span class="badge ' + p.tags[ti][1] + '">' + p.tags[ti][0] + "</span>";
+          }
+          document.getElementById("typeTags").innerHTML = tagsHtml;
+          document.getElementById("orbSun").setAttribute("aria-label", p.sun);
+          document.getElementById("orbWater").setAttribute("aria-label", p.water);
+          document.getElementById("orbTemp").setAttribute("aria-label", p.temp);
+          document.getElementById("orbSoil").setAttribute("aria-label", "Soil: " + p.soil.toLowerCase() + ", pH " + p.ph.replace("–", " to "));
+          document.getElementById("soilMain").textContent = p.soil;
+          document.getElementById("soilPh").textContent = "— pH " + p.ph;
+          var dexHtml = "";
+          for (var di = 0; di < p.dex.length; di++) dexHtml += "<p>" + p.dex[di] + "</p>";
+          document.getElementById("dexEntry").innerHTML = dexHtml;
+          growthBox.innerHTML = "";
+          stageImgs = [];
+          for (var si = 0; si < p.stages.length; si++) {
+            var img = document.createElement("img");
+            img.className = "thumb stage-img";
+            img.setAttribute("data-stage", si);
+            img.src = p.stages[si];
+            if (si === p.stages.length - 1) {
+              img.alt = "Rendered " + p.name + " — matures to " + p.h[0] + "–" + p.h[1] + " ft tall and " + p.w[0] + "–" + p.w[1] + " ft wide";
+            } else {
+              img.alt = "";
+              img.setAttribute("aria-hidden", "true");
+            }
+            img.addEventListener("load", function () { renderGrowth(); });
+            growthBox.appendChild(img);
+            stageImgs.push(img);
+          }
+          growth = 100;
+          growthSlider.value = "100";
+          stageApplied = -1;
+          lastDimLabelW = null;
+          lastDimLabelH = null;
+          renderGrowth();
+          fitInfoColumn();
+        }
+
+        /* ----- Favorite star (front only) ----- */
+        favBtn.addEventListener("click", function () {
+          favFlags[frontIdx] = !favFlags[frontIdx];
+          favBtn.setAttribute("aria-pressed", favFlags[frontIdx] ? "true" : "false");
+          favBtn.setAttribute("aria-label", favFlags[frontIdx] ? "Remove from favorites" : "Add to favorites");
+        });
+
+        /* ----- Growth slider (back art) ----- */
+        var SCALE_KEYS_TREE = [[0, 0.45], [25, 0.62], [65, 0.82], [100, 1]];
+        var SCALE_KEYS_BUSH = [[0, 0.45], [33, 0.66], [66, 0.85], [100, 1]];
+        function growthScale(v, keys) {
+          for (var i = 1; i < keys.length; i++) {
+            if (v <= keys[i][0]) {
+              var a = keys[i - 1];
+              var b = keys[i];
               return a[1] + (b[1] - a[1]) * (v - a[0]) / (b[0] - a[0]);
             }
           }
           return 1;
         }
-
-        function stageFor(v) {
+        function stageFor(v, p) {
+          if (p.stages.length === 3) {
+            if (v <= 33) return 0;
+            if (v <= 66) return 1;
+            return 2;
+          }
           if (v <= 25) return 0;
           if (v <= 50) return 1;
           if (v <= 75) return 2;
           return 3;
         }
-        function fmtFt(n) {
-          return String(Math.round(n * 2) / 2);
-        }
-        var lastDimLabel = null;
-        /* ----- The plant's extent inside each stage image ----- */
-        var PLANT_EXTENT = [
-          { l: 0.155, r: 0.812, t: 0.468, b: 0.810, cx: 0.508 },
-          { l: 0.040, r: 0.945, t: 0.135, b: 0.805, cx: 0.510 },
-          { l: 0.025, r: 0.965, t: 0.120, b: 0.810, cx: 0.511 },
-          { l: 0.017, r: 0.984, t: 0.095, b: 0.798, cx: 0.514 }
-        ];
-        var IMG_ASPECT = 1120 / 2240; 
+        function fmtFt(n) { return String(Math.round(n * 2) / 2); }
+        var lastDimLabelW = null;
+        var lastDimLabelH = null;
 
         function plantGeometry(s) {
+          var p = PLANTS[backIdx];
           var fw = growthFrame.clientWidth;
           var fh = growthFrame.clientHeight;
-          var ext = PLANT_EXTENT[stageShown];
+          var ext = p.ext[stageShown];
           if (!(fw > 0) || !(fh > 0) || !ext) return null;
+          var img = stageImgs[stageShown];
+          var aspect = 1120 / 2240;
+          if (img && img.naturalWidth > 0 && img.naturalHeight > 0) aspect = img.naturalWidth / img.naturalHeight;
           var iw, ih, ix, iy;
-          if (fw / fh > IMG_ASPECT) {
-            ih = fh; iw = fh * IMG_ASPECT;
+          if (fw / fh > aspect) {
+            ih = fh; iw = fh * aspect;
             ix = (fw - iw) / 2; iy = 0;
           } else {
-            iw = fw; ih = fw / IMG_ASPECT;
+            iw = fw; ih = fw / aspect;
             ix = 0; iy = (fh - ih) / 2;
           }
-          var ax = ix + ext.cx * iw;  
-          var ay = iy + ext.b * ih;
+          var ax = ix + ext[4] * iw;
+          var ay = iy + ext[3] * ih;
           function px(fx) { return ax + s * (ix + fx * iw - ax); }
           function py(fy) { return ay + s * (iy + fy * ih - ay); }
           return {
             fw: fw, fh: fh,
             originX: (ax / fw * 100), originY: (ay / fh * 100),
-            left: px(ext.l), right: px(ext.r),
-            top: py(ext.t), trunkBottom: ay,
+            left: px(ext[0]), right: px(ext[1]),
+            top: py(ext[2]), trunkBottom: ay,
             trunkX: ax
           };
         }
         function renderGrowth() {
-          var s = growthScale(growth);
-          stageShown = stageFor(growth);
-
+          var p = PLANTS[backIdx];
+          if (!stageImgs.length) return;
+          var s = growthScale(growth, p.group === "bush" ? SCALE_KEYS_BUSH : SCALE_KEYS_TREE);
+          stageShown = stageFor(growth, p);
           if (stageShown !== stageApplied) {
             stageApplied = stageShown;
             for (var i = 0; i < stageImgs.length; i++) {
@@ -1545,7 +1805,6 @@
               geo.originX.toFixed(2) + "% " + geo.originY.toFixed(2) + "%";
           }
           stageImgs[stageShown].style.transform = "scale(" + s.toFixed(3) + ")";
-
           if (geo) {
             dimW.style.left = geo.left.toFixed(1) + "px";
             dimW.style.right = (geo.fw - geo.right).toFixed(1) + "px";
@@ -1556,22 +1815,17 @@
             dimH.style.top = geo.top.toFixed(1) + "px";
             dimH.style.bottom = (geo.fh - geo.trunkBottom).toFixed(1) + "px";
           }
-          var dimLabel =
-            fmtFt(12 * growth / 100) + "–" + fmtFt(15 * growth / 100) + " FT";
-          if (dimLabel !== lastDimLabel) {
-            lastDimLabel = dimLabel;
-            dimWLabel.textContent = dimLabel;
-            dimHLabel.textContent = dimLabel;
-          }
+          var wLabel = fmtFt(p.w[0] * growth / 100) + "–" + fmtFt(p.w[1] * growth / 100) + " FT";
+          var hLabel = fmtFt(p.h[0] * growth / 100) + "–" + fmtFt(p.h[1] * growth / 100) + " FT";
+          if (wLabel !== lastDimLabelW) { lastDimLabelW = wLabel; dimWLabel.textContent = wLabel; }
+          if (hLabel !== lastDimLabelH) { lastDimLabelH = hLabel; dimHLabel.textContent = hLabel; }
         }
-
         growthSlider.addEventListener("input", function () {
           var v = parseFloat(growthSlider.value);
           if (isNaN(v)) return;
           growth = Math.max(0, Math.min(100, v));
           renderGrowth();
         });
-        renderGrowth();
 
         /* ----- Back: right column width = badge block width ----- */
         var backHead = pageEl.querySelector(".back-head");
@@ -1591,64 +1845,91 @@
             if (!(extent > 0)) return;
             if (Math.abs(extent - prev) < 0.05) break;
             prev = extent;
-            backHead.style.gridTemplateColumns =
-              "1fr " + extent.toFixed(2) + "px";
+            backHead.style.gridTemplateColumns = "1fr " + extent.toFixed(2) + "px";
           }
-        }
-        fitInfoColumn();
-
-        renderGrowth();
-        window.addEventListener("resize", function () {
-          fitInfoColumn();
-          renderGrowth();
-        });
-        if (document.fonts && document.fonts.ready) {
-          document.fonts.ready.then(function () {
-            fitInfoColumn();
-            renderGrowth();
-          });
-        }
-
-        /* ----- Front image: rendering by default, photo after scan ----- */
-        var artBox = document.getElementById("artBox");
-        var scanned = false;
-        function markScanned() {
-          if (scanned) return;
-          scanned = true;
-          artBox.classList.add("scanned", "show-photo");
-          frontFace.classList.add("scanned");
         }
 
         /* ----- Library ----- */
         var addBtn = document.getElementById("addBtn");
         var addBtnLabel = document.getElementById("addBtnLabel");
         var addBtnIcon = document.getElementById("addBtnIcon");
-        var stamp = document.getElementById("stamp");
         var libCount = document.getElementById("libCount");
         var libEmpty = document.getElementById("libEmpty");
-        var libItem = document.getElementById("libItem");
+        var libList = document.getElementById("libList");
         var srAdd = document.getElementById("srAdd");
         var srMeta = document.getElementById("srMeta");
 
-        function setAdded(v, silent) {
-          added = v;
+        function addedCount() {
+          var n = 0;
+          for (var i = 0; i < addedFlags.length; i++) if (addedFlags[i]) n++;
+          return n;
+        }
+        function syncChrome() {
+          var p = PLANTS[cur];
+          pageSub.textContent = "Plant Library · Page № " + p.no;
+          document.title = "Shokudex — Page № " + p.no + " · " + p.name;
+          var v = addedFlags[cur];
           addBtn.classList.toggle("added", v);
           addBtn.setAttribute("aria-pressed", v ? "true" : "false");
           addBtnLabel.textContent = v ? "In Your Library" : "Add to My Library";
           addBtnIcon.innerHTML = v
             ? '<path d="M4.5 12.5l5 5L19.5 7"/>'
             : '<path d="M12 5v14M5 12h14"/>';
-          stamp.classList.toggle("on", v);
-          libCount.textContent = v ? "1" : "0";
-          libEmpty.hidden = v;
-          libItem.hidden = !v;
+          libCount.textContent = String(addedCount());
           srAdd.textContent = v ? "In Your Library — View" : "Add Page";
-          if (v) srMeta.textContent = "№ 001 · ALREADY COLLECTED";
-          if (!silent) toast(v ? "Page № 001 added to your library" : "Page № 001 removed from your library");
         }
-        addBtn.addEventListener("click", function () {
-          setAdded(!added);
-        });
+        function rebuildLibrary() {
+          libList.innerHTML = "";
+          var any = false;
+          for (var i = 0; i < PLANTS.length; i++) {
+            if (!addedFlags[i]) continue;
+            any = true;
+            (function (idx) {
+              var p = PLANTS[idx];
+              var btn = document.createElement("button");
+              btn.className = "lib-item";
+              var img = document.createElement("img");
+              img.src = p.front;
+              img.alt = "";
+              var span = document.createElement("span");
+              var nameEl = document.createElement("span");
+              nameEl.className = "li-name";
+              nameEl.textContent = p.name;
+              var noEl = document.createElement("span");
+              noEl.className = "li-no";
+              noEl.textContent = "№ " + p.no + " · " + p.kind;
+              span.appendChild(nameEl);
+              span.appendChild(document.createElement("br"));
+              span.appendChild(noEl);
+              btn.appendChild(img);
+              btn.appendChild(span);
+              btn.addEventListener("click", function () { goToPlant(idx); });
+              libList.appendChild(btn);
+            })(i);
+          }
+          libEmpty.hidden = any;
+        }
+        function setAdded(v, silent) {
+          addedFlags[cur] = v;
+          if (frontIdx === cur) stamp.classList.toggle("on", v);
+          rebuildLibrary();
+          syncChrome();
+          if (v) srMeta.textContent = "№ " + PLANTS[cur].no + " · ALREADY COLLECTED";
+          if (!silent) toast(v ? "Page № " + PLANTS[cur].no + " added to your library" : "Page № " + PLANTS[cur].no + " removed from your library");
+        }
+        addBtn.addEventListener("click", function () { setAdded(!addedFlags[cur]); });
+
+        function goToPlant(i) {
+          applySettle();
+          cur = i;
+          loadFront(i);
+          loadBack(i);
+          rot = Math.round(rot / 360) * 360;
+          renderFlip();
+          syncChrome();
+          document.getElementById("libraryPanel").classList.remove("open");
+          document.getElementById("libraryBtn").setAttribute("aria-expanded", "false");
+        }
 
         /* ----- Library panel ----- */
         var libraryBtn = document.getElementById("libraryBtn");
@@ -1664,10 +1945,6 @@
             libraryBtn.setAttribute("aria-expanded", "false");
           }
         });
-        libItem.addEventListener("click", function () {
-          libraryPanel.classList.remove("open");
-          setFlipped(false);
-        });
 
         /* ----- Scan ----- */
         var scanOverlay = document.getElementById("scanOverlay");
@@ -1677,16 +1954,29 @@
         var scanTimer = null;
         var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+        function markScanned() {
+          if (scannedFlags[cur]) return;
+          scannedFlags[cur] = true;
+          if (frontIdx === cur) {
+            artBox.classList.add("scanned", "show-photo");
+            frontFace.classList.add("scanned");
+          }
+        }
         function runScan() {
+          var p = PLANTS[cur];
           scanResult.classList.remove("show");
           scanline.style.display = "block";
           scanStatus.textContent = "Looking for leaves & fruit…";
+          document.getElementById("srImg").src = p.front;
+          document.getElementById("srName").textContent = p.name;
+          srMeta.textContent = "№ " + p.no + " · MATCH 98% · " + p.kind;
+          syncChrome();
           clearTimeout(scanTimer);
           scanTimer = setTimeout(function () {
             scanline.style.display = "none";
-            scanStatus.textContent = added ? "Found it — this page is already yours." : "Found a match in the Shokudex.";
+            scanStatus.textContent = addedFlags[cur] ? "Found it — this page is already yours." : "Found a match in the Shokudex.";
+            if (addedFlags[cur]) srMeta.textContent = "№ " + p.no + " · ALREADY COLLECTED";
             scanResult.classList.add("show");
-
             markScanned();
           }, reduced ? 250 : 1500);
         }
@@ -1702,9 +1992,9 @@
         document.getElementById("scanClose").addEventListener("click", closeScan);
         document.getElementById("srAgain").addEventListener("click", runScan);
         srAdd.addEventListener("click", function () {
-          if (!added) setAdded(true);
+          if (!addedFlags[cur]) setAdded(true);
           closeScan();
-          setFlipped(false);
+          if (isBack()) turn(-1);
         });
         document.addEventListener("keydown", function (e) {
           if (e.key === "Escape") {
@@ -1712,6 +2002,25 @@
             libraryPanel.classList.remove("open");
           }
         });
+
+        /* ----- First load: the persimmon page, as it was ----- */
+        loadFront(11);
+        loadBack(11);
+        syncChrome();
+        rebuildLibrary();
+        renderFlip();
+        renderGrowth();
+        fitInfoColumn();
+        window.addEventListener("resize", function () {
+          fitInfoColumn();
+          renderGrowth();
+        });
+        if (document.fonts && document.fonts.ready) {
+          document.fonts.ready.then(function () {
+            fitInfoColumn();
+            renderGrowth();
+          });
+        }
       })();
     </script>
     <script>
