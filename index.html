@@ -279,7 +279,7 @@
         position: relative;
         height: 100%;
         transform-style: preserve-3d;
-        transition: transform 0.65s cubic-bezier(0.25, 0.7, 0.25, 1);
+        transition: transform 0.32s ease-out;
       }
       .face img {
         -webkit-user-drag: none;
@@ -2027,35 +2027,48 @@
           settleTimer = setTimeout(applySettle, 700);
         }
         function turn(dir) {
+          /* dir follows the swipe: +1 (right) rotates +180deg, -1 (left) rotates -180deg.
+             Either direction toggles front <-> this same plant's back, so the
+             turn's direction always matches the swipe's direction. */
           applySettle();
-          if (dir > 0) {
-            if (!isBack()) { rot += 180; }
-            else return;
-          } else {
-            if (isBack()) { rot -= 180; }
-            else return;
-          }
+          rot += dir > 0 ? 180 : -180;
           renderFlip();
           syncChrome();
         }
         backFace.setAttribute("aria-hidden", "true");
 
-        /* ----- Page turn: a pull past half the page's width turns one page ----- */
-        var startX = 0, startY = 0;
+        /* ----- Page turn: ~12px of clearly horizontal movement turns the card,
+               fired mid-swipe the moment the distance is crossed (once per
+               swipe). A fast flick of ~8px+ also turns it. Movement under ~6px
+               or mostly-vertical movement never turns it. Either direction,
+               from anywhere on the card. ----- */
+        var startX = 0, startY = 0, startT = 0, swipeDone = false;
+        function tryFlip(dx, dy, dt) {
+          if (swipeDone) return;
+          var adx = Math.abs(dx), ady = Math.abs(dy);
+          if (adx <= ady * 1.5) return;
+          var commit = adx >= 12;
+          var flick = adx >= 8 && dt > 0 && adx / dt >= 0.4;
+          if (commit || flick) {
+            swipeDone = true;
+            turn(dx > 0 ? 1 : -1);
+          }
+        }
         pageEl.addEventListener("touchstart", function (e) {
           var t = e.changedTouches[0];
-          if (t) { startX = t.clientX; startY = t.clientY; }
+          if (t) { startX = t.clientX; startY = t.clientY; startT = Date.now(); swipeDone = false; }
+        }, { passive: true });
+        pageEl.addEventListener("touchmove", function (e) {
+          var t = e.changedTouches[0];
+          if (!t || swipeDone) return;
+          tryFlip(t.clientX - startX, t.clientY - startY, Date.now() - startT);
         }, { passive: true });
         pageEl.addEventListener("touchend", function (e) {
           var t = e.changedTouches[0];
-          if (!t) return;
-          var dx = t.clientX - startX;
-          var dy = t.clientY - startY;
-          var half = (pageEl.clientWidth || window.innerWidth) / 2;
-          if (Math.abs(dx) > half && Math.abs(dx) > Math.abs(dy)) {
-            turn(dx > 0 ? 1 : -1);
-          }
-        });
+          if (!t || swipeDone) return;
+          tryFlip(t.clientX - startX, t.clientY - startY, Date.now() - startT);
+        }, { passive: true });
+        pageEl.addEventListener("touchcancel", function () { swipeDone = false; }, { passive: true });
 
         /* ----- Loading a plant onto a face ----- */
         var frontRender = document.getElementById("frontRender");
