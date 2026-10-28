@@ -86,6 +86,8 @@
         height: 100dvh;
         display: grid;
         grid-template-rows: auto 1fr;
+        grid-template-columns: minmax(0, 1fr);
+        width: 100%;
         max-width: 560px;
         margin: 0 auto;
       }
@@ -1028,6 +1030,244 @@
         fill: #f2b01e;
       }
 
+      /* ----- Dex views (splash / category home / category grid) ----- */
+      .badge.perennial { background: #4e6e8e; }
+      .badge.deciduous { background: #b06a28; }
+      .badge.evergreen { background: #2e5d43; }
+      .badge.small { background: #7d9b4e; }
+      .badge.medium { background: #39749e; }
+      .badge.tall { background: #8a4b2f; }
+
+      .app[data-view="splash"] .topbar,
+      .app[data-view="home"] .topbar,
+      .app[data-view="grid"] .topbar { display: none; }
+      .app:not([data-view="card"]) .stage { display: none; }
+      .stage { grid-row: 2; }
+
+      .splash {
+        position: fixed; inset: 0; z-index: 100;
+        background: var(--bg-deep);
+        overflow: hidden;
+      }
+      .splash[hidden] { display: none; }
+      .splash img {
+        position: absolute; inset: 0;
+        width: 100%; height: 100%;
+        object-fit: cover; object-position: 50% 30%;
+      }
+      .splash-shade {
+        position: absolute; inset: 0;
+        background: linear-gradient(180deg, rgba(10,16,10,0.25) 0%, rgba(10,16,10,0.55) 55%, rgba(10,16,10,0.88) 100%);
+      }
+      .splash-inner {
+        position: absolute; inset: 0;
+        display: flex; flex-direction: column;
+        align-items: center; justify-content: flex-end;
+        padding: 24px 24px calc(48px + env(safe-area-inset-bottom));
+        text-align: center;
+      }
+      .splash-name {
+        font-family: "Spectral", Georgia, serif;
+        font-weight: 700; font-size: clamp(40px, 11vw, 58px);
+        letter-spacing: 0.16em; color: #f4efdc;
+        text-transform: uppercase;
+        text-shadow: 3px 3px 0 rgba(0,0,0,0.45);
+      }
+      .splash-sub {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 12px; letter-spacing: 0.3em;
+        color: #cfd8bd; text-transform: uppercase;
+        margin-top: 8px;
+      }
+      .enter-btn {
+        margin-top: 30px;
+        font-family: "IBM Plex Mono", monospace;
+        font-weight: 600; font-size: 16px; letter-spacing: 0.24em;
+        color: #fff7ea; background: var(--persimmon);
+        border: 1.5px solid #7e3f08; border-radius: 6px;
+        padding: 14px 46px 13px;
+        box-shadow: 4px 5px 0 rgba(0,0,0,0.5);
+      }
+      .enter-btn:active { transform: translate(2px,3px); box-shadow: 1px 1px 0 rgba(0,0,0,0.5); }
+
+      .dex-home, .dex-grid {
+        grid-row: 2; min-height: 0; min-width: 0;
+        width: 100%; box-sizing: border-box;
+        display: flex; flex-direction: column;
+        padding: 6px 14px 0;
+        overflow: hidden;
+      }
+      .dex-home[hidden], .dex-grid[hidden] { display: none; }
+      .dex-head {
+        display: flex; align-items: baseline; justify-content: space-between;
+        gap: 12px; padding: calc(8px + env(safe-area-inset-top)) 2px 12px;
+      }
+      .dex-title {
+        font-family: "Spectral", Georgia, serif;
+        font-weight: 700; font-size: 24px;
+        letter-spacing: 0.14em; text-transform: uppercase;
+      }
+      .dex-count {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 12px; font-weight: 600; letter-spacing: 0.08em;
+        color: #cfd8bd; white-space: nowrap;
+      }
+      .cat-list {
+        flex: 1 1 auto; min-height: 0;
+        overflow-y: auto;
+        display: flex; flex-direction: column; gap: 12px;
+        padding: 4px 2px 14px;
+      }
+      .cat-row {
+        position: relative;
+        flex: 0 0 auto;
+        flex-shrink: 0;
+        display: flex; align-items: stretch; gap: 12px;
+        width: 100%; text-align: left;
+        min-height: 98px;
+        box-sizing: border-box;
+        background: var(--paper); color: var(--ink);
+        border: 1.5px solid var(--ink); border-radius: 10px;
+        box-shadow: 4px 5px 0 var(--shadow-hard);
+        padding: 16px 14px; overflow: hidden;
+      }
+      .cat-row:active { transform: translate(2px,3px); box-shadow: 1px 1px 0 var(--shadow-hard); }
+      .cat-row.dim { opacity: 0.45; }
+      .cat-info {
+        flex: 1 1 auto; min-width: 0;
+        display: flex; flex-direction: column; justify-content: center;
+        padding: 4px 0 4px;
+        overflow: visible;
+      }
+      .cat-name {
+        font-family: "Spectral", Georgia, serif;
+        font-weight: 700; font-size: 20px; line-height: 1.35;
+        text-transform: uppercase; letter-spacing: 0.03em;
+        white-space: nowrap;
+        padding-top: 2px;
+      }
+      .cat-meta {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 12px; font-weight: 600; line-height: 1.4;
+        color: var(--persimmon-deep); margin-top: 5px;
+      }
+      .cat-complete {
+        font-size: 12.5px; font-weight: 600; line-height: 1.35; color: var(--leaf-deep); margin-top: 3px;
+      }
+      .cat-bar {
+        height: 7px; border-radius: 4px;
+        background: var(--paper-3); border: 1px solid var(--line);
+        margin-top: 9px; overflow: hidden; max-width: 190px;
+        flex: 0 0 auto;
+      }
+      .cat-bar i { display: block; height: 100%; background: var(--leaf); }
+      .cat-thumbs { display: flex; gap: 6px; flex: 0 0 auto; align-items: stretch; }
+      .cat-thumbs img {
+        width: 44px; height: auto; min-height: 62px; align-self: stretch; object-fit: cover; object-position: 50% 20%;
+        border-radius: 5px; border: 1px solid var(--line);
+        background: #efe8d3;
+      }
+      .tag-bar {
+        flex: 0 0 auto;
+        min-width: 0; max-width: 100%; width: 100%; box-sizing: border-box;
+        display: flex; flex-wrap: nowrap; gap: 8px;
+        overflow-x: auto; overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        padding: 10px 2px calc(10px + env(safe-area-inset-bottom));
+        border-top: 1px solid rgba(238,242,226,0.18);
+      }
+      .tag-bar::-webkit-scrollbar { display: none; }
+      .tag-pill {
+        flex: 0 0 auto;
+        white-space: nowrap;
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 11.5px; font-weight: 600; letter-spacing: 0.08em;
+        padding: 7px 13px 6px; border-radius: 999px;
+        border: 1.5px solid rgba(238,242,226,0.55);
+        background: transparent; color: var(--chrome-ink);
+        text-transform: uppercase;
+      }
+      .tag-pill.on {
+        background: var(--persimmon); border-color: #7e3f08; color: #fff7ea;
+        box-shadow: 2px 3px 0 rgba(0,0,0,0.45);
+      }
+
+      .grid-head {
+        display: flex; align-items: center; gap: 12px;
+        padding: calc(8px + env(safe-area-inset-top)) 2px 10px;
+      }
+      .text-btn {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 12px; font-weight: 600; letter-spacing: 0.08em;
+        background: var(--paper); color: var(--ink);
+        border: 1.5px solid var(--ink); border-radius: 6px;
+        padding: 8px 12px; box-shadow: 2px 3px 0 var(--shadow-hard);
+        white-space: nowrap;
+      }
+      .text-btn:active { transform: translate(1px,2px); box-shadow: 1px 1px 0 var(--shadow-hard); }
+      .grid-title {
+        flex: 1; min-width: 0;
+        font-family: "Spectral", Georgia, serif;
+        font-weight: 700; font-size: 23px;
+        letter-spacing: 0.08em; text-transform: uppercase;
+      }
+      .count-pill {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 13px; font-weight: 600;
+        background: var(--leaf-deep); color: #fff7ea;
+        border-radius: 999px; padding: 6px 14px;
+        white-space: nowrap;
+      }
+      .sort-bar {
+        display: flex; flex-wrap: wrap; gap: 7px; align-items: center;
+        padding: 2px 2px 12px;
+      }
+      .sort-btn {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 11.5px; font-weight: 600; letter-spacing: 0.06em;
+        padding: 8px 12px 7px; border-radius: 999px;
+        border: 1.5px solid rgba(238,242,226,0.5);
+        background: transparent; color: var(--chrome-ink);
+      }
+      .sort-btn.on { background: var(--paper); color: var(--ink); border-color: var(--ink); }
+      .sort-dir {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 11.5px; font-weight: 600;
+        padding: 8px 12px 7px; border-radius: 999px;
+        border: 1.5px solid #7e3f08;
+        background: var(--persimmon); color: #fff7ea;
+      }
+      .tile-scroll { flex: 1 1 auto; min-height: 0; overflow-y: auto; padding-bottom: calc(14px + env(safe-area-inset-bottom)); }
+      .tile-grid {
+        display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
+      }
+      .tile {
+        background: var(--paper); color: var(--ink);
+        border: 1.5px solid var(--ink); border-radius: 8px;
+        box-shadow: 3px 4px 0 var(--shadow-hard);
+        padding: 6px 6px 7px;
+        display: flex; flex-direction: column; align-items: center; gap: 3px;
+      }
+      .tile:active { transform: translate(1px,2px); box-shadow: 1px 1px 0 var(--shadow-hard); }
+      .tile img {
+        width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: 50% 18%;
+        border-radius: 5px; border: 1px solid var(--line); background: #efe8d3;
+      }
+      .tile .tile-no {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 12.5px; font-weight: 600; color: var(--persimmon-deep);
+      }
+      .tile .tile-name {
+        font-size: 10.5px; font-weight: 600; line-height: 1.2; text-align: center;
+        color: var(--ink-soft);
+        display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+      }
+      .grid-empty {
+        grid-column: 1 / -1; text-align: center;
+        color: #cfd8bd; font-size: 14px; padding: 28px 10px;
+      }
+
       /* ----- Toast ----- */
       .toast {
         position: fixed;
@@ -1218,7 +1458,18 @@
     </style>
   </head>
   <body>
-    <div class="app">
+    <!-- ============ SCREEN 1 — LOGIN SPLASH ============ -->
+    <div class="splash" id="splashView">
+      <img id="splashImg" src="persimmon-fully-mature.jpg" alt="" />
+      <div class="splash-shade"></div>
+      <div class="splash-inner">
+        <div class="splash-name">Shokudex</div>
+        <div class="splash-sub">Plant Library</div>
+        <button class="enter-btn" id="enterBtn">ENTER</button>
+      </div>
+    </div>
+
+    <div class="app" id="appEl" data-view="splash">
       <!-- Sticky header · floating controls -->
       <header class="topbar">
         <div class="library-wrap">
@@ -1256,6 +1507,37 @@
           </svg>
         </button>
       </header>
+
+      <!-- ============ SCREEN 2 — CATEGORY HOME ============ -->
+      <section class="dex-home" id="homeView" hidden aria-label="Dex — categories">
+        <div class="dex-head">
+          <div class="dex-title">Shokudex</div>
+          <div class="dex-count" id="homeLibCount">IN LIBRARY: 0 / 17</div>
+        </div>
+        <div class="cat-list" id="catRows"></div>
+        <div class="tag-bar" id="tagPills" role="group" aria-label="Filter by tag"></div>
+      </section>
+
+      <!-- ============ SCREEN 3 — CATEGORY GRID ============ -->
+      <section class="dex-grid" id="gridView" hidden aria-label="Dex — category grid">
+        <div class="grid-head">
+          <button class="text-btn" id="gridBack">Categories</button>
+          <div class="grid-title" id="gridTitle">Tree</div>
+          <span class="count-pill" id="gridCount">0 / 0</span>
+        </div>
+        <div class="sort-bar" id="sortBar" role="group" aria-label="Sort plants">
+          <button class="sort-btn on" data-sort="az">A–Z</button>
+          <button class="sort-btn" data-sort="za">Z–A</button>
+          <button class="sort-btn" data-sort="height">HEIGHT</button>
+          <button class="sort-btn" data-sort="sun">SUN</button>
+          <button class="sort-btn" data-sort="water">WATER</button>
+          <button class="sort-btn" data-sort="temp">TEMP</button>
+          <button class="sort-dir" id="sortDirBtn" aria-label="Flip sort direction">↑ LOW → HIGH</button>
+        </div>
+        <div class="tile-scroll">
+          <div class="tile-grid" id="gridTiles"></div>
+        </div>
+      </section>
 
       <!-- The page -->
       <main class="stage">
@@ -1555,6 +1837,26 @@
 
         var TREE_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8.2" r="5.6" /><path d="M12 13.4V21M12 16.8c-1.8-.2-3-1.2-3.6-2.8M12 15.4c1.6-.4 2.6-1.4 3.1-3" /><circle cx="9.7" cy="6.6" r="1" fill="currentColor" stroke="none" /><circle cx="14.1" cy="5.9" r="1" fill="currentColor" stroke="none" /><circle cx="12.4" cy="10.3" r="1" fill="currentColor" stroke="none" /><path d="M7.5 21h9" /></svg>';
         var BUSH_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 15.5a5 5 0 0 1 1.2-9.8A6.5 6.5 0 0 1 17.6 4.6a5 5 0 0 1 1.9 10.9" /><path d="M12 15.5V19M5 21h14" /><circle cx="9" cy="10.5" r="1" fill="currentColor" stroke="none" /><circle cx="14.5" cy="8.5" r="1" fill="currentColor" stroke="none" /><circle cx="12.3" cy="13" r="1" fill="currentColor" stroke="none" /></svg>';
+
+        /* ----- Tags (max 4 yes/no attributes) + category, derived from each plant's real data ----- */
+        var TAG_CLASS = { PERENNIAL: "perennial", DECIDUOUS: "deciduous", EVERGREEN: "evergreen", EDIBLE: "edible", SMALL: "small", MEDIUM: "medium", TALL: "tall" };
+        function heightClass(p) { var t = p.h[1]; return t <= 10 ? "SMALL" : (t <= 20 ? "MEDIUM" : "TALL"); }
+        function waterScore(p) {
+          var t = p.water.toLowerCase();
+          if (t.indexOf("twice") >= 0) return 3;
+          if (t.indexOf("week or two") >= 0) return 1;
+          return 2;
+        }
+        function sunScore(p) { return p.sun.toLowerCase().indexOf("full sun") >= 0 ? 3 : 2; }
+        function tempLow(p) { var n = parseInt(p.zones, 10); return isNaN(n) ? 0 : n; }
+        for (var ti2 = 0; ti2 < PLANTS.length; ti2++) {
+          var pp = PLANTS[ti2];
+          pp.cat = pp.kind.indexOf("VINE") >= 0 ? "Vine" : (pp.group === "bush" ? "Shrub" : "Tree");
+          pp.filterTags = ["PERENNIAL", "DECIDUOUS", "EDIBLE", heightClass(pp)];
+          pp.tags = [];
+          for (var tj = 0; tj < pp.filterTags.length; tj++) pp.tags.push([pp.filterTags[tj], TAG_CLASS[pp.filterTags[tj]]]);
+        }
+        var CATEGORIES = ["Tree", "Shrub", "Vine", "Ground Cover", "Ornamental", "Bulbs", "Succulents", "Aquatic", "Ferns"];
 
         var pageEl = document.getElementById("pageEl");
         var frontFace = pageEl.querySelector(".face.front");
@@ -1877,6 +2179,8 @@
             : '<path d="M12 5v14M5 12h14"/>';
           libCount.textContent = String(addedCount());
           srAdd.textContent = v ? "In Your Library — View" : "Add Page";
+          if (typeof renderHome === "function") renderHome();
+          if (typeof renderGrid === "function" && gridCat) renderGrid();
         }
         function rebuildLibrary() {
           libList.innerHTML = "";
@@ -1927,24 +2231,13 @@
           rot = Math.round(rot / 360) * 360;
           renderFlip();
           syncChrome();
-          document.getElementById("libraryPanel").classList.remove("open");
-          document.getElementById("libraryBtn").setAttribute("aria-expanded", "false");
+          showCardView();
         }
 
         /* ----- Library panel ----- */
         var libraryBtn = document.getElementById("libraryBtn");
         var libraryPanel = document.getElementById("libraryPanel");
-        libraryBtn.addEventListener("click", function (e) {
-          e.stopPropagation();
-          var open = libraryPanel.classList.toggle("open");
-          libraryBtn.setAttribute("aria-expanded", open ? "true" : "false");
-        });
-        document.addEventListener("click", function (e) {
-          if (!libraryPanel.contains(e.target)) {
-            libraryPanel.classList.remove("open");
-            libraryBtn.setAttribute("aria-expanded", "false");
-          }
-        });
+        libraryBtn.addEventListener("click", function () { showHomeView(); });
 
         /* ----- Scan ----- */
         var scanOverlay = document.getElementById("scanOverlay");
@@ -1999,9 +2292,207 @@
         document.addEventListener("keydown", function (e) {
           if (e.key === "Escape") {
             closeScan();
-            libraryPanel.classList.remove("open");
           }
         });
+
+        /* ================= Dex flow: splash -> category home -> category grid -> card ================= */
+        var appEl = document.getElementById("appEl");
+        var splashView = document.getElementById("splashView");
+        var homeView = document.getElementById("homeView");
+        var gridView = document.getElementById("gridView");
+        var activeTags = {};          /* empty = ALL */
+        var gridCat = null;
+        var sortKey = "num";          /* num (default, = number order) | name | height | sun | water | temp */
+        var sortDir = 1;              /* 1 = increasing, -1 = decreasing */
+
+        function setView(v) {
+          appEl.setAttribute("data-view", v);
+          splashView.hidden = v !== "splash";
+          homeView.hidden = v !== "home";
+          gridView.hidden = v !== "grid";
+        }
+        function showHomeView() { renderHome(); setView("home"); }
+        function showCardView() { setView("card"); }
+        function showGridView(cat) { gridCat = cat; renderGrid(); setView("grid"); }
+
+        function anyTagOn() { for (var k in activeTags) if (activeTags[k]) return true; return false; }
+        function plantMatches(p) {
+          if (!anyTagOn()) return true;
+          for (var k in activeTags) if (activeTags[k] && p.filterTags.indexOf(k) < 0) return false;
+          return true;
+        }
+        function catPlants(cat) {
+          var out = [];
+          for (var i = 0; i < PLANTS.length; i++) if (PLANTS[i].cat === cat) out.push(i);
+          return out;
+        }
+
+        /* ----- Screen 2: category home ----- */
+        function renderHome() {
+          var filtering = anyTagOn();
+          var totMatch = 0, libMatch = 0;
+          for (var i = 0; i < PLANTS.length; i++) {
+            if (plantMatches(PLANTS[i])) { totMatch++; if (addedFlags[i]) libMatch++; }
+          }
+          document.getElementById("homeLibCount").textContent =
+            "IN LIBRARY: " + (filtering ? libMatch : addedCount()) + " / " + (filtering ? totMatch : PLANTS.length);
+          var rows = document.getElementById("catRows");
+          rows.innerHTML = "";
+          CATEGORIES.forEach(function (cat) {
+            var idxs = catPlants(cat).filter(function (i) { return plantMatches(PLANTS[i]); });
+            var total = idxs.length;
+            var inLib = idxs.filter(function (i) { return addedFlags[i]; }).length;
+            var btn = document.createElement("button");
+            btn.className = "cat-row" + (total === 0 ? " dim" : "");
+            btn.setAttribute("aria-label", cat + " — " + inLib + " of " + total + " in library");
+            var info = document.createElement("div");
+            info.className = "cat-info";
+            var nm = document.createElement("div");
+            nm.className = "cat-name"; nm.textContent = cat;
+            info.appendChild(nm);
+            var meta = document.createElement("div");
+            meta.className = "cat-meta"; meta.textContent = inLib + " / " + total;
+            info.appendChild(meta);
+            if (total > 0 && inLib === total) {
+              var comp = document.createElement("div");
+              comp.className = "cat-complete"; comp.textContent = "Complete!";
+              info.appendChild(comp);
+            }
+            if (total > 0) {
+              var bar = document.createElement("div");
+              bar.className = "cat-bar";
+              var fill = document.createElement("i");
+              fill.style.width = Math.round(inLib / total * 100) + "%";
+              bar.appendChild(fill);
+              info.appendChild(bar);
+            }
+            btn.appendChild(info);
+            var thumbs = document.createElement("div");
+            thumbs.className = "cat-thumbs";
+            var allIdx = catPlants(cat);
+            for (var t = 0; t < Math.min(3, allIdx.length); t++) {
+              var im = document.createElement("img");
+              im.src = PLANTS[allIdx[t]].front;
+              im.alt = "";
+              thumbs.appendChild(im);
+            }
+            btn.appendChild(thumbs);
+            btn.addEventListener("click", function () { showGridView(cat); });
+            rows.appendChild(btn);
+          });
+          renderPills();
+        }
+        function allTags() {
+          var seen = [], out = [];
+          for (var i = 0; i < PLANTS.length; i++) {
+            for (var j = 0; j < PLANTS[i].filterTags.length; j++) {
+              var t = PLANTS[i].filterTags[j];
+              if (!seen[t]) { seen[t] = true; out.push(t); }
+            }
+          }
+          return out;
+        }
+        function renderPills() {
+          var bar = document.getElementById("tagPills");
+          bar.innerHTML = "";
+          var allBtn = document.createElement("button");
+          allBtn.className = "tag-pill" + (!anyTagOn() ? " on" : "");
+          allBtn.textContent = "ALL";
+          allBtn.setAttribute("aria-pressed", !anyTagOn() ? "true" : "false");
+          allBtn.addEventListener("click", function () { activeTags = {}; renderHome(); if (gridCat) renderGrid(); });
+          bar.appendChild(allBtn);
+          allTags().forEach(function (t) {
+            var b = document.createElement("button");
+            b.className = "tag-pill" + (activeTags[t] ? " on" : "");
+            b.textContent = t;
+            b.setAttribute("aria-pressed", activeTags[t] ? "true" : "false");
+            b.addEventListener("click", function () {
+              if (activeTags[t]) delete activeTags[t]; else activeTags[t] = true;
+              renderHome(); if (gridCat) renderGrid();
+            });
+            bar.appendChild(b);
+          });
+        }
+
+        /* ----- Screen 3: category grid ----- */
+        function sortValue(p, key) {
+          if (key === "height") return p.h[1];
+          if (key === "sun") return sunScore(p);
+          if (key === "water") return waterScore(p);
+          if (key === "temp") return tempLow(p);
+          return 0;
+        }
+        function renderGrid() {
+          if (!gridCat) return;
+          document.getElementById("gridTitle").textContent = gridCat;
+          var idxs = catPlants(gridCat).filter(function (i) { return plantMatches(PLANTS[i]); });
+          var inLib = idxs.filter(function (i) { return addedFlags[i]; }).length;
+          document.getElementById("gridCount").textContent = inLib + " / " + idxs.length;
+          var sorted = idxs.slice().sort(function (a, b) {
+            var pa = PLANTS[a], pb = PLANTS[b], d = 0;
+            if (sortKey === "num") d = pa.no.localeCompare(pb.no);
+            else if (sortKey === "name") d = pa.name.localeCompare(pb.name);
+            else d = sortValue(pa, sortKey) - sortValue(pb, sortKey);
+            if (d === 0) d = pa.no.localeCompare(pb.no);
+            return d * sortDir;
+          });
+          var grid = document.getElementById("gridTiles");
+          grid.innerHTML = "";
+          if (!sorted.length) {
+            var emp = document.createElement("div");
+            emp.className = "grid-empty";
+            emp.textContent = "No plants here match the lit tags.";
+            grid.appendChild(emp);
+          }
+          sorted.forEach(function (i) {
+            var p = PLANTS[i];
+            var tile = document.createElement("button");
+            tile.className = "tile";
+            tile.setAttribute("aria-label", "Open page № " + p.no + " — " + p.name);
+            var im = document.createElement("img");
+            im.src = p.front; im.alt = "";
+            var no = document.createElement("span");
+            no.className = "tile-no"; no.textContent = "№ " + p.no;
+            var nm = document.createElement("span");
+            nm.className = "tile-name"; nm.textContent = p.name;
+            tile.appendChild(im); tile.appendChild(no); tile.appendChild(nm);
+            tile.addEventListener("click", function () { goToPlant(i); });
+            grid.appendChild(tile);
+          });
+          var btns = document.querySelectorAll("#sortBar .sort-btn");
+          for (var bi = 0; bi < btns.length; bi++) {
+            var k = btns[bi].getAttribute("data-sort");
+            var on = (k === "az" && (sortKey === "name" || sortKey === "num") && sortDir === 1) ||
+                     (k === "za" && sortKey === "name" && sortDir === -1) ||
+                     (k === sortKey && sortKey !== "name");
+            btns[bi].classList.toggle("on", !!on);
+          }
+          document.getElementById("sortDirBtn").textContent = sortDir === 1 ? "↑ LOW → HIGH" : "↓ HIGH → LOW";
+        }
+        document.getElementById("sortBar").addEventListener("click", function (e) {
+          var b = e.target.closest ? e.target.closest("[data-sort]") : null;
+          if (!b) return;
+          var k = b.getAttribute("data-sort");
+          if (k === "az") { sortKey = "name"; sortDir = 1; }
+          else if (k === "za") { sortKey = "name"; sortDir = -1; }
+          else { sortKey = k; }
+          renderGrid();
+        });
+        document.getElementById("sortDirBtn").addEventListener("click", function () {
+          sortDir = sortDir * -1;
+          renderGrid();
+        });
+        document.getElementById("gridBack").addEventListener("click", function () { showHomeView(); });
+
+        /* ----- Screen 1: splash ----- */
+        document.getElementById("enterBtn").addEventListener("click", function () { showHomeView(); });
+        (function initSplash() {
+          var picks = PLANTS.map(function (p) { return p.front; });
+          var pick = picks[Math.floor(Math.random() * picks.length)];
+          document.getElementById("splashImg").src = pick;
+          renderHome();
+          setView("splash");
+        })();
 
         /* ----- First load: the persimmon page, as it was ----- */
         loadFront(11);
