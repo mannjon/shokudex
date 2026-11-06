@@ -1,0 +1,1463 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="data:," />
+    <title>Landscaping Sun Planner</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Spectral:wght@500;600;700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet" />
+    <style>
+      :root{
+        --bg:#eceee2;
+        --panel:#fcfcf6;
+        --panel-2:#f3f4e9;
+        --ink:#22301f;
+        --muted:#5c6a56;
+        --line:#d5dac4;
+        --accent:#2f6b33;
+        --accent-soft:#e2ecd4;
+        --sun:#dd9416;
+        --danger:#b23a26;
+        --warn:#c07f13;
+        --good:#2f7d3a;
+        --chip-bg:#eef0e0;
+        --shadow-col:rgba(24,32,64,.40);
+        --radius:5px;
+        --font-body:"Source Sans 3", system-ui, -apple-system, sans-serif;
+        --font-display:"Spectral", Georgia, serif;
+      }
+      @media (prefers-color-scheme: dark){
+        :root{
+          --bg:#11150d;
+          --panel:#1a2013;
+          --panel-2:#212a18;
+          --ink:#e7ebda;
+          --muted:#a3af97;
+          --line:#37402a;
+          --accent:#86bc6a;
+          --accent-soft:#2a3a20;
+          --sun:#eda93c;
+          --danger:#e07a5f;
+          --warn:#e0aa4e;
+          --good:#8fce7f;
+          --chip-bg:#232b19;
+          --shadow-col:rgba(6,8,20,.5);
+        }
+      }
+      *{ box-sizing:border-box; }
+      html,body{ margin:0; padding:0; }
+      body{
+        background:var(--bg);
+        color:var(--ink);
+        font-family:var(--font-body);
+        font-size:16px;
+        line-height:1.45;
+        -webkit-font-smoothing:antialiased;
+      }
+      .app{ max-width:1360px; margin:0 auto; padding:18px 16px 40px; }
+
+      /* ---------- header ---------- */
+      .topbar{
+        display:flex; flex-wrap:wrap; gap:14px; align-items:flex-end; justify-content:space-between;
+        margin-bottom:14px;
+      }
+      .topbar h1{
+        font-family:var(--font-display); font-weight:700; font-size:30px; line-height:1.1; margin:0;
+        letter-spacing:.2px;
+      }
+      .topbar .sub{ margin:4px 0 0; color:var(--muted); font-size:15px; max-width:56ch; }
+      .view-toggle{
+        display:flex; background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden;
+      }
+      .view-toggle button{
+        appearance:none; border:0; background:transparent; color:var(--muted);
+        font:600 15px var(--font-body); padding:10px 18px; cursor:pointer;
+      }
+      .view-toggle button[aria-pressed="true"]{ background:var(--accent); color:#fff; }
+      @media (prefers-color-scheme: dark){
+        .view-toggle button[aria-pressed="true"]{ color:#131a10; }
+      }
+
+      /* ---------- layout ---------- */
+      .layout{ display:grid; grid-template-columns:minmax(0,1fr) 336px; gap:16px; align-items:start; }
+      @media (max-width: 980px){ .layout{ grid-template-columns:1fr; } }
+      .stage-col{ display:flex; flex-direction:column; gap:14px; min-width:0; }
+      .side-col{ display:flex; flex-direction:column; gap:14px; min-width:0; }
+      .card{
+        background:var(--panel); border:1px solid var(--line); border-radius:var(--radius);
+        padding:14px 16px;
+      }
+      .card h2{
+        font-family:var(--font-display); font-size:18px; font-weight:600; margin:0 0 4px;
+      }
+      .card .hint{ color:var(--muted); font-size:13.5px; margin:0 0 10px; }
+      .card h3{ font-size:13px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); margin:14px 0 6px; font-weight:700;}
+
+      /* ---------- stage ---------- */
+      .stage-card{
+        background:var(--panel); border:1px solid var(--line); border-radius:var(--radius);
+        padding:10px; position:relative;
+      }
+      .stage-wrap{ position:relative; }
+      #stage{ display:block; width:100%; height:auto; border-radius:3px; touch-action:none; cursor:crosshair; background:#6f9a52; }
+      #stage.armed{ cursor:copy; }
+      .compass{
+        position:absolute; top:12px; right:12px; width:76px; height:76px; border-radius:50%;
+        background:color-mix(in srgb, var(--panel) 88%, transparent);
+        border:1px solid var(--line);
+        display:flex; align-items:center; justify-content:center;
+        cursor:grab; touch-action:none; user-select:none; -webkit-user-select:none;
+        box-shadow:0 2px 10px rgba(20,30,10,.18);
+      }
+      .compass:active{ cursor:grabbing; }
+      .compass svg{ width:64px; height:64px; pointer-events:none; }
+      .compass .cdeg{
+        position:absolute; bottom:-19px; left:50%; transform:translateX(-50%);
+        font-size:11.5px; font-weight:700; color:var(--ink);
+        background:color-mix(in srgb, var(--panel) 88%, transparent);
+        padding:0 5px; border-radius:3px; white-space:nowrap;
+      }
+      .sun-chip{
+        position:absolute; top:12px; left:12px;
+        background:color-mix(in srgb, var(--panel) 90%, transparent);
+        border:1px solid var(--line); border-radius:var(--radius);
+        padding:7px 11px; font-size:13.5px; line-height:1.35; pointer-events:none;
+        box-shadow:0 2px 10px rgba(20,30,10,.12);
+      }
+      .sun-chip b{ font-size:15px; }
+      .sun-chip .dim{ color:var(--muted); }
+      @media (max-width: 640px){
+        .compass{ width:58px; height:58px; top:10px; right:10px; }
+        .compass svg{ width:48px; height:48px; }
+        .compass .cdeg{ bottom:-17px; font-size:10.5px; }
+        .sun-chip{ max-width:calc(100% - 84px); font-size:12.5px; padding:6px 9px; top:10px; left:10px; }
+        .sun-chip b{ font-size:13.5px; }
+      }
+      .stage-hint{
+        margin-top:9px; font-size:13.5px; color:var(--muted); min-height:1.3em;
+      }
+      .stage-hint b{ color:var(--ink); }
+
+      /* ---------- time bar ---------- */
+      .timebar{ display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+      .play-btn{
+        appearance:none; border:1px solid var(--accent); background:var(--accent); color:#fff;
+        width:40px; height:40px; border-radius:var(--radius); cursor:pointer; flex:0 0 auto;
+        display:flex; align-items:center; justify-content:center;
+      }
+      @media (prefers-color-scheme: dark){ .play-btn{ color:#131a10; } }
+      .play-btn svg{ width:18px; height:18px; }
+      .time-slider-wrap{ flex:1 1 220px; display:flex; flex-direction:column; gap:2px; }
+      .time-slider-wrap input[type="range"]{ width:100%; accent-color:var(--accent); }
+      .time-ends{ display:flex; justify-content:space-between; font-size:12px; color:var(--muted); }
+      .time-readout{ font-weight:700; font-size:17px; min-width:86px; text-align:right; font-variant-numeric:tabular-nums; }
+      .time-readout .ampm{ font-size:12.5px; color:var(--muted); font-weight:600; }
+
+      /* ---------- palette ---------- */
+      .chips{ display:flex; flex-wrap:wrap; gap:8px; }
+      .chip{
+        appearance:none; border:1px solid var(--line); background:var(--chip-bg); color:var(--ink);
+        border-radius:var(--radius); padding:7px 10px 7px 7px; cursor:pointer; text-align:left;
+        display:flex; align-items:center; gap:9px; font-family:var(--font-body);
+      }
+      .chip canvas{ width:44px; height:44px; flex:0 0 auto; }
+      .chip .cname{ font-weight:700; font-size:14.5px; line-height:1.15; display:block; }
+      .chip .cmeta{ font-size:12px; color:var(--muted); display:block; }
+      .chip[aria-pressed="true"]{ border-color:var(--accent); background:var(--accent-soft); box-shadow:inset 0 0 0 1px var(--accent); }
+      .chip:hover{ border-color:var(--accent); }
+
+      /* ---------- selection ---------- */
+      .sel-head{ display:flex; gap:12px; align-items:center; }
+      .sel-head canvas{ width:56px; height:56px; flex:0 0 auto; }
+      .sel-name{ font-family:var(--font-display); font-size:19px; font-weight:600; line-height:1.15; }
+      .sel-meta{ color:var(--muted); font-size:13.5px; }
+      .status-pill{
+        display:inline-block; font-weight:700; font-size:13px; border-radius:3px; padding:2px 8px; margin-top:6px;
+      }
+      .status-pill.good{ background:#dcefd4; color:#256b2a; }
+      .status-pill.bad{ background:#f6ddd4; color:#93331d; }
+      .status-pill.warn{ background:#f7ead0; color:#8a5c08; }
+      @media (prefers-color-scheme: dark){
+        .status-pill.good{ background:#274a22; color:#a9dd97; }
+        .status-pill.bad{ background:#55281c; color:#f0b09c; }
+        .status-pill.warn{ background:#54401a; color:#eec987; }
+      }
+      .sel-actions{ display:flex; gap:8px; margin-top:12px; flex-wrap:wrap; }
+      .btn{
+        appearance:none; border:1px solid var(--line); background:var(--panel-2); color:var(--ink);
+        border-radius:var(--radius); padding:8px 13px; font:600 14px var(--font-body); cursor:pointer;
+      }
+      .btn:hover{ border-color:var(--accent); }
+      .btn.primary{ background:var(--accent); border-color:var(--accent); color:#fff; }
+      @media (prefers-color-scheme: dark){ .btn.primary{ color:#131a10; } }
+      .btn.danger{ color:var(--danger); border-color:color-mix(in srgb, var(--danger) 45%, var(--line)); }
+      .btn.small{ padding:5px 9px; font-size:13px; }
+      .btn:disabled{ opacity:.45; cursor:default; }
+
+      /* ---------- forms ---------- */
+      label.flabel{ display:block; font-size:13px; font-weight:700; color:var(--muted); margin:10px 0 4px; letter-spacing:.02em;}
+      input[type="number"], input[type="date"], select{
+        font:400 15px var(--font-body); color:var(--ink); background:var(--panel-2);
+        border:1px solid var(--line); border-radius:var(--radius); padding:7px 9px; width:100%;
+      }
+      input[type="range"]{ accent-color:var(--accent); }
+      .row{ display:flex; gap:8px; }
+      .row > *{ flex:1; }
+      .preset-row{ display:flex; flex-wrap:wrap; gap:6px; margin-top:6px; }
+      .preset-row .btn{ flex:0 0 auto; }
+      .north-readout{
+        display:flex; align-items:baseline; gap:10px; background:var(--panel-2);
+        border:1px solid var(--line); border-radius:var(--radius); padding:10px 12px; margin-bottom:6px;
+      }
+      .north-readout .big{ font-family:var(--font-display); font-size:26px; font-weight:700; font-variant-numeric:tabular-nums; }
+      .north-readout .pt{ font-weight:700; color:var(--accent); font-size:17px; }
+      .north-readout .expl{ color:var(--muted); font-size:13px; }
+      .nudge-row{ display:flex; gap:6px; margin-top:8px; flex-wrap:wrap; }
+      .nudge-row .btn{ flex:1; min-width:52px; }
+      .compass-live{
+        font-variant-numeric:tabular-nums; font-weight:700; font-size:20px;
+      }
+      .fineprint{ font-size:12.5px; color:var(--muted); margin-top:8px; }
+
+      /* ---------- blockers ---------- */
+      .blocker-row{
+        display:flex; align-items:center; gap:9px; padding:8px 9px; border:1px solid var(--line);
+        border-radius:var(--radius); margin-bottom:7px; background:var(--panel-2); cursor:pointer;
+      }
+      .blocker-row.selected{ border-color:var(--accent); box-shadow:inset 0 0 0 1px var(--accent); }
+      .blocker-row .bname{ font-weight:700; font-size:14.5px; line-height:1.15; }
+      .blocker-row .bmeta{ font-size:12px; color:var(--muted); }
+      .blocker-row .grow{ flex:1; min-width:0; }
+      .stepper{ display:flex; align-items:center; gap:5px; flex:0 0 auto; }
+      .stepper button{
+        appearance:none; width:28px; height:28px; border-radius:var(--radius); border:1px solid var(--line);
+        background:var(--panel); color:var(--ink); font-size:16px; font-weight:700; cursor:pointer; line-height:1;
+      }
+      .stepper .hval{ min-width:44px; text-align:center; font-weight:700; font-variant-numeric:tabular-nums; font-size:14px;}
+      .icon-btn{
+        appearance:none; border:0; background:transparent; color:var(--muted); cursor:pointer;
+        width:28px; height:28px; flex:0 0 auto; font-size:16px; border-radius:var(--radius);
+      }
+      .icon-btn:hover{ color:var(--danger); background:var(--panel); }
+
+      /* ---------- legend ---------- */
+      .tier-row{ display:flex; align-items:center; gap:9px; padding:4px 0; font-size:14.5px; }
+      .tier-sw{ width:20px; height:14px; border-radius:3px; flex:0 0 auto; border:1px solid rgba(0,0,0,.15); }
+      .tier-row .tpct{ margin-left:auto; font-weight:700; font-variant-numeric:tabular-nums; }
+      .tier-row .trange{ color:var(--muted); font-size:13px; }
+
+      .divider{ border-top:1px solid var(--line); margin:12px 0; }
+      .kbd-note{ font-size:13px; color:var(--muted); }
+      .hidden{ display:none !important; }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <header class="topbar">
+        <div>
+          <h1>Landscaping Sun Planner</h1>
+          <p class="sub">Lay out plants on your yard, set which way is north, and watch real shadows move — or switch to Sun hours to see the whole day added up.</p>
+        </div>
+        <div class="view-toggle" role="group" aria-label="View mode">
+          <button id="modeShadows" aria-pressed="true">Shadows at a time</button>
+          <button id="modeHours" aria-pressed="false">Sun hours (all day)</button>
+        </div>
+      </header>
+
+      <main class="layout">
+        <div class="stage-col">
+          <div class="stage-card">
+            <div class="stage-wrap">
+              <canvas id="stage" width="900" height="640"></canvas>
+              <div class="sun-chip" id="sunChip"></div>
+              <div class="compass" id="compass" title="Drag to point north">
+                <svg viewBox="0 0 64 64" aria-hidden="true">
+                  <g id="compassDial">
+                    <circle cx="32" cy="32" r="29" fill="none" stroke="var(--line)" stroke-width="1"/>
+                    <text x="32" y="13.5" text-anchor="middle" font-size="10" font-weight="700" fill="var(--muted)">N</text>
+                    <text x="32" y="57" text-anchor="middle" font-size="10" font-weight="700" fill="var(--muted)">S</text>
+                    <text x="7" y="35.5" font-size="10" font-weight="700" fill="var(--muted)">W</text>
+                    <text x="52" y="35.5" font-size="10" font-weight="700" fill="var(--muted)">E</text>
+                  </g>
+                  <g id="compassArrow">
+                    <polygon points="32,7 37,33 32,28 27,33" fill="var(--danger)"/>
+                    <polygon points="32,57 27,31 32,36 37,31" fill="var(--muted)"/>
+                    <circle cx="32" cy="32" r="3" fill="var(--ink)"/>
+                  </g>
+                </svg>
+                <span class="cdeg" id="compassDeg"></span>
+              </div>
+            </div>
+            <p class="stage-hint" id="stageHint"></p>
+          </div>
+
+          <div class="card timebar" id="timebar">
+            <button class="play-btn" id="playBtn" aria-label="Play the day">
+              <svg id="playIcon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="6,4 20,12 6,20"/></svg>
+            </button>
+            <div class="time-slider-wrap">
+              <input type="range" id="timeSlider" min="0" max="1439" step="5" value="630" aria-label="Time of day" />
+              <div class="time-ends"><span id="sunriseLbl">Sunrise —</span><span id="sunsetLbl">Sunset —</span></div>
+            </div>
+            <div class="time-readout"><span id="timeReadout">10:30</span> <span class="ampm" id="timeAmpm">AM</span></div>
+          </div>
+
+          <section class="card" aria-label="Plant palette">
+            <h2>Plant palette</h2>
+            <p class="hint">Pick a plant, then tap the yard to place it at its <b>mature size</b>. Placed plants cast shade too, and each one gets a badge: green means the sun in that spot fits what it needs.</p>
+            <div class="chips" id="chips"></div>
+          </section>
+
+          <section class="card" id="selectionCard" aria-label="Selection"></section>
+        </div>
+
+        <aside class="side-col">
+          <section class="card" aria-label="North calibration">
+            <h2>Which way is north?</h2>
+            <p class="hint">Shadows are only right if north is right. Tell the planner which direction the <b>top edge of your photo</b> points — drag the compass on the photo, use the slider, or read it off your phone.</p>
+            <div class="north-readout">
+              <span class="big" id="northBig">0°</span>
+              <span class="pt" id="northPoint">N</span>
+              <span class="expl" id="northExpl">The top of the photo points due north.</span>
+            </div>
+            <label class="flabel" for="northSlider">Bearing of the photo's top edge</label>
+            <input type="range" id="northSlider" min="0" max="359" step="1" value="0" />
+            <div class="nudge-row">
+              <button class="btn small" data-nudge="-5">−5°</button>
+              <button class="btn small" data-nudge="-1">−1°</button>
+              <button class="btn small" data-nudge="1">+1°</button>
+              <button class="btn small" data-nudge="5">+5°</button>
+              <button class="btn small" id="northReset">Top = N</button>
+            </div>
+            <div class="divider"></div>
+            <h3>Read it from your phone</h3>
+            <p class="hint">Stand in the yard, hold your phone flat, and point its top edge the same way the top of your photo points — toward the back fence, say. Then set north from the phone.</p>
+            <div class="row">
+              <button class="btn primary" id="compassStart">Use phone compass</button>
+              <button class="btn" id="compassSet" disabled>Set north from phone</button>
+            </div>
+            <p class="fineprint" id="compassStatus">Compass is off. <span id="compassLiveWrap" class="hidden">Phone is pointing: <span class="compass-live" id="compassLive">—</span></span></p>
+            <label class="flabel" for="declInput">Magnetic declination adjustment (°)</label>
+            <input type="number" id="declInput" step="0.5" value="0" />
+            <p class="fineprint">Phone compasses find magnetic north; true north sits a few degrees off, depending on where you live. Add your local declination here, or skip it and nudge the slider until a shadow in the photo lines up with the shadow on screen.</p>
+          </section>
+
+          <section class="card" aria-label="Day and location">
+            <h2>Day &amp; place</h2>
+            <label class="flabel" for="dateInput">Date</label>
+            <input type="date" id="dateInput" value="2026-10-25" />
+            <div class="preset-row" id="seasonRow">
+              <button class="btn small" data-date="2026-03-20">Spring · Mar 20</button>
+              <button class="btn small" data-date="2026-06-21">Summer · Jun 21</button>
+              <button class="btn small" data-date="2026-10-25">Fall · Oct 25</button>
+              <button class="btn small" data-date="2026-12-21">Winter · Dec 21</button>
+            </div>
+            <div class="row">
+              <div><label class="flabel" for="latInput">Latitude</label><input type="number" id="latInput" step="0.001" value="34.803" /></div>
+              <div><label class="flabel" for="lonInput">Longitude</label><input type="number" id="lonInput" step="0.001" value="-86.972" /></div>
+            </div>
+            <label class="flabel" for="offsetInput">Yard clock — hours from UTC</label>
+            <input type="number" id="offsetInput" step="0.5" value="-5" />
+            <p class="fineprint" id="offsetNote" style="margin-top:4px;"></p>
+            <div class="preset-row">
+              <button class="btn small" id="geoBtn">Use my location</button>
+              <span class="kbd-note" id="geoStatus" style="align-self:center;">Default: Athens, AL</span>
+            </div>
+            <p class="fineprint" id="dayFacts"></p>
+          </section>
+
+          <section class="card" aria-label="Shade blockers">
+            <h2>What casts shade</h2>
+            <p class="hint">The house, fence, shed, and trees. Heights drive the shadow lengths — tap a row, then drag the shape on the photo, and step the height to match.</p>
+            <div id="blockerList"></div>
+            <div class="row">
+              <button class="btn small" id="addRectBtn">+ Building / box</button>
+              <button class="btn small" id="addTreeBtn">+ Tree</button>
+            </div>
+          </section>
+
+          <section class="card" aria-label="Yard base and grid">
+            <h2>Yard photo &amp; grid</h2>
+            <p class="hint">Start from the built-in demo yard, or drop in your own overhead drone shot. With a photo, set its real width so the grid and shadows measure true.</p>
+            <div class="row">
+              <button class="btn" id="photoBtn">Upload drone photo</button>
+              <button class="btn" id="demoBtn" disabled>Demo yard</button>
+            </div>
+            <input type="file" id="photoFile" accept="image/*" class="hidden" />
+            <div id="photoScaleWrap" class="hidden">
+              <label class="flabel" for="photoWidthInput">Photo width, edge to edge (ft)</label>
+              <input type="number" id="photoWidthInput" step="1" min="10" value="90" />
+            </div>
+            <div class="row">
+              <div>
+                <label class="flabel" for="gridSizeSel">Grid squares</label>
+                <select id="gridSizeSel">
+                  <option value="1">1 ft</option>
+                  <option value="2" selected>2 ft</option>
+                  <option value="5">5 ft</option>
+                </select>
+              </div>
+              <div>
+                <label class="flabel" for="gridToggleSel">Grid</label>
+                <select id="gridToggleSel">
+                  <option value="on" selected>Shown</option>
+                  <option value="off">Hidden</option>
+                </select>
+              </div>
+            </div>
+          </section>
+
+          <section class="card" id="legendCard" aria-label="Sun hours legend">
+            <h2>Sun-hour key</h2>
+            <p class="hint">Total direct sun per spot for the chosen day, in the bands nurseries use on plant tags.</p>
+            <div id="tierRows"></div>
+            <p class="fineprint" id="tierCalcNote">Switch to “Sun hours (all day)” to paint this onto the yard.</p>
+          </section>
+        </aside>
+      </main>
+    </div>
+
+    <script>
+    "use strict";
+    /* ============================================================
+       Landscaping Sun Planner — v1
+       Solar position: NOAA algorithm (accurate to ~0.01 deg).
+       Shadows: 2.5D — each blocker footprint is projected along
+       the sun's opposite bearing by height / tan(altitude).
+       ============================================================ */
+    const $ = (id) => document.getElementById(id);
+    const RAD = Math.PI / 180;
+    const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+    const norm360 = (d) => ((d % 360) + 360) % 360;
+
+    /* ---------------- plant catalog ----------------
+       w/h = mature size in feet. sunMin/sunMax = direct-sun hours
+       the plant wants per day. opacity = how much light its own
+       canopy blocks once placed (0..1).                     */
+    const PLANTS = {
+      pawpaw:     { name: "Pawpaw",         w: 15, h: 20, sunMin: 4, sunMax: 99, opacity: 0.80, note: "Needs a partner nearby for pollination." },
+      persimmon:  { name: "Fuyu Persimmon", w: 12, h: 14, sunMin: 6, sunMax: 99, opacity: 0.80, note: "Fruit ripens best with full sun." },
+      jujube:     { name: "Jujube",         w: 18, h: 25, sunMin: 6, sunMax: 99, opacity: 0.70, note: "Thorny — keep it off paths." },
+      blackberry: { name: "Blackberry",     w: 4,  h: 5,  sunMin: 5, sunMax: 99, opacity: 0.45, note: "Canes fruit on last year's growth." },
+      raspberry:  { name: "Raspberry",      w: 3,  h: 5,  sunMin: 5, sunMax: 99, opacity: 0.40, note: "Spreads by suckers — give it a lane." },
+      grape:      { name: "Grape Vine",     w: 6,  h: 6,  sunMin: 6, sunMax: 99, opacity: 0.50, note: "Trains along the fence line." },
+      palm:       { name: "Majesty Palm",   w: 8,  h: 15, sunMin: 4, sunMax: 99, opacity: 0.55, note: "Potted — comes in for the cold." },
+      croton:     { name: "Croton",         w: 3,  h: 3,  sunMin: 4, sunMax: 99, opacity: 0.35, note: "Color fades in deep shade." },
+      cactus:     { name: "Potted Cacti",   w: 2,  h: 3,  sunMin: 6, sunMax: 99, opacity: 0.25, note: "Wants the brightest spot going." },
+      aloe:       { name: "Aloe",           w: 2,  h: 2,  sunMin: 4, sunMax: 99, opacity: 0.20, note: "Potted — comes in for the cold." },
+      fern:       { name: "Fern",           w: 2,  h: 2,  sunMin: 0, sunMax: 3,  opacity: 0.20, note: "A shade plant — sun over 3 hrs scorches it." },
+    };
+    const PLANT_ORDER = ["pawpaw","persimmon","jujube","blackberry","raspberry","grape","palm","croton","cactus","aloe","fern"];
+
+    /* ---------------- tiers ---------------- */
+    const TIERS = [
+      { key: "full",    label: "Full sun",      range: "6+ hrs",  color: "#eda22c", min: 6 },
+      { key: "partial", label: "Partial sun",   range: "4–6 hrs", color: "#f2cd6b", min: 4 },
+      { key: "pshade",  label: "Partial shade", range: "2–4 hrs", color: "#a9bc7a", min: 2 },
+      { key: "shade",   label: "Full shade",    range: "under 2", color: "#7d94a6", min: 0 },
+    ];
+    const tierFor = (hrs) => TIERS.find((t) => hrs >= t.min) || TIERS[TIERS.length - 1];
+
+    /* ---------------- state ---------------- */
+    let blockerSeq = 100;
+    const S = {
+      mode: "shadows",                 // 'shadows' | 'hours'
+      dateStr: "2026-10-25",
+      minutes: 630,                    // 10:30 AM local
+      lat: 34.803, lon: -86.972,       // Athens, AL
+      northDeg: 0,                     // bearing the photo's top edge points to
+      decl: 0,
+      yardW: 90, yardH: 64,            // feet (demo yard)
+      gridFt: 2, showGrid: true,
+      photo: null,                     // HTMLImageElement or null
+      armed: null,                     // plant key armed for placement
+      plants: [],                      // {id, key, x, y} in feet
+      plantSeq: 0,
+      blockers: [],
+      selPlant: null, selBlocker: null,
+      playing: false,
+      hoursGrid: null, hoursMeta: null, hoursDirty: true,
+      compassOn: false, compassHeading: null,
+    };
+    function defaultBlockers() {
+      return [
+        { id: "house", name: "House", kind: "rect", x: 12, y: 46, w: 54, h: 18, height: 22, opacity: 1, fixed: false, locked: false },
+        { id: "shed",  name: "Shed",  kind: "rect", x: 6,  y: 14, w: 10, h: 8,  height: 10, opacity: 1, fixed: false, locked: false },
+        { id: "oak",   name: "Big oak", kind: "circle", cx: 73, cy: 13, r: 13, height: 30, opacity: 0.75, fixed: false, locked: false },
+        { id: "fence", name: "Fence (all sides)", kind: "fence", height: 6, opacity: 1, fixed: true, locked: true },
+      ];
+    }
+    S.blockers = defaultBlockers();
+
+    /* ---------------- solar position (NOAA) ---------------- */
+    function sunPosition(date, lat, lon) {
+      const JD = date.getTime() / 86400000 + 2440587.5;
+      const T = (JD - 2451545.0) / 36525;
+      let L0 = (280.46646 + T * (36000.76983 + 0.0003032 * T)) % 360; if (L0 < 0) L0 += 360;
+      const M = 357.52911 + T * (35999.05029 - 0.0001537 * T);
+      const e = 0.016708634 - T * (0.000042037 + 0.0000001267 * T);
+      const C = Math.sin(M * RAD) * (1.914602 - T * (0.004817 + 0.000014 * T))
+              + Math.sin(2 * M * RAD) * (0.019993 - 0.000101 * T)
+              + Math.sin(3 * M * RAD) * 0.000289;
+      const trueLong = L0 + C;
+      const omega = 125.04 - 1934.136 * T;
+      const lambda = trueLong - 0.00569 - 0.00478 * Math.sin(omega * RAD);
+      const eps0 = 23 + (26 + (21.448 - T * (46.815 + T * (0.00059 - T * 0.001813))) / 60) / 60;
+      const eps = eps0 + 0.00256 * Math.cos(omega * RAD);
+      const decl = Math.asin(Math.sin(eps * RAD) * Math.sin(lambda * RAD));
+      const y = Math.tan(eps * RAD / 2) ** 2;
+      const eqTime = 4 / RAD * (y * Math.sin(2 * L0 * RAD) - 2 * e * Math.sin(M * RAD)
+              + 4 * e * y * Math.sin(M * RAD) * Math.cos(2 * L0 * RAD)
+              - 0.5 * y * y * Math.sin(4 * L0 * RAD) - 1.25 * e * e * Math.sin(2 * M * RAD));
+      const utcMin = date.getUTCHours() * 60 + date.getUTCMinutes() + date.getUTCSeconds() / 60;
+      let tst = ((utcMin + eqTime + 4 * lon) % 1440 + 1440) % 1440;
+      let ha = tst / 4 - 180; if (ha < -180) ha += 360;
+      const latR = lat * RAD;
+      const cosZen = Math.sin(latR) * Math.sin(decl) + Math.cos(latR) * Math.cos(decl) * Math.cos(ha * RAD);
+      const zen = Math.acos(clamp(cosZen, -1, 1));
+      const alt = 90 - zen / RAD;
+      let az = Math.atan2(Math.sin(ha * RAD), Math.cos(ha * RAD) * Math.sin(latR) - Math.tan(decl) * Math.cos(latR)) / RAD + 180;
+      return { alt, az: norm360(az) };
+    }
+    /* All clock times in the planner are the YARD's local time, not the
+       viewer's. The offset is auto-estimated from longitude (standard-time
+       zone) with the US/Canada daylight-saving rule applied; it can be
+       overridden in the Day & place panel. */
+    let offsetOverrideMin = null;
+    function nthSunday(year, month, n) { // returns yyyymmdd number
+      const first = new Date(Date.UTC(year, month - 1, 1));
+      const firstSunday = 1 + (7 - first.getUTCDay()) % 7;
+      return year * 10000 + month * 100 + (firstSunday + (n - 1) * 7);
+    }
+    function autoOffsetMin(dateStr) {
+      const std = Math.round(S.lon / 15) * 60;
+      const [y, m, d] = dateStr.split("-").map(Number);
+      const inNA = S.lat > 18 && S.lat < 72 && S.lon < -50 && S.lon > -170;
+      const isAZ = S.lon <= -109 && S.lon >= -115.5 && S.lat >= 31 && S.lat <= 37.5; // Arizona: no DST
+      if (inNA && !isAZ) {
+        const cur = y * 10000 + m * 100 + d;
+        if (cur >= nthSunday(y, 3, 2) && cur < nthSunday(y, 11, 1)) return std + 60;
+      }
+      return std;
+    }
+    function offsetMin(dateStr) { return offsetOverrideMin !== null ? offsetOverrideMin : autoOffsetMin(dateStr || S.dateStr); }
+    function dateAt(dateStr, minutes) {
+      const [yy, mm, dd] = dateStr.split("-").map(Number);
+      return new Date(Date.UTC(yy, mm - 1, dd) + (minutes - offsetMin(dateStr)) * 60000);
+    }
+    function sunAt(dateStr, minutes, lat, lon) { return sunPosition(dateAt(dateStr, minutes), lat, lon); }
+    function sunTimes(dateStr, lat, lon) {
+      // scan for altitude crossing -0.583 deg (refraction + solar disc)
+      let rise = null, set = null, prevAlt = sunAt(dateStr, 0, lat, lon).alt, prevT = 0;
+      for (let t = 5; t <= 1440; t += 5) {
+        const a = sunAt(dateStr, t, lat, lon).alt;
+        if (rise === null && prevAlt < -0.583 && a >= -0.583) rise = prevT + 5 * (-0.583 - prevAlt) / (a - prevAlt);
+        if (prevAlt >= -0.583 && a < -0.583) set = prevT + 5 * (-0.583 - prevAlt) / (a - prevAlt);
+        prevAlt = a; prevT = t;
+      }
+      return { rise, set };
+    }
+
+    /* ---------------- geometry ---------------- */
+    // Bearing (compass, clockwise from true north) -> unit vector on the photo.
+    // The photo's "up" points at bearing S.northDeg.
+    function bearingVec(bearing) {
+      const a = (bearing - S.northDeg) * RAD;
+      return { x: Math.sin(a), y: -Math.cos(a) };
+    }
+    function convexHull(points) {
+      const pts = points.slice().sort((p, q) => p.x - q.x || p.y - q.y);
+      if (pts.length < 3) return pts;
+      const cross = (o, a, b) => (a.x - o.x) * (b.y - o.y) - (a.y - o.y) * (b.x - o.x);
+      const lower = [], upper = [];
+      for (const p of pts) {
+        while (lower.length >= 2 && cross(lower[lower.length - 2], lower[lower.length - 1], p) <= 0) lower.pop();
+        lower.push(p);
+      }
+      for (let i = pts.length - 1; i >= 0; i--) {
+        const p = pts[i];
+        while (upper.length >= 2 && cross(upper[upper.length - 2], upper[upper.length - 1], p) <= 0) upper.pop();
+        upper.push(p);
+      }
+      lower.pop(); upper.pop();
+      return lower.concat(upper);
+    }
+    function pointInPoly(x, y, poly) {
+      let inside = false;
+      for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+        const xi = poly[i].x, yi = poly[i].y, xj = poly[j].x, yj = poly[j].y;
+        if ((yi > y) !== (yj > y) && x < (xj - xi) * (y - yi) / (yj - yi) + xi) inside = !inside;
+      }
+      return inside;
+    }
+    // A blocker's ground footprint as an array of polygons (fence = 4 strips).
+    function blockerShapes(b) {
+      if (b.kind === "rect") return [[{x:b.x,y:b.y},{x:b.x+b.w,y:b.y},{x:b.x+b.w,y:b.y+b.h},{x:b.x,y:b.y+b.h}]];
+      if (b.kind === "circle") {
+        const pts = [];
+        for (let i = 0; i < 16; i++) { const a = i / 16 * Math.PI * 2; pts.push({ x: b.cx + Math.cos(a) * b.r, y: b.cy + Math.sin(a) * b.r }); }
+        return [pts];
+      }
+      if (b.kind === "fence") {
+        const t = 0.5, W = S.yardW, H = S.yardH;
+        return [
+          [{x:0,y:0},{x:W,y:0},{x:W,y:t},{x:0,y:t}],
+          [{x:0,y:H-t},{x:W,y:H-t},{x:W,y:H},{x:0,y:H}],
+          [{x:0,y:0},{x:t,y:0},{x:t,y:H},{x:0,y:H}],
+          [{x:W-t,y:0},{x:W,y:0},{x:W,y:H},{x:W-t,y:H}],
+        ];
+      }
+      return [];
+    }
+    function blockerCenter(b) {
+      if (b.kind === "rect") return { x: b.x + b.w / 2, y: b.y + b.h / 2 };
+      if (b.kind === "circle") return { x: b.cx, y: b.cy };
+      return { x: S.yardW / 2, y: S.yardH / 2 };
+    }
+    // Shadow polygon of one footprint shape, given sun alt/az.
+    function shadowPoly(shape, height, alt, az) {
+      if (alt <= 0.15 || height <= 0) return null;
+      const len = Math.min(height / Math.tan(alt * RAD), 400);
+      const v = bearingVec(az + 180);
+      const dx = v.x * len, dy = v.y * len;
+      const moved = shape.map((p) => ({ x: p.x + dx, y: p.y + dy }));
+      return convexHull(shape.concat(moved));
+    }
+    // All shadow-casting objects: blockers + placed plants.
+    function allCasters() {
+      const list = [];
+      for (const b of S.blockers) list.push({ shapes: blockerShapes(b), height: b.height, opacity: b.opacity });
+      for (const p of S.plants) {
+        const def = PLANTS[p.key];
+        const pts = [];
+        for (let i = 0; i < 12; i++) { const a = i / 12 * Math.PI * 2; pts.push({ x: p.x + Math.cos(a) * def.w / 2, y: p.y + Math.sin(a) * def.w / 2 }); }
+        list.push({ shapes: [pts], height: def.h, opacity: def.opacity });
+      }
+      return list;
+    }
+    // Direct-sun hours at one point for the current date/lat/north.
+    function hoursAtPoint(x, y) {
+      const { rise, set } = sunTimes(S.dateStr, S.lat, S.lon);
+      if (rise === null || set === null) return 0;
+      const casters = allCasters();
+      const stepMin = 15;
+      let hrs = 0;
+      for (let t = rise; t < set; t += stepMin) {
+        const s = sunAt(S.dateStr, t + stepMin / 2, S.lat, S.lon);
+        if (s.alt <= 0) continue;
+        let eff = 0;
+        for (const c of casters) {
+          for (const sh of c.shapes) {
+            const poly = shadowPoly(sh, c.height, s.alt, s.az);
+            if (poly && pointInPoly(x, y, poly)) eff = Math.max(eff, c.opacity);
+          }
+        }
+        hrs += (stepMin / 60) * (1 - eff);
+      }
+      return hrs;
+    }
+    // Full-yard accumulation at 1 ft resolution.
+    function computeHoursGrid() {
+      const W = Math.round(S.yardW), H = Math.round(S.yardH);
+      const grid = new Float32Array(W * H);
+      const { rise, set } = sunTimes(S.dateStr, S.lat, S.lon);
+      const counts = { full: 0, partial: 0, pshade: 0, shade: 0 };
+      if (rise !== null && set !== null) {
+        const casters = allCasters();
+        const stepMin = 20;
+        // Pre-project every caster's shadow for each step.
+        const steps = [];
+        for (let t = rise; t < set; t += stepMin) {
+          const s = sunAt(S.dateStr, t + stepMin / 2, S.lat, S.lon);
+          if (s.alt <= 0) continue;
+          const polys = [];
+          for (const c of casters) for (const sh of c.shapes) {
+            const poly = shadowPoly(sh, c.height, s.alt, s.az);
+            if (poly) {
+              let mnx = 1e9, mny = 1e9, mxx = -1e9, mxy = -1e9;
+              for (const p of poly) { mnx = Math.min(mnx, p.x); mny = Math.min(mny, p.y); mxx = Math.max(mxx, p.x); mxy = Math.max(mxy, p.y); }
+              polys.push({ poly, opacity: c.opacity, mnx, mny, mxx, mxy });
+            }
+          }
+          steps.push(polys);
+        }
+        for (let gy = 0; gy < H; gy++) {
+          for (let gx = 0; gx < W; gx++) {
+            const x = gx + 0.5, y = gy + 0.5;
+            let hrs = 0;
+            for (const polys of steps) {
+              let eff = 0;
+              for (const sp of polys) {
+                if (x < sp.mnx || x > sp.mxx || y < sp.mny || y > sp.mxy) continue;
+                if (pointInPoly(x, y, sp.poly)) eff = Math.max(eff, sp.opacity);
+              }
+              hrs += (stepMin / 60) * (1 - eff);
+            }
+            grid[gy * W + gx] = hrs;
+          }
+        }
+      }
+      for (let i = 0; i < grid.length; i++) counts[tierFor(grid[i]).key]++;
+      const total = Math.max(1, grid.length);
+      for (const k of Object.keys(counts)) counts[k] = Math.round(counts[k] / total * 100);
+      return { grid, W, H, counts };
+    }
+
+    /* ---------------- stylized plant icons ----------------
+       One drawing routine per plant, top-down, used by both the
+       palette chips and the plants placed on the yard.         */
+    function hashStr(s) { let h = 0; for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0; return Math.abs(h); }
+    function rng(seed) { let s = seed % 2147483647; if (s <= 0) s += 2147483646; return () => (s = s * 16807 % 2147483647) / 2147483647; }
+    function canopy(ctx, cx, cy, R, base, light) {
+      ctx.fillStyle = base;
+      ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = light;
+      const n = 9;
+      for (let i = 0; i < n; i++) {
+        const a = i / n * Math.PI * 2;
+        ctx.beginPath(); ctx.arc(cx + Math.cos(a) * R * 0.62, cy + Math.sin(a) * R * 0.62, R * 0.42, 0, Math.PI * 2); ctx.fill();
+      }
+      ctx.beginPath(); ctx.arc(cx, cy, R * 0.45, 0, Math.PI * 2); ctx.fill();
+    }
+    function leaf(ctx, x, y, len, wid, ang, color) {
+      ctx.save(); ctx.translate(x, y); ctx.rotate(ang);
+      ctx.fillStyle = color;
+      ctx.beginPath(); ctx.ellipse(0, -len / 2, wid / 2, len / 2, 0, 0, Math.PI * 2); ctx.fill();
+      ctx.restore();
+    }
+    function dots(ctx, cx, cy, R, count, rMin, rMax, color, rand) {
+      ctx.fillStyle = color;
+      for (let i = 0; i < count; i++) {
+        const a = rand() * Math.PI * 2, d = Math.sqrt(rand()) * R * 0.8;
+        ctx.beginPath(); ctx.arc(cx + Math.cos(a) * d, cy + Math.sin(a) * d, rMin + rand() * (rMax - rMin), 0, Math.PI * 2); ctx.fill();
+      }
+    }
+    function drawPlantIcon(ctx, key, cx, cy, R) {
+      const rand = rng(hashStr(key) + 7);
+      ctx.save();
+      ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2); ctx.clip();
+      if (key === "pawpaw") {
+        canopy(ctx, cx, cy, R, "#477a35", "#598f43");
+        for (let i = 0; i < 7; i++) { const a = i / 7 * Math.PI * 2 + 0.4; leaf(ctx, cx + Math.cos(a) * R * 0.3, cy + Math.sin(a) * R * 0.3, R * 1.05, R * 0.42, a + Math.PI / 2, i % 2 ? "#4c8439" : "#639c4b"); }
+        dots(ctx, cx, cy, R, 4, R * 0.07, R * 0.11, "#cfe0a0", rand); // pale fruit
+      } else if (key === "persimmon") {
+        canopy(ctx, cx, cy, R, "#3e7331", "#508a3e");
+        dots(ctx, cx, cy, R, 10, R * 0.08, R * 0.12, "#ef8f2a", rand); // orange fruit
+      } else if (key === "jujube") {
+        canopy(ctx, cx, cy, R, "#527c39", "#678f47");
+        dots(ctx, cx, cy, R, 26, R * 0.03, R * 0.05, "#3d6128", rand);
+        dots(ctx, cx, cy, R, 7, R * 0.05, R * 0.08, "#a34d2d", rand); // ripe fruit
+      } else if (key === "blackberry" || key === "raspberry") {
+        const cane = key === "blackberry" ? "#4a5d2a" : "#5d7434";
+        const berry = key === "blackberry" ? "#2c2333" : "#c22f45";
+        ctx.strokeStyle = cane; ctx.lineWidth = R * 0.07; ctx.lineCap = "round";
+        for (let i = 0; i < 5; i++) {
+          const a = i / 5 * Math.PI * 2 + rand();
+          ctx.beginPath(); ctx.moveTo(cx, cy);
+          ctx.quadraticCurveTo(cx + Math.cos(a) * R * 0.55, cy + Math.sin(a) * R * 0.55 - R * 0.18, cx + Math.cos(a) * R * 0.92, cy + Math.sin(a) * R * 0.8);
+          ctx.stroke();
+          leaf(ctx, cx + Math.cos(a) * R * 0.55, cy + Math.sin(a) * R * 0.5, R * 0.42, R * 0.3, a, "#5f8f3e");
+        }
+        for (let i = 0; i < 6; i++) { // berry clusters
+          const a = rand() * Math.PI * 2, d = R * (0.45 + rand() * 0.45), bx = cx + Math.cos(a) * d, by = cy + Math.sin(a) * d;
+          ctx.fillStyle = berry;
+          for (let j = 0; j < 4; j++) { ctx.beginPath(); ctx.arc(bx + (rand() - 0.5) * R * 0.16, by + (rand() - 0.5) * R * 0.16, R * 0.075, 0, Math.PI * 2); ctx.fill(); }
+        }
+      } else if (key === "grape") {
+        ctx.strokeStyle = "#7a5a35"; ctx.lineWidth = R * 0.08;
+        ctx.beginPath(); ctx.moveTo(cx - R, cy + R * 0.1); ctx.quadraticCurveTo(cx, cy - R * 0.25, cx + R, cy + R * 0.05); ctx.stroke();
+        for (let i = 0; i < 6; i++) {
+          const x = cx + (rand() - 0.5) * R * 1.5, y = cy + (rand() - 0.5) * R * 1.1;
+          ctx.fillStyle = i % 2 ? "#55853a" : "#679c46";
+          for (let j = 0; j < 3; j++) { ctx.beginPath(); ctx.arc(x + (j - 1) * R * 0.16, y + (j % 2) * R * 0.12, R * 0.17, 0, Math.PI * 2); ctx.fill(); }
+        }
+        for (let i = 0; i < 3; i++) { // grape clusters
+          const x = cx + (rand() - 0.5) * R * 1.2, y = cy + rand() * R * 0.5;
+          ctx.fillStyle = "#5d3a75";
+          for (let j = 0; j < 5; j++) { ctx.beginPath(); ctx.arc(x + (rand() - 0.5) * R * 0.22, y + j * R * 0.1, R * 0.07, 0, Math.PI * 2); ctx.fill(); }
+        }
+      } else if (key === "palm") {
+        for (let i = 0; i < 9; i++) {
+          const a = i / 9 * Math.PI * 2;
+          ctx.strokeStyle = i % 2 ? "#4c8a44" : "#5da052"; ctx.lineWidth = R * 0.11; ctx.lineCap = "round";
+          ctx.beginPath(); ctx.moveTo(cx, cy);
+          ctx.quadraticCurveTo(cx + Math.cos(a) * R * 0.6, cy + Math.sin(a) * R * 0.6 - R * 0.12, cx + Math.cos(a) * R * 0.97, cy + Math.sin(a) * R * 0.9);
+          ctx.stroke();
+        }
+        ctx.fillStyle = "#8a6b42"; ctx.beginPath(); ctx.arc(cx, cy, R * 0.14, 0, Math.PI * 2); ctx.fill();
+      } else if (key === "croton") {
+        const cols = ["#c4502c", "#e09a2b", "#7d9b3a", "#a03a58", "#d4692e"];
+        for (let i = 0; i < 9; i++) { const a = i / 9 * Math.PI * 2; leaf(ctx, cx, cy, R * 0.95, R * 0.3, a, cols[i % cols.length]); }
+        ctx.fillStyle = "#8a3b22"; ctx.beginPath(); ctx.arc(cx, cy, R * 0.12, 0, Math.PI * 2); ctx.fill();
+      } else if (key === "cactus") {
+        const pads = [[0, 0, 0.5], [-0.45, 0.3, 0.34], [0.45, 0.28, 0.36], [0.1, -0.48, 0.32]];
+        for (const [px, py, pr] of pads) {
+          ctx.fillStyle = "#4e8f57"; ctx.beginPath(); ctx.ellipse(cx + px * R, cy + py * R, pr * R * 0.78, pr * R, 0, 0, Math.PI * 2); ctx.fill();
+          ctx.fillStyle = "#cfe3b8";
+          for (let j = 0; j < 5; j++) { ctx.beginPath(); ctx.arc(cx + px * R + (rand() - 0.5) * pr * R, cy + py * R + (rand() - 0.5) * pr * R * 1.4, R * 0.03, 0, Math.PI * 2); ctx.fill(); }
+        }
+        ctx.fillStyle = "#e56b9a"; ctx.beginPath(); ctx.arc(cx, cy - R * 0.55, R * 0.11, 0, Math.PI * 2); ctx.fill();
+      } else if (key === "aloe") {
+        for (let ring = 0; ring < 2; ring++) {
+          const n = ring ? 6 : 9, rr = ring ? R * 0.5 : R * 0.95;
+          for (let i = 0; i < n; i++) { const a = i / n * Math.PI * 2 + ring * 0.4; leaf(ctx, cx, cy, rr, R * 0.24, a, ring ? "#7fae94" : "#63977c"); }
+        }
+        ctx.fillStyle = "#4e7d64"; ctx.beginPath(); ctx.arc(cx, cy, R * 0.1, 0, Math.PI * 2); ctx.fill();
+      } else if (key === "fern") {
+        ctx.strokeStyle = "#5da24a"; ctx.lineCap = "round";
+        for (let i = 0; i < 8; i++) {
+          const a = i / 8 * Math.PI * 2 + 0.3;
+          const ex = cx + Math.cos(a) * R * 0.95, ey = cy + Math.sin(a) * R * 0.95;
+          ctx.lineWidth = R * 0.05;
+          ctx.beginPath(); ctx.moveTo(cx, cy); ctx.quadraticCurveTo(cx + Math.cos(a) * R * 0.5, cy + Math.sin(a) * R * 0.5 - R * 0.1, ex, ey); ctx.stroke();
+          ctx.lineWidth = R * 0.035;
+          for (let j = 1; j <= 4; j++) {
+            const t = j / 5, bx = cx + Math.cos(a) * R * t, by = cy + Math.sin(a) * R * t - R * 0.06;
+            ctx.beginPath(); ctx.moveTo(bx, by); ctx.lineTo(bx + Math.cos(a + Math.PI / 2) * R * 0.16 * (1 - t), by + Math.sin(a + Math.PI / 2) * R * 0.16 * (1 - t)); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(bx, by); ctx.lineTo(bx - Math.cos(a + Math.PI / 2) * R * 0.16 * (1 - t), by - Math.sin(a + Math.PI / 2) * R * 0.16 * (1 - t)); ctx.stroke();
+          }
+        }
+      } else {
+        canopy(ctx, cx, cy, R, "#4c7f3a", "#61954b");
+      }
+      ctx.restore();
+      // thin rim so icons read on any base
+      ctx.strokeStyle = "rgba(20,35,15,.35)"; ctx.lineWidth = Math.max(1, R * 0.045);
+      ctx.beginPath(); ctx.arc(cx, cy, R - ctx.lineWidth / 2, 0, Math.PI * 2); ctx.stroke();
+    }
+
+    /* ---------------- stage rendering ---------------- */
+    const stage = $("stage");
+    const sctx = stage.getContext("2d");
+    let scale = 10; // px per foot, set in render()
+    const FX = (ft) => ft * scale;
+
+    function drawDemoYard(ctx) {
+      const W = S.yardW, H = S.yardH;
+      // lawn + mowing stripes
+      ctx.fillStyle = "#79a656"; ctx.fillRect(0, 0, FX(W), FX(H));
+      ctx.fillStyle = "rgba(255,255,255,.055)";
+      for (let x = 0; x < W; x += 12) ctx.fillRect(FX(x), 0, FX(6), FX(H));
+      ctx.fillStyle = "rgba(46,84,32,.10)";
+      for (let x = 6; x < W; x += 12) ctx.fillRect(FX(x), 0, FX(1.2), FX(H));
+      // mulch beds along the left and right edges
+      ctx.fillStyle = "#8a6844";
+      ctx.fillRect(FX(0.6), FX(0.6), FX(4.4), FX(H - 1.2));
+      ctx.fillRect(FX(W - 5), FX(0.6), FX(4.4), FX(26));
+      ctx.fillStyle = "rgba(0,0,0,.12)";
+      ctx.fillRect(FX(0.6), FX(0.6), FX(4.4), FX(1));
+      // patio in front of the house
+      ctx.fillStyle = "#c9c2ae"; ctx.fillRect(FX(16), FX(38), FX(46), FX(8));
+      ctx.strokeStyle = "rgba(90,80,60,.35)"; ctx.lineWidth = 1;
+      for (let x = 16; x <= 62; x += 5.75) { ctx.beginPath(); ctx.moveTo(FX(x), FX(38)); ctx.lineTo(FX(x), FX(46)); ctx.stroke(); }
+      ctx.beginPath(); ctx.moveTo(FX(16), FX(42)); ctx.lineTo(FX(62), FX(42)); ctx.stroke();
+      // driveway corner, bottom right
+      ctx.fillStyle = "#b9b9b2"; ctx.fillRect(FX(70), FX(50), FX(20), FX(14));
+      ctx.strokeStyle = "rgba(70,70,70,.3)";
+      ctx.beginPath(); ctx.moveTo(FX(70), FX(57)); ctx.lineTo(FX(90), FX(57)); ctx.stroke();
+    }
+    function drawBlockerBase(ctx, b) {
+      const sel = S.selBlocker === b.id;
+      ctx.save();
+      if (b.kind === "fence") {
+        ctx.strokeStyle = sel ? "#ffd34d" : "#8a6f4d"; ctx.lineWidth = Math.max(2.5, FX(0.45));
+        ctx.strokeRect(FX(0.25), FX(0.25), FX(S.yardW - 0.5), FX(S.yardH - 0.5));
+        ctx.fillStyle = "#77572f";
+        for (let x = 0; x <= S.yardW; x += 6) { ctx.fillRect(FX(x) - 2, 0, 4, 5); ctx.fillRect(FX(x) - 2, FX(S.yardH) - 5, 4, 5); }
+        for (let y = 0; y <= S.yardH; y += 6) { ctx.fillRect(0, FX(y) - 2, 5, 4); ctx.fillRect(FX(S.yardW) - 5, FX(y) - 2, 5, 4); }
+      } else if (b.kind === "rect") {
+        ctx.fillStyle = b.id === "house" ? "#96785a" : "#a08b62";
+        ctx.fillRect(FX(b.x), FX(b.y), FX(b.w), FX(b.h));
+        ctx.strokeStyle = "rgba(60,40,20,.45)"; ctx.lineWidth = 1.5;
+        ctx.strokeRect(FX(b.x), FX(b.y), FX(b.w), FX(b.h));
+        if (b.id === "house") { // roof ridge + seams
+          ctx.strokeStyle = "rgba(60,40,20,.3)";
+          ctx.beginPath(); ctx.moveTo(FX(b.x), FX(b.y + b.h / 2)); ctx.lineTo(FX(b.x + b.w), FX(b.y + b.h / 2)); ctx.stroke();
+          for (let x = b.x + 9; x < b.x + b.w; x += 9) { ctx.beginPath(); ctx.moveTo(FX(x), FX(b.y)); ctx.lineTo(FX(x), FX(b.y + b.h)); ctx.stroke(); }
+        }
+        if (sel) { ctx.strokeStyle = "#ffd34d"; ctx.lineWidth = 3; ctx.strokeRect(FX(b.x) - 2, FX(b.y) - 2, FX(b.w) + 4, FX(b.h) + 4); }
+        ctx.fillStyle = "rgba(30,20,10,.75)";
+        ctx.font = `700 ${Math.max(11, FX(1.7))}px "Source Sans 3", sans-serif`;
+        ctx.textAlign = "center"; ctx.textBaseline = "middle";
+        ctx.fillText(b.name.toUpperCase() + " · " + b.height + " FT", FX(b.x + b.w / 2), FX(b.y + b.h / 2));
+      } else if (b.kind === "circle") {
+        if (sel) { ctx.strokeStyle = "#ffd34d"; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(FX(b.cx), FX(b.cy), FX(b.r) + 3, 0, Math.PI * 2); ctx.stroke(); }
+        // trunk
+        ctx.fillStyle = "#6e5133"; ctx.beginPath(); ctx.arc(FX(b.cx), FX(b.cy), Math.max(3, FX(0.8)), 0, Math.PI * 2); ctx.fill();
+      }
+      ctx.restore();
+    }
+    function drawGrid(ctx) {
+      if (!S.showGrid) return;
+      ctx.save();
+      ctx.strokeStyle = "rgba(255,255,255,.28)"; ctx.lineWidth = 1;
+      ctx.beginPath();
+      for (let x = 0; x <= S.yardW; x += S.gridFt) { ctx.moveTo(FX(x) + 0.5, 0); ctx.lineTo(FX(x) + 0.5, FX(S.yardH)); }
+      for (let y = 0; y <= S.yardH; y += S.gridFt) { ctx.moveTo(0, FX(y) + 0.5); ctx.lineTo(FX(S.yardW), FX(y) + 0.5); }
+      ctx.stroke();
+      // heavier line every 10 ft
+      ctx.strokeStyle = "rgba(255,255,255,.45)";
+      ctx.beginPath();
+      for (let x = 0; x <= S.yardW; x += 10) { ctx.moveTo(FX(x) + 0.5, 0); ctx.lineTo(FX(x) + 0.5, FX(S.yardH)); }
+      for (let y = 0; y <= S.yardH; y += 10) { ctx.moveTo(0, FX(y) + 0.5); ctx.lineTo(FX(S.yardW), FX(y) + 0.5); }
+      ctx.stroke();
+      ctx.restore();
+    }
+    function pathPoly(ctx, poly) {
+      ctx.beginPath();
+      poly.forEach((p, i) => i ? ctx.lineTo(FX(p.x), FX(p.y)) : ctx.moveTo(FX(p.x), FX(p.y)));
+      ctx.closePath();
+    }
+    function drawShadows(ctx, sun) {
+      if (sun.alt <= 0.15) return;
+      ctx.save();
+      for (const c of allCasters()) {
+        for (const sh of c.shapes) {
+          const poly = shadowPoly(sh, c.height, sun.alt, sun.az);
+          if (!poly) continue;
+          ctx.fillStyle = `rgba(22,30,66,${0.14 + 0.30 * c.opacity})`;
+          pathPoly(ctx, poly); ctx.fill();
+        }
+      }
+      ctx.restore();
+    }
+    let hoursCanvas = null;
+    function drawHoursOverlay(ctx) {
+      if (!S.hoursGrid) return;
+      const { grid, W, H } = S.hoursGrid;
+      if (!hoursCanvas) hoursCanvas = document.createElement("canvas");
+      hoursCanvas.width = W; hoursCanvas.height = H;
+      const hctx = hoursCanvas.getContext("2d");
+      const img = hctx.createImageData(W, H);
+      for (let i = 0; i < W * H; i++) {
+        const c = tierFor(grid[i]).color;
+        img.data[i * 4] = parseInt(c.slice(1, 3), 16);
+        img.data[i * 4 + 1] = parseInt(c.slice(3, 5), 16);
+        img.data[i * 4 + 2] = parseInt(c.slice(5, 7), 16);
+        img.data[i * 4 + 3] = 255;
+      }
+      hctx.putImageData(img, 0, 0);
+      ctx.save();
+      ctx.globalAlpha = 0.62;
+      ctx.imageSmoothingEnabled = true;
+      ctx.drawImage(hoursCanvas, 0, 0, FX(S.yardW), FX(S.yardH));
+      ctx.restore();
+    }
+    function plantStatus(p) {
+      const def = PLANTS[p.key];
+      const hrs = hoursAtPoint(p.x, p.y);
+      if (hrs < def.sunMin) return { hrs, cls: "bad", label: `Too shady — gets ${hrs.toFixed(1)} hrs, wants ${def.sunMin}+` };
+      if (hrs > def.sunMax) return { hrs, cls: "bad", label: `Too much sun — gets ${hrs.toFixed(1)} hrs, wants under ${def.sunMax}` };
+      if (hrs < def.sunMin + 0.75) return { hrs, cls: "warn", label: `Borderline — ${hrs.toFixed(1)} hrs of sun` };
+      return { hrs, cls: "good", label: `Good spot — ${hrs.toFixed(1)} hrs of sun` };
+    }
+    function drawPlants(ctx) {
+      for (const p of S.plants) {
+        const def = PLANTS[p.key];
+        const R = FX(def.w / 2), cx = FX(p.x), cy = FX(p.y);
+        // mature canopy footprint
+        ctx.save();
+        ctx.setLineDash([5, 4]);
+        ctx.strokeStyle = "rgba(255,255,255,.75)"; ctx.lineWidth = 1.5;
+        ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2); ctx.stroke();
+        ctx.restore();
+        drawPlantIcon(ctx, p.key, cx, cy, R * 0.94);
+        if (S.selPlant === p.id) {
+          ctx.strokeStyle = "#ffd34d"; ctx.lineWidth = 3;
+          ctx.beginPath(); ctx.arc(cx, cy, R + 4, 0, Math.PI * 2); ctx.stroke();
+        }
+        // status badge
+        const st = plantStatus(p);
+        const bx = cx + R * 0.72, by = cy - R * 0.72, br = Math.max(7, FX(0.85));
+        ctx.fillStyle = st.cls === "good" ? "#2f7d3a" : st.cls === "warn" ? "#c07f13" : "#b23a26";
+        ctx.beginPath(); ctx.arc(bx, by, br, 0, Math.PI * 2); ctx.fill();
+        ctx.strokeStyle = "#fff"; ctx.lineWidth = 2; ctx.stroke();
+        ctx.fillStyle = "#fff"; ctx.font = `700 ${br * 1.25}px "Source Sans 3", sans-serif`;
+        ctx.textAlign = "center"; ctx.textBaseline = "middle";
+        ctx.fillText(st.cls === "good" ? "✓" : "!", bx, by + 1);
+      }
+    }
+    function render() {
+      const wrapW = stage.parentElement.clientWidth || 900;
+      const dpr = window.devicePixelRatio || 1;
+      const cssW = wrapW, cssH = Math.round(wrapW * S.yardH / S.yardW);
+      stage.style.height = cssH + "px";
+      stage.width = Math.round(cssW * dpr); stage.height = Math.round(cssH * dpr);
+      scale = (cssW * dpr) / S.yardW;
+      const ctx = sctx;
+      ctx.clearRect(0, 0, stage.width, stage.height);
+      // base
+      if (S.photo) ctx.drawImage(S.photo, 0, 0, stage.width, stage.height);
+      else drawDemoYard(ctx);
+      // mode layer
+      const sun = sunAt(S.dateStr, S.minutes, S.lat, S.lon);
+      if (S.mode === "hours") {
+        if (S.hoursDirty) { S.hoursGrid = computeHoursGrid(); S.hoursDirty = false; updateTierPercents(); }
+        drawHoursOverlay(ctx);
+      } else {
+        drawShadows(ctx, sun);
+      }
+      drawGrid(ctx);
+      // blocker bases (tree canopies are drawn as plants layer icons)
+      for (const b of S.blockers) if (b.kind !== "circle") drawBlockerBase(ctx, b);
+      for (const b of S.blockers) if (b.kind === "circle") {
+        drawBlockerBase(ctx, b);
+        // canopy icon for generic trees
+        ctx.save(); ctx.globalAlpha = 0.92;
+        canopy(ctx, FX(b.cx), FX(b.cy), FX(b.r) * 0.96, "#446f31", "#557f3d");
+        dots(ctx, FX(b.cx), FX(b.cy), FX(b.r) * 0.9, 30, FX(0.25), FX(0.5), "#3a6129", rng(hashStr(b.id)));
+        ctx.restore();
+        ctx.fillStyle = "rgba(255,255,255,.9)";
+        ctx.font = `700 ${Math.max(11, FX(1.6))}px "Source Sans 3", sans-serif`;
+        ctx.textAlign = "center"; ctx.textBaseline = "middle";
+        ctx.fillText(b.name + " · " + b.height + " ft", FX(b.cx), FX(b.cy) + FX(b.r) + 12);
+      }
+      drawPlants(ctx);
+      updateSunChip(sun);
+      updateCompassUI();
+    }
+
+    /* ---------------- readouts ---------------- */
+    const COMPASS_POINTS = ["N","NNE","NE","ENE","E","ESE","SE","SSE","S","SSW","SW","WSW","W","WNW","NW","NNW"];
+    const pointName = (deg) => COMPASS_POINTS[Math.round(norm360(deg) / 22.5) % 16];
+    function fmtTime(mins) {
+      if (mins === null || isNaN(mins)) return "—";
+      const m = ((Math.round(mins) % 1440) + 1440) % 1440;
+      let h = Math.floor(m / 60); const mm = m % 60;
+      const ap = h >= 12 ? "PM" : "AM"; h = h % 12; if (h === 0) h = 12;
+      return { text: h + ":" + String(mm).padStart(2, "0"), ap };
+    }
+    function updateSunChip(sun) {
+      const chip = $("sunChip");
+      const t = fmtTime(S.minutes);
+      if (S.mode === "hours") {
+        const { rise, set } = sunTimes(S.dateStr, S.lat, S.lon);
+        const dayLen = rise !== null && set !== null ? ((set - rise) / 60).toFixed(1) : "—";
+        chip.innerHTML = `<b>All-day sun totals</b><br><span class="dim">${S.dateStr} · daylight ${dayLen} hrs · colors = direct sun per spot</span>`;
+        return;
+      }
+      if (sun.alt <= 0) {
+        chip.innerHTML = `<b>${t.text} ${t.ap}</b> · <span class="dim">The sun is below the horizon — no shadows to cast.</span>`;
+      } else {
+        chip.innerHTML = `<b>${t.text} ${t.ap}</b> · Sun ${sun.alt.toFixed(0)}° up, bearing ${Math.round(sun.az)}° (${pointName(sun.az)})<br><span class="dim">Shadows point ${pointName(sun.az + 180)} and run ${(1 / Math.tan(Math.max(sun.alt, 2) * RAD)).toFixed(1)}× object height</span>`;
+      }
+    }
+    function updateDayFacts() {
+      const { rise, set } = sunTimes(S.dateStr, S.lat, S.lon);
+      const r = fmtTime(rise), s = fmtTime(set);
+      $("sunriseLbl").textContent = "Sunrise " + (rise === null ? "—" : r.text + " " + r.ap);
+      $("sunsetLbl").textContent = "Sunset " + (set === null ? "—" : s.text + " " + s.ap);
+      const noon = sunAt(S.dateStr, 720, S.lat, S.lon);
+      $("dayFacts").textContent = rise === null
+        ? "The sun doesn't rise on this date at this latitude."
+        : `Sunrise ${r.text} ${r.ap} · sunset ${s.text} ${s.ap} · midday sun peaks at ${noon.alt.toFixed(0)}° above the southern horizon.`;
+      const t = fmtTime(S.minutes);
+      $("timeReadout").textContent = t.text; $("timeAmpm").textContent = t.ap;
+      const off = offsetMin();
+      const offH = off / 60;
+      $("offsetInput").value = offH;
+      $("offsetNote").textContent = offsetOverrideMin !== null
+        ? "Set by hand. Change the latitude/longitude to go back to automatic."
+        : `Automatic from longitude, daylight time included — the yard's clock is UTC${offH >= 0 ? "+" : "−"}${Math.abs(offH)}. All times on this page use the yard's clock, not this device's.`;
+    }
+    function updateTierPercents() {
+      const wrap = $("tierRows");
+      wrap.innerHTML = "";
+      for (const t of TIERS) {
+        const row = document.createElement("div");
+        row.className = "tier-row";
+        const pct = S.hoursGrid ? S.hoursGrid.counts[t.key] + "%" : "—";
+        row.innerHTML = `<span class="tier-sw" style="background:${t.color}"></span><span>${t.label}</span><span class="trange">${t.range}</span><span class="tpct">${pct}</span>`;
+        wrap.appendChild(row);
+      }
+      $("tierCalcNote").textContent = S.mode === "hours"
+        ? "Percentages are the share of the yard in each band for this date — they move when you change the date, north, a height, or a plant."
+        : "Switch to “Sun hours (all day)” to paint this onto the yard.";
+    }
+
+    /* ---------------- north UI ---------------- */
+    function updateCompassUI() {
+      // arrow rotation on screen = -(northDeg): north sits that far left of the photo's top
+      $("compassArrow").setAttribute("transform", `rotate(${-S.northDeg} 32 32)`);
+      $("compassDial").setAttribute("transform", `rotate(${-S.northDeg} 32 32)`);
+      $("compassDeg").textContent = "N " + Math.round(norm360(S.northDeg)) + "°";
+      $("northBig").textContent = Math.round(norm360(S.northDeg)) + "°";
+      $("northPoint").textContent = pointName(S.northDeg);
+      const off = norm360(S.northDeg);
+      $("northExpl").textContent = off === 0
+        ? "The top of the photo points due north."
+        : `The top of the photo points ${pointName(off)} — north sits ${off > 180 ? 360 - off : off}° to the ${off > 180 ? "right" : "left"} of the top edge.`;
+      $("northSlider").value = Math.round(norm360(S.northDeg));
+    }
+    function setNorth(deg) {
+      S.northDeg = norm360(deg);
+      S.hoursDirty = true;
+      render();
+    }
+    $("northSlider").addEventListener("input", (e) => setNorth(Number(e.target.value)));
+    document.querySelectorAll("[data-nudge]").forEach((b) =>
+      b.addEventListener("click", () => setNorth(S.northDeg + Number(b.dataset.nudge))));
+    $("northReset").addEventListener("click", () => setNorth(0));
+    $("declInput").addEventListener("change", (e) => { S.decl = Number(e.target.value) || 0; });
+
+    // Draggable compass: point the arrow where north is.
+    (() => {
+      const el = $("compass");
+      let dragging = false;
+      const angleFromEvent = (e) => {
+        const r = el.getBoundingClientRect();
+        const dx = e.clientX - (r.left + r.width / 2), dy = e.clientY - (r.top + r.height / 2);
+        return Math.atan2(dx, -dy) / RAD; // clockwise from up
+      };
+      el.addEventListener("pointerdown", (e) => { dragging = true; el.setPointerCapture(e.pointerId); setNorth(-angleFromEvent(e)); });
+      el.addEventListener("pointermove", (e) => { if (dragging) setNorth(-angleFromEvent(e)); });
+      el.addEventListener("pointerup", () => { dragging = false; });
+      el.addEventListener("pointercancel", () => { dragging = false; });
+    })();
+
+    // Phone compass (DeviceOrientation). Heading = bearing the phone's top edge points to.
+    function onOrientation(e) {
+      let h = null;
+      if (typeof e.webkitCompassHeading === "number") h = e.webkitCompassHeading; // iOS: already a bearing
+      else if (e.alpha !== null && e.alpha !== undefined) h = 360 - e.alpha;      // Android absolute alpha
+      if (h === null || isNaN(h)) return;
+      S.compassHeading = norm360(h);
+      $("compassLive").textContent = Math.round(S.compassHeading) + "° " + pointName(S.compassHeading);
+      $("compassSet").disabled = false;
+    }
+    $("compassStart").addEventListener("click", async () => {
+      const status = $("compassStatus");
+      try {
+        if (typeof DeviceOrientationEvent !== "undefined" && typeof DeviceOrientationEvent.requestPermission === "function") {
+          const res = await DeviceOrientationEvent.requestPermission();
+          if (res !== "granted") { status.firstChild.textContent = "Compass permission wasn't granted — the slider and draggable compass still work. "; return; }
+        }
+        window.addEventListener("deviceorientationabsolute", onOrientation, true);
+        window.addEventListener("deviceorientation", onOrientation, true);
+        S.compassOn = true;
+        $("compassLiveWrap").classList.remove("hidden");
+        status.firstChild.textContent = "Compass is on — point the phone's top edge the way the photo's top edge points. ";
+        $("compassStart").textContent = "Compass on";
+        $("compassStart").disabled = true;
+      } catch (err) {
+        status.firstChild.textContent = "This device didn't hand over a compass reading — the slider and draggable compass still work. ";
+      }
+    });
+    $("compassSet").addEventListener("click", () => {
+      if (S.compassHeading === null) return;
+      setNorth(S.compassHeading + S.decl);
+      $("compassStatus").firstChild.textContent = `North set from the phone: top of photo = ${Math.round(norm360(S.northDeg))}° (${pointName(S.northDeg)}), declination ${S.decl > 0 ? "+" : ""}${S.decl}° applied. `;
+    });
+
+    /* ---------------- palette ---------------- */
+    function buildChips() {
+      const wrap = $("chips");
+      wrap.innerHTML = "";
+      for (const key of PLANT_ORDER) {
+        const def = PLANTS[key];
+        const btn = document.createElement("button");
+        btn.className = "chip"; btn.dataset.key = key; btn.setAttribute("aria-pressed", "false");
+        const cv = document.createElement("canvas");
+        cv.width = 88; cv.height = 88;
+        drawPlantIcon(cv.getContext("2d"), key, 44, 44, 40);
+        const txt = document.createElement("span");
+        const sunTxt = def.sunMax >= 99 ? def.sunMin + "+ hrs sun" : "shade, under " + def.sunMax + " hrs";
+        txt.innerHTML = `<span class="cname">${def.name}</span><span class="cmeta">${def.w} ft wide · ${sunTxt}</span>`;
+        btn.appendChild(cv); btn.appendChild(txt);
+        btn.addEventListener("click", () => {
+          S.armed = S.armed === key ? null : key;
+          S.selPlant = null;
+          refreshChips(); renderSelection(); updateHint(); render();
+        });
+        wrap.appendChild(btn);
+      }
+    }
+    function refreshChips() {
+      document.querySelectorAll(".chip").forEach((c) => c.setAttribute("aria-pressed", c.dataset.key === S.armed ? "true" : "false"));
+      stage.classList.toggle("armed", !!S.armed);
+    }
+    function updateHint() {
+      const h = $("stageHint");
+      if (S.armed) {
+        h.innerHTML = `<b>${PLANTS[S.armed].name} picked.</b> Tap the yard to plant it — it lands at mature size and starts casting its own shade. Tap the chip again to put it back.`;
+      } else if (S.mode === "hours") {
+        h.innerHTML = `Every square is colored by its <b>total direct sun</b> for this date. Drag the compass or change the date and the map repaints.`;
+      } else {
+        h.innerHTML = `Drag the <b>time slider</b> to walk the shadows across the yard. Drag plants and blockers to move them; drag the <b>compass</b> to set north.`;
+      }
+    }
+
+    /* ---------------- selection panel ---------------- */
+    function renderSelection() {
+      const card = $("selectionCard");
+      const p = S.plants.find((x) => x.id === S.selPlant);
+      const b = S.blockers.find((x) => x.id === S.selBlocker);
+      if (p) {
+        const def = PLANTS[p.key];
+        const st = plantStatus(p);
+        card.innerHTML = "";
+        const head = document.createElement("div"); head.className = "sel-head";
+        const cv = document.createElement("canvas"); cv.width = 112; cv.height = 112;
+        drawPlantIcon(cv.getContext("2d"), p.key, 56, 56, 50);
+        const info = document.createElement("div");
+        info.innerHTML = `<div class="sel-name">${def.name}</div>
+          <div class="sel-meta">Mature: ${def.w} ft wide × ${def.h} ft tall · wants ${def.sunMax >= 99 ? def.sunMin + "+ hrs" : "under " + def.sunMax + " hrs"} of sun · ${def.note}</div>
+          <span class="status-pill ${st.cls}">${st.label} on ${S.dateStr}</span>`;
+        head.appendChild(cv); head.appendChild(info);
+        const acts = document.createElement("div"); acts.className = "sel-actions";
+        const rm = document.createElement("button"); rm.className = "btn danger"; rm.textContent = "Remove plant";
+        rm.addEventListener("click", () => { S.plants = S.plants.filter((x) => x.id !== p.id); S.selPlant = null; S.hoursDirty = true; renderSelection(); render(); });
+        const done = document.createElement("button"); done.className = "btn"; done.textContent = "Done";
+        done.addEventListener("click", () => { S.selPlant = null; renderSelection(); render(); });
+        acts.appendChild(rm); acts.appendChild(done);
+        card.appendChild(head); card.appendChild(acts);
+        const tip = document.createElement("p"); tip.className = "fineprint"; tip.textContent = "Drag it on the yard to try another spot — the badge re-scores as you move.";
+        card.appendChild(tip);
+      } else if (b) {
+        const c = blockerCenter(b);
+        card.innerHTML = `<div class="sel-name">${b.name}</div>
+          <div class="sel-meta">${b.kind === "fence" ? "Runs the whole yard edge — height is the only setting." : "Drag it on the yard to move it."} Height is set in the “What casts shade” list${b.kind === "fence" ? "" : ` — currently ${b.height} ft`}.</div>`;
+        const acts = document.createElement("div"); acts.className = "sel-actions";
+        const done = document.createElement("button"); done.className = "btn"; done.textContent = "Done";
+        done.addEventListener("click", () => { S.selBlocker = null; renderBlockerList(); renderSelection(); render(); });
+        acts.appendChild(done); card.appendChild(acts);
+        if (b.kind !== "fence") {
+          const info = document.createElement("p"); info.className = "fineprint";
+          info.textContent = `Position: ${Math.round(c.x)} ft from the left edge, ${Math.round(c.y)} ft from the top edge of the photo.`;
+          card.appendChild(info);
+        }
+      } else {
+        card.innerHTML = `<h2>Nothing picked</h2>
+          <p class="hint" style="margin-bottom:0;">Pick a plant from the palette to place it, or tap any plant or shaded shape already on the yard to see its details. In Sun hours view, tap the yard to read the exact sun total for that square.</p>
+          <p class="fineprint" id="tapReadout"></p>`;
+      }
+    }
+
+    /* ---------------- blocker list ---------------- */
+    function renderBlockerList() {
+      const wrap = $("blockerList");
+      wrap.innerHTML = "";
+      for (const b of S.blockers) {
+        const row = document.createElement("div");
+        row.className = "blocker-row" + (S.selBlocker === b.id ? " selected" : "");
+        const meta = b.kind === "fence" ? "Perimeter"
+          : b.kind === "circle" ? `Tree canopy · blocks ${Math.round(b.opacity * 100)}% of light under it`
+          : `${b.w} × ${b.h} ft footprint`;
+        row.innerHTML = `<div class="grow"><div class="bname">${b.name}</div><div class="bmeta">${meta}</div></div>`;
+        const stepper = document.createElement("div"); stepper.className = "stepper";
+        const minus = document.createElement("button"); minus.textContent = "−"; minus.setAttribute("aria-label", "Lower " + b.name);
+        const val = document.createElement("span"); val.className = "hval"; val.textContent = b.height + " ft";
+        const plus = document.createElement("button"); plus.textContent = "+"; plus.setAttribute("aria-label", "Raise " + b.name);
+        const stepH = (d) => (e) => { e.stopPropagation(); b.height = clamp(b.height + d, 0, 60); S.hoursDirty = true; renderBlockerList(); render(); };
+        minus.addEventListener("click", stepH(-1));
+        plus.addEventListener("click", stepH(1));
+        stepper.appendChild(minus); stepper.appendChild(val); stepper.appendChild(plus);
+        row.appendChild(stepper);
+        if (!b.locked) {
+          const del = document.createElement("button"); del.className = "icon-btn"; del.textContent = "✕"; del.title = "Remove " + b.name;
+          del.addEventListener("click", (e) => { e.stopPropagation(); S.blockers = S.blockers.filter((x) => x.id !== b.id); if (S.selBlocker === b.id) S.selBlocker = null; S.hoursDirty = true; renderBlockerList(); renderSelection(); render(); });
+          row.appendChild(del);
+        }
+        row.addEventListener("click", () => { S.selBlocker = S.selBlocker === b.id ? null : b.id; S.selPlant = null; renderBlockerList(); renderSelection(); render(); });
+        wrap.appendChild(row);
+      }
+    }
+    $("addRectBtn").addEventListener("click", () => {
+      const id = "blk" + (++blockerSeq);
+      S.blockers.push({ id, name: "Building " + (blockerSeq - 100), kind: "rect", x: S.yardW / 2 - 6, y: S.yardH / 2 - 5, w: 12, h: 10, height: 10, opacity: 1, locked: false });
+      S.selBlocker = id; S.hoursDirty = true; renderBlockerList(); renderSelection(); render();
+    });
+    $("addTreeBtn").addEventListener("click", () => {
+      const id = "blk" + (++blockerSeq);
+      S.blockers.push({ id, name: "Tree " + (blockerSeq - 100), kind: "circle", cx: S.yardW / 2, cy: S.yardH / 2, r: 8, height: 20, opacity: 0.75, locked: false });
+      S.selBlocker = id; S.hoursDirty = true; renderBlockerList(); renderSelection(); render();
+    });
+
+    /* ---------------- stage pointer interaction ---------------- */
+    function eventFt(e) {
+      const r = stage.getBoundingClientRect();
+      return { x: (e.clientX - r.left) / r.width * S.yardW, y: (e.clientY - r.top) / r.height * S.yardH };
+    }
+    let drag = null;
+    stage.addEventListener("pointerdown", (e) => {
+      const pt = eventFt(e);
+      if (S.armed) {
+        const def = PLANTS[S.armed];
+        const p = { id: "p" + (++S.plantSeq), key: S.armed, x: clamp(pt.x, def.w / 2, S.yardW - def.w / 2), y: clamp(pt.y, def.w / 2, S.yardH - def.w / 2) };
+        S.plants.push(p);
+        S.selPlant = p.id; S.selBlocker = null; S.armed = null;
+        S.hoursDirty = true; refreshChips(); renderBlockerList(); renderSelection(); updateHint(); render();
+        return;
+      }
+      // topmost plant first
+      for (let i = S.plants.length - 1; i >= 0; i--) {
+        const p = S.plants[i], def = PLANTS[p.key];
+        if (Math.hypot(p.x - pt.x, p.y - pt.y) <= def.w / 2 + 0.6) {
+          S.selPlant = p.id; S.selBlocker = null;
+          drag = { type: "plant", id: p.id, dx: p.x - pt.x, dy: p.y - pt.y };
+          stage.setPointerCapture(e.pointerId);
+          renderBlockerList(); renderSelection(); render();
+          return;
+        }
+      }
+      for (let i = S.blockers.length - 1; i >= 0; i--) {
+        const b = S.blockers[i];
+        if (b.kind === "fence") continue;
+        const shapes = blockerShapes(b);
+        if (shapes.some((sh) => pointInPoly(pt.x, pt.y, sh))) {
+          S.selBlocker = b.id; S.selPlant = null;
+          const c = blockerCenter(b);
+          drag = { type: "blocker", id: b.id, dx: c.x - pt.x, dy: c.y - pt.y };
+          stage.setPointerCapture(e.pointerId);
+          renderBlockerList(); renderSelection(); render();
+          return;
+        }
+      }
+      S.selPlant = null; S.selBlocker = null;
+      renderBlockerList(); renderSelection(); render();
+      if (S.mode === "hours" && S.hoursGrid) {
+        const gx = clamp(Math.floor(pt.x), 0, S.hoursGrid.W - 1), gy = clamp(Math.floor(pt.y), 0, S.hoursGrid.H - 1);
+        const hrs = S.hoursGrid.grid[gy * S.hoursGrid.W + gx];
+        const ro = $("tapReadout");
+        if (ro) ro.textContent = `That square gets ${hrs.toFixed(1)} hrs of direct sun on ${S.dateStr} — ${tierFor(hrs).label.toLowerCase()}.`;
+      }
+    });
+    stage.addEventListener("pointermove", (e) => {
+      if (!drag) return;
+      const pt = eventFt(e);
+      if (drag.type === "plant") {
+        const p = S.plants.find((x) => x.id === drag.id); if (!p) return;
+        const def = PLANTS[p.key];
+        p.x = clamp(pt.x + drag.dx, def.w / 2, S.yardW - def.w / 2);
+        p.y = clamp(pt.y + drag.dy, def.w / 2, S.yardH - def.w / 2);
+      } else {
+        const b = S.blockers.find((x) => x.id === drag.id); if (!b) return;
+        const nx = pt.x + drag.dx, ny = pt.y + drag.dy;
+        if (b.kind === "rect") { b.x = clamp(nx - b.w / 2, 0, S.yardW - b.w); b.y = clamp(ny - b.h / 2, 0, S.yardH - b.h); }
+        if (b.kind === "circle") { b.cx = clamp(nx, b.r * 0.4, S.yardW - b.r * 0.4); b.cy = clamp(ny, b.r * 0.4, S.yardH - b.r * 0.4); }
+      }
+      render();
+    });
+    const endDrag = () => { if (drag) { drag = null; S.hoursDirty = true; renderSelection(); render(); } };
+    stage.addEventListener("pointerup", endDrag);
+    stage.addEventListener("pointercancel", endDrag);
+
+    /* ---------------- time & playback ---------------- */
+    $("timeSlider").addEventListener("input", (e) => { S.minutes = Number(e.target.value); updateDayFacts(); render(); });
+    let playTimer = null;
+    $("playBtn").addEventListener("click", () => {
+      S.playing = !S.playing;
+      $("playIcon").innerHTML = S.playing ? '<rect x="5" y="4" width="5" height="16"/><rect x="14" y="4" width="5" height="16"/>' : '<polygon points="6,4 20,12 6,20"/>';
+      $("playBtn").setAttribute("aria-label", S.playing ? "Pause" : "Play the day");
+      if (S.playing) {
+        const { rise, set } = sunTimes(S.dateStr, S.lat, S.lon);
+        if (rise !== null && (S.minutes < rise || S.minutes > set)) S.minutes = rise;
+        let last = performance.now();
+        const tick = (now) => {
+          if (!S.playing) return;
+          const dt = now - last; last = now;
+          S.minutes += dt / 1000 * 12; // 12 sun-minutes per real second
+          const st = sunTimes(S.dateStr, S.lat, S.lon);
+          if (st.set !== null && S.minutes >= st.set) { S.minutes = st.set; S.playing = false; $("playIcon").innerHTML = '<polygon points="6,4 20,12 6,20"/>'; }
+          $("timeSlider").value = Math.round(S.minutes);
+          updateDayFacts(); render();
+          if (S.playing) playTimer = requestAnimationFrame(tick);
+        };
+        playTimer = requestAnimationFrame(tick);
+      } else if (playTimer) cancelAnimationFrame(playTimer);
+    });
+
+    /* ---------------- mode toggle ---------------- */
+    function setMode(m) {
+      S.mode = m;
+      $("modeShadows").setAttribute("aria-pressed", m === "shadows" ? "true" : "false");
+      $("modeHours").setAttribute("aria-pressed", m === "hours" ? "true" : "false");
+      $("timebar").style.opacity = m === "hours" ? "0.45" : "1";
+      $("timeSlider").disabled = m === "hours";
+      $("playBtn").disabled = m === "hours";
+      if (m === "hours") S.hoursDirty = true;
+      updateHint(); updateTierPercents(); render();
+    }
+    $("modeShadows").addEventListener("click", () => setMode("shadows"));
+    $("modeHours").addEventListener("click", () => setMode("hours"));
+
+    /* ---------------- day & place ---------------- */
+    let recomputeTimer = null;
+    function scheduleRecompute() {
+      clearTimeout(recomputeTimer);
+      recomputeTimer = setTimeout(() => { S.hoursDirty = true; updateDayFacts(); renderSelection(); render(); }, 160);
+    }
+    $("dateInput").addEventListener("change", (e) => { if (e.target.value) { S.dateStr = e.target.value; scheduleRecompute(); } });
+    document.querySelectorAll("#seasonRow [data-date]").forEach((b) =>
+      b.addEventListener("click", () => { S.dateStr = b.dataset.date; $("dateInput").value = S.dateStr; scheduleRecompute(); }));
+    $("latInput").addEventListener("change", (e) => { const v = Number(e.target.value); if (!isNaN(v)) { S.lat = clamp(v, -65, 70); e.target.value = S.lat; offsetOverrideMin = null; scheduleRecompute(); } });
+    $("lonInput").addEventListener("change", (e) => { const v = Number(e.target.value); if (!isNaN(v)) { S.lon = clamp(v, -180, 180); e.target.value = S.lon; offsetOverrideMin = null; scheduleRecompute(); } });
+    $("offsetInput").addEventListener("change", (e) => { const v = Number(e.target.value); if (!isNaN(v)) { offsetOverrideMin = clamp(Math.round(v * 2) / 2, -12, 14) * 60; scheduleRecompute(); } });
+    $("geoBtn").addEventListener("click", () => {
+      const st = $("geoStatus");
+      if (!navigator.geolocation) { st.textContent = "This device has no location service."; return; }
+      st.textContent = "Locating…";
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          S.lat = Math.round(pos.coords.latitude * 1000) / 1000;
+          S.lon = Math.round(pos.coords.longitude * 1000) / 1000;
+          offsetOverrideMin = null;
+          $("latInput").value = S.lat; $("lonInput").value = S.lon;
+          st.textContent = "Using this device's location.";
+          scheduleRecompute();
+        },
+        () => { st.textContent = "Location wasn't shared — type latitude/longitude instead."; },
+        { timeout: 8000 }
+      );
+    });
+
+    /* ---------------- photo & grid ---------------- */
+    $("photoBtn").addEventListener("click", () => $("photoFile").click());
+    $("photoFile").addEventListener("change", (e) => {
+      const f = e.target.files && e.target.files[0];
+      if (!f) return;
+      const url = URL.createObjectURL(f);
+      const img = new Image();
+      img.onload = () => {
+        S.photo = img;
+        applyPhotoScale();
+        $("demoBtn").disabled = false;
+        $("photoScaleWrap").classList.remove("hidden");
+        S.hoursDirty = true; render();
+      };
+      img.src = url;
+    });
+    function applyPhotoScale() {
+      if (!S.photo) return;
+      const wFt = clamp(Number($("photoWidthInput").value) || 90, 10, 600);
+      S.yardW = wFt;
+      S.yardH = Math.round(wFt * S.photo.naturalHeight / S.photo.naturalWidth);
+    }
+    $("photoWidthInput").addEventListener("change", () => { applyPhotoScale(); S.hoursDirty = true; render(); });
+    $("demoBtn").addEventListener("click", () => {
+      S.photo = null; S.yardW = 90; S.yardH = 64;
+      S.blockers = defaultBlockers(); S.plants = []; S.selPlant = null; S.selBlocker = null;
+      $("demoBtn").disabled = true; $("photoScaleWrap").classList.add("hidden");
+      S.hoursDirty = true; renderBlockerList(); renderSelection(); render();
+    });
+    $("gridSizeSel").addEventListener("change", (e) => { S.gridFt = Number(e.target.value); render(); });
+    $("gridToggleSel").addEventListener("change", (e) => { S.showGrid = e.target.value === "on"; render(); });
+
+    /* ---------------- resize ---------------- */
+    let resizeTimer = null;
+    window.addEventListener("resize", () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(render, 120); });
+
+    /* ---------------- init ---------------- */
+    buildChips();
+    renderBlockerList();
+    renderSelection();
+    updateDayFacts();
+    updateTierPercents();
+    updateHint();
+    render();
+    </script>
+  </body>
+</html>
